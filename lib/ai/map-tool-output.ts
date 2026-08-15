@@ -3,6 +3,7 @@ import {
   TOOL_NAMES,
   addLinesSchemaFor,
   clarificationInputSchema,
+  proposeStepsSchema,
 } from "./tools";
 import { round4 } from "@/lib/money";
 import { getNorma } from "@/lib/norme";
@@ -37,9 +38,23 @@ export interface GeneratedLine {
   confidence: "MARE" | "MEDIE" | "MICA";
 }
 
+/**
+ * Un pas dedus, propus omului. Nu e linie de deviz si nu devine una pina nu-l
+ * bifeaza cineva — vezi `propune_pasi` din tools.ts.
+ */
+export interface ProposedStep {
+  code: string | null;
+  name: string;
+  unit: string;
+  /** null cind nu rezulta din ce a spus omul: o completeaza el. */
+  quantity: number | null;
+  reason: string;
+}
+
 export type MappedEvent =
   | { type: "section"; name: string }
   | { type: "line"; line: GeneratedLine }
+  | { type: "steps"; steps: ProposedStep[] }
   | { type: "question"; question: string };
 
 const CONFIDENCE_MAP = {
@@ -104,6 +119,28 @@ export function mapToolCall(
     }
 
     return events;
+  }
+
+  if (toolName === TOOL_NAMES.proposeSteps) {
+    const parsed = proposeStepsSchema.safeParse(input);
+    if (!parsed.success) return [];
+
+    const steps = parsed.data.pasi.map((pas) => {
+      // Acelasi tratament ca la linii: codul care nu exista in indicator se
+      // arunca, iar denumirea si unitatea vin din norma cind codul e bun. Un
+      // cod oficial fals e citit de beneficiar ca un angajament.
+      const norma = pas.cod_norma ? getNorma(pas.cod_norma) : null;
+
+      return {
+        code: norma?.cod ?? null,
+        name: norma?.denumire ?? pas.denumire,
+        unit: norma?.um ?? pas.um,
+        quantity: pas.cantitate === undefined ? null : round4(pas.cantitate),
+        reason: pas.motiv,
+      };
+    });
+
+    return [{ type: "steps", steps }];
   }
 
   if (toolName === TOOL_NAMES.clarify) {

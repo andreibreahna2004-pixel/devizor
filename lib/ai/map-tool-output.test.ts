@@ -291,3 +291,94 @@ describe("mapToolCall — apeluri necunoscute", () => {
     expect(mapToolCall(TOOL_NAMES.addLines, null, "COMBINAT")).toEqual([]);
   });
 });
+
+/**
+ * Pasii dedusi ies pe alt canal decat liniile si nu ajung in deviz pina nu-i
+ * bifeaza omul. Testele de aici pazesc exact ce face canalul sigur: cantitatea
+ * lipsa ramine lipsa, iar un cod inventat nu se lipeste de propunere.
+ */
+describe("mapToolCall — propune_pasi", () => {
+  const pas = {
+    denumire: "Demontare pardoseala din placi de gresie",
+    um: "mp",
+    motiv: "gresia noua nu se monteaza peste cea veche",
+  };
+
+  it("intoarce pasii ca propuneri, nu ca linii", () => {
+    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] }, "COMBINAT");
+
+    expect(events).toHaveLength(1);
+    expect(events[0].type).toBe("steps");
+    expect(events.some((e) => e.type === "line")).toBe(false);
+  });
+
+  it("pastreaza ordinea in care au venit", () => {
+    const events = mapToolCall(
+      TOOL_NAMES.proposeSteps,
+      {
+        pasi: [
+          { ...pas, denumire: "Demontare gresie veche" },
+          { ...pas, denumire: "Amorsare strat suport" },
+          { ...pas, denumire: "Chituire rosturi" },
+        ],
+      },
+      "COMBINAT",
+    );
+
+    const steps = events[0].type === "steps" ? events[0].steps : [];
+    expect(steps.map((s) => s.name)).toEqual([
+      "Demontare gresie veche",
+      "Amorsare strat suport",
+      "Chituire rosturi",
+    ]);
+  });
+
+  it("lasa cantitatea null cand modelul nu o trimite", () => {
+    // Cifra lipsa e un semnal, nu o scapare: pasul depinde de starea de pe
+    // teren si il masoara omul.
+    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] }, "COMBINAT");
+    const steps = events[0].type === "steps" ? events[0].steps : [];
+
+    expect(steps[0].quantity).toBeNull();
+  });
+
+  it("pastreaza cantitatea cand rezulta din ce a spus omul", () => {
+    const events = mapToolCall(
+      TOOL_NAMES.proposeSteps,
+      { pasi: [{ ...pas, cantitate: 6 }] },
+      "COMBINAT",
+    );
+    const steps = events[0].type === "steps" ? events[0].steps : [];
+
+    expect(steps[0].quantity).toBe(6);
+  });
+
+  it("ia denumirea din indicator cand codul exista", () => {
+    const events = mapToolCall(
+      TOOL_NAMES.proposeSteps,
+      { pasi: [{ ...pas, cod_norma: "CA01A1" }] },
+      "COMBINAT",
+    );
+    const steps = events[0].type === "steps" ? events[0].steps : [];
+
+    expect(steps[0].code).toBe("CA01A1");
+    expect(steps[0].name).not.toBe(pas.denumire);
+  });
+
+  it("arunca un cod care nu exista si pastreaza denumirea scrisa", () => {
+    const events = mapToolCall(
+      TOOL_NAMES.proposeSteps,
+      { pasi: [{ ...pas, cod_norma: "XX99Z9" }] },
+      "COMBINAT",
+    );
+    const steps = events[0].type === "steps" ? events[0].steps : [];
+
+    expect(steps[0].code).toBeNull();
+    expect(steps[0].name).toBe(pas.denumire);
+  });
+
+  it("ignora un apel fara pasi", () => {
+    expect(mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [] }, "COMBINAT")).toEqual([]);
+    expect(mapToolCall(TOOL_NAMES.proposeSteps, {}, "COMBINAT")).toEqual([]);
+  });
+});

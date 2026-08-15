@@ -77,8 +77,86 @@ export type SearchInput = z.infer<typeof searchInputSchema>;
 export const TOOL_NAMES = {
   searchNorm: "cauta_norma",
   addLines: "adauga_linii_deviz",
+  proposeSteps: "propune_pasi",
   clarify: "cere_clarificare",
 } as const;
+
+/**
+ * Pasii pe care omul nu i-a spus, dar care fac parte din lucrare.
+ *
+ * Nu intra in deviz. Din devizul asta iese o factura, iar un pas dedus gresit
+ * ar fi munca facturata si neexecutata — de aceea propunerile ies pe alt canal
+ * decat liniile si asteapta bifa omului.
+ *
+ * Cantitatea e optionala anume: la "am schimbat gresia" stii ca s-a demolat
+ * pardoseala veche, dar nu si cita. Mai bine o propunere fara cifra, pe care
+ * omul o completeaza, decat una inventata care pare masurata.
+ */
+const stepShape = {
+  cod_norma: z.string().trim().min(4).max(12).optional(),
+  denumire: z.string().min(3).max(300),
+  um: z.string().min(1).max(16),
+  cantitate: z.number().nonnegative().optional(),
+  motiv: z.string().min(1).max(400),
+};
+
+export const proposeStepsSchema = z.object({
+  pasi: z.array(z.object(stepShape)).min(1).max(20),
+});
+
+const proposeStepsTool: Anthropic.Tool = {
+  name: TOOL_NAMES.proposeSteps,
+  description:
+    "Propune pasii care fac parte din lucrare dar pe care omul nu i-a spus. NU intra in deviz: " +
+    "omul ii vede intr-o caseta separata, in ordinea executiei, si bifeaza ce s-a facut. " +
+    "Foloseste-l pentru tot ce deduci — la 'am schimbat gresia': demontarea pardoselii vechi, " +
+    "pregatirea stratului suport, chituirea rosturilor, transportul molozului. " +
+    "In 'adauga_linii_deviz' pui doar ce a spus omul explicit. Apeleaza-l o singura data, " +
+    "cu toti pasii, in ordine cronologica: intii pregatirea, apoi executia, la urma finisarea " +
+    "si curatenia.",
+  input_schema: {
+    type: "object",
+    properties: {
+      pasi: {
+        type: "array",
+        description: "Pasii, in ordinea in care se executa pe santier.",
+        items: {
+          type: "object",
+          properties: {
+            cod_norma: {
+              type: "string",
+              description:
+                "Codul din indicator, daca ai cautat si ai gasit norma potrivita. Optional.",
+            },
+            denumire: {
+              type: "string",
+              description: "Ce se executa la pasul asta, ca intr-un deviz.",
+            },
+            um: {
+              type: "string",
+              description: "Unitatea de masura: mp, mc, ml, buc, kg, ora.",
+            },
+            cantitate: {
+              type: "number",
+              description:
+                "Cantitatea, DOAR daca rezulta din ce a spus omul (gresie pe 6 mp -> " +
+                "demolare 6 mp). Daca nu ai de unde s-o stii, las-o goala: omul o completeaza. " +
+                "Nu inventa cifre.",
+            },
+            motiv: {
+              type: "string",
+              description:
+                "De ce face parte din lucrare, in cuvinte simple. " +
+                "Ex: 'gresia noua nu se monteaza peste cea veche'.",
+            },
+          },
+          required: ["denumire", "um", "motiv"],
+        },
+      },
+    },
+    required: ["pasi"],
+  },
+};
 
 const SECTION_DESCRIPTION =
   "Stadiul fizic: 'Terasamente', 'Infrastructura', 'Suprastructura', 'Invelitoare', " +
@@ -286,6 +364,7 @@ export function estimateToolsFor(mode: EstimateMode): Anthropic.Tool[] {
   return [
     searchNormTool,
     ...(mode === "SEPARAT" ? splitTools : combinedTools),
+    proposeStepsTool,
     clarifyTool,
   ];
 }

@@ -4,6 +4,7 @@ import { AI_EFFORT, AI_MAX_TOKENS, AI_MODEL, getAiClient } from "./client";
 import { type EstimateBrief, buildBriefMessage, buildSystemBlocks } from "./prompts";
 import {
   type GeneratedLine,
+  type ProposedStep,
   mapToolCall,
   pricelessLines,
   unknownNormCodes,
@@ -13,6 +14,7 @@ import {
   TOOL_NAMES,
   addLinesSchemaFor,
   estimateToolsFor,
+  proposeStepsSchema,
   searchInputSchema,
 } from "./tools";
 import { searchNorme } from "@/lib/norme";
@@ -34,12 +36,14 @@ export type GenerationEvent =
   | { type: "status"; message: string }
   | { type: "section"; name: string }
   | { type: "line"; line: GeneratedLine }
+  /** Pasi dedusi, propusi omului. Nu sint linii si nu se salveaza. */
+  | { type: "steps"; steps: ProposedStep[] }
   | { type: "question"; question: string }
   | { type: "summary"; text: string }
   | { type: "usage"; usage: GenerationUsage }
   | { type: "error"; message: string };
 
-export type { GeneratedLine };
+export type { GeneratedLine, ProposedStep };
 
 export interface GenerationUsage {
   inputTokens: number;
@@ -291,6 +295,20 @@ function runTool(call: PendingToolCall, mode: EstimateMode): string {
     }
 
     return notes.join(" ");
+  }
+
+  if (call.name === TOOL_NAMES.proposeSteps) {
+    const parsed = proposeStepsSchema.safeParse(call.input);
+    if (!parsed.success) {
+      return `Argumente invalide, niciun pas nu a fost propus: ${parsed.error.issues
+        .map((i) => `${i.path.join(".")} ${i.message}`)
+        .join("; ")}`;
+    }
+    return (
+      `${parsed.data.pasi.length} pasi propusi. Sint doar propuneri: omul ii vede ` +
+      `intr-o caseta separata si bifeaza ce s-a executat. Nu-i mai adauga si cu ` +
+      `adauga_linii_deviz — ar intra de doua ori.`
+    );
   }
 
   if (call.name === TOOL_NAMES.clarify) {

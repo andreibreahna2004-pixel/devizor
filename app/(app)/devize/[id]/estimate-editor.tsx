@@ -4,6 +4,7 @@ import { Fragment, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   addEstimateLineManual,
+  addSuggestedSteps,
   deleteEstimateLine,
   saveEstimateLines,
   searchNormeAction,
@@ -11,6 +12,7 @@ import {
   updateEstimateVatRate,
 } from "@/app/actions/estimates";
 import { ConfidenceBadge } from "@/components/status-badge";
+import type { ProposedStep } from "@/lib/ai/map-tool-output";
 import { consumeEventStream } from "@/lib/event-stream";
 import { formatLei, formatQty } from "@/lib/money";
 import type { Norma } from "@/lib/norme";
@@ -394,6 +396,7 @@ export function EstimateEditor({
           <SpokenWork
             estimateId={estimateId}
             aiConfigured={aiConfigured}
+            sections={sections}
             onFinished={() => router.refresh()}
           />
           <AddLineForm
@@ -693,16 +696,19 @@ const EMPTY_LINE = {
 function SpokenWork({
   estimateId,
   aiConfigured,
+  sections,
   onFinished,
 }: {
   estimateId: string;
   aiConfigured: boolean;
+  sections: Section[];
   onFinished: () => void;
 }) {
   const [text, setText] = useState("");
   const [running, setRunning] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [added, setAdded] = useState<string[]>([]);
+  const [steps, setSteps] = useState<ProposedStep[]>([]);
   const [question, setQuestion] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -711,6 +717,7 @@ function SpokenWork({
     setRunning(true);
     setStatus("AI-ul cauta lucrarile in indicator...");
     setAdded([]);
+    setSteps([]);
     setQuestion(null);
     setSummary(null);
     setError(null);
@@ -744,6 +751,9 @@ function SpokenWork({
             ]);
             break;
           }
+          case "steps":
+            setSteps(event.steps as ProposedStep[]);
+            break;
           case "question":
             setQuestion(event.question as string);
             break;
@@ -825,6 +835,209 @@ function SpokenWork({
           {summary}
         </p>
       )}
+
+      {steps.length > 0 && (
+        <StepsBox
+          estimateId={estimateId}
+          steps={steps}
+          sections={sections}
+          onAdded={() => {
+            setSteps([]);
+            onFinished();
+          }}
+          onDismiss={() => setSteps([])}
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * Ordinea lucrarilor: pasii pe care AI-ul i-a dedus, dar pe care omul nu i-a
+ * spus.
+ *
+ * Nimic de aici nu e in deviz. Sint propuneri, in ordinea in care se executa pe
+ * santier, si intra doar cele bifate — de aceea nimic nu e bifat de la inceput.
+ * Un pas dedus gresit care ar intra singur in deviz ar deveni munca facturata
+ * si neexecutata.
+ */
+function StepsBox({
+  estimateId,
+  steps,
+  sections,
+  onAdded,
+  onDismiss,
+}: {
+  estimateId: string;
+  steps: ProposedStep[];
+  sections: Section[];
+  onAdded: () => void;
+  onDismiss: () => void;
+}) {
+  const [pending, startTransition] = useTransition();
+  const [chosen, setChosen] = useState<Set<number>>(new Set());
+  const [quantities, setQuantities] = useState<Record<number, string>>({});
+  const [sectionId, setSectionId] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  function toggle(index: number) {
+    setChosen((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+    setError(null);
+  }
+
+  function handleAdd() {
+    setError(null);
+    const alese = [...chosen].sort((a, b) => a - b);
+
+    startTransition(async () => {
+      const result = await addSuggestedSteps({
+        estimateId,
+        sectionId: sectionId === "" ? null : sectionId,
+        pasi: alese.map((i) => ({
+          code: steps[i].code,
+          name: steps[i].name,
+          unit: steps[i].unit,
+          quantity: parseDecimal(quantities[i] ?? "") || steps[i].quantity || 0,
+        })),
+      });
+
+      if (!result.ok) {
+        setError(result.error ?? "Pasii nu au putut fi adaugati");
+        return;
+      }
+      onAdded();
+    });
+  }
+
+  return (
+    <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <h3 className="text-sm font-semibold text-blue-900">Ordinea lucrarilor</h3>
+          <p className="mt-0.5 text-xs text-blue-900/80">
+            Pasii astia fac parte din lucrare, dar nu i-ai spus. Bifeaza ce s-a
+            executat — restul nu intra nicaieri.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="text-xs text-blue-900/70 underline-offset-2 hover:underline"
+        >
+          Nu-mi trebuie
+        </button>
+      </div>
+
+      <ol className="mt-3 space-y-1.5">
+        {steps.map((step, index) => {
+          const bifat = chosen.has(index);
+
+          return (
+            <li key={`${step.name}-${index}`}>
+              <div
+                className={`rounded-lg border bg-[var(--surface)] p-3 transition-colors ${
+                  bifat ? "border-brand-400" : "border-[var(--border)]"
+                }`}
+              >
+                <label className="flex cursor-pointer items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    checked={bifat}
+                    onChange={() => toggle(index)}
+                    className="mt-0.5 h-4 w-4 shrink-0"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-medium text-ink-900">
+                      <span className="tabular text-ink-500">{index + 1}.</span>{" "}
+                      {step.name}
+                    </span>
+                    {step.code && (
+                      <span className="tabular mt-0.5 block text-xs text-brand-700">
+                        {step.code}
+                      </span>
+                    )}
+                    <span className="mt-0.5 block text-xs text-ink-500">
+                      {step.reason}
+                    </span>
+                  </span>
+                </label>
+
+                {bifat && (
+                  <div className="mt-2.5 flex items-center gap-2 border-t border-[var(--border)] pt-2.5">
+                    <label className="text-xs text-ink-500">Cantitate</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      className="cell-input tabular w-24 text-right"
+                      placeholder={step.quantity === null ? "de pus" : undefined}
+                      value={
+                        quantities[index] ??
+                        (step.quantity === null ? "" : formatQty(step.quantity))
+                      }
+                      onChange={(e) =>
+                        setQuantities((prev) => ({ ...prev, [index]: e.target.value }))
+                      }
+                    />
+                    <span className="text-xs text-ink-500">{step.unit}</span>
+                    {step.quantity === null && (
+                      <span className="text-xs text-amber-800">
+                        AI-ul n-a putut-o deduce
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div className="mt-3 flex flex-wrap items-end gap-3">
+        {sections.length > 0 && (
+          <div>
+            <label className="label text-xs" htmlFor="steps-section">
+              Sectiune
+            </label>
+            <select
+              id="steps-section"
+              className="input"
+              value={sectionId}
+              onChange={(e) => setSectionId(e.target.value)}
+            >
+              <option value="">Alte lucrari</option>
+              {sections.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <button
+          type="button"
+          className="btn-primary w-full sm:w-auto"
+          onClick={handleAdd}
+          disabled={pending || chosen.size === 0}
+        >
+          {pending
+            ? "Se adauga..."
+            : chosen.size === 0
+              ? "Bifeaza pasii de adaugat"
+              : `Adauga ${chosen.size} ${chosen.size === 1 ? "pas" : "pasi"} in deviz`}
+        </button>
+
+        {error && <span className="text-sm text-red-700">{error}</span>}
+      </div>
+
+      <p className="mt-2 text-xs text-ink-500">
+        Intra fara pret, marcati pentru verificare. Pretul il scrii tu pe linie.
+      </p>
     </div>
   );
 }

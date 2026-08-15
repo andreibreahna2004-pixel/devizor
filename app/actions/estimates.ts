@@ -198,6 +198,88 @@ export async function addEstimateLineManual(
   return { ok: true };
 }
 
+const addStepsSchema = z.object({
+  estimateId: z.string().min(1),
+  sectionId: z.string().min(1).nullable().optional(),
+  pasi: z
+    .array(
+      z.object({
+        code: z.string().min(1).nullable().optional(),
+        name: z.string().min(1).max(300),
+        unit: z.string().min(1).max(16),
+        quantity: z.number().nonnegative(),
+      }),
+    )
+    .min(1)
+    .max(20),
+});
+
+/**
+ * Pasii bifati de om din caseta de propuneri.
+ *
+ * Intra fara pret si nemarcati ca verificati: pasul e propus de AI, cantitatea
+ * de multe ori pusa de om cu ochiul, iar pretul nu l-a scris nimeni inca. Asa
+ * apar in editor cerand atentie, nu ca linii gata de facturat.
+ *
+ * Ce nu a bifat omul nu ajunge aici — propunerile traiesc doar in browser, pina
+ * cind le alege cineva.
+ */
+export async function addSuggestedSteps(payload: unknown): Promise<ActionResult> {
+  const parsed = addStepsSchema.safeParse(payload);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Date invalide" };
+  }
+
+  const guard = await loadEditable(parsed.data.estimateId);
+  if ("error" in guard) return { ok: false, error: guard.error };
+
+  if (parsed.data.sectionId) {
+    const owned = await prisma.estimateSection.count({
+      where: { id: parsed.data.sectionId, estimateId: parsed.data.estimateId },
+    });
+    if (owned === 0) return { ok: false, error: "Sectiunea nu exista" };
+  }
+
+  const last = await prisma.estimateLine.findFirst({
+    where: { estimateId: parsed.data.estimateId },
+    orderBy: { sortOrder: "desc" },
+    select: { sortOrder: true },
+  });
+
+  let sortOrder = (last?.sortOrder ?? -1) + 1;
+
+  // Ordinea din caseta e ordinea de executie de pe santier; se pastreaza in
+  // deviz, altfel propunerea isi pierde tocmai sensul pentru care a fost facuta.
+  for (const pas of parsed.data.pasi) {
+    const norma = pas.code ? getNorma(pas.code) : null;
+
+    await prisma.estimateLine.create({
+      data: {
+        estimateId: parsed.data.estimateId,
+        sectionId: parsed.data.sectionId ?? null,
+        code: norma?.cod ?? null,
+        name: norma?.denumire ?? pas.name,
+        unit: norma?.um ?? pas.unit,
+        quantity: toDecimal(pas.quantity, 4),
+        materialUnitPrice: toDecimal(0, 4),
+        laborUnitPrice: toDecimal(0, 4),
+        unitPrice: toDecimal(0, 4),
+        total: toDecimal(0, 2),
+        sortOrder: sortOrder++,
+        aiGenerated: true,
+        aiConfidence: "MICA",
+        aiJustification:
+          "Pas propus de AI si confirmat de tine. Pretul si cantitatea le pui tu.",
+        reviewed: false,
+      },
+    });
+  }
+
+  await recalculateEstimate(parsed.data.estimateId);
+  revalidatePath(`/devize/${parsed.data.estimateId}`);
+  return { ok: true };
+}
+
 const vatSchema = z.object({
   estimateId: z.string().min(1),
   vatRate: z.number().min(0).max(100),
