@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EstimateStatusBadge } from "@/components/status-badge";
 import { isAiConfigured } from "@/lib/ai/client";
-import { getEstimateForView, isEditable } from "@/lib/estimates/service";
+import { getEstimateForView, isDeletable, isEditable } from "@/lib/estimates/service";
 import { toNumber } from "@/lib/money";
 import { getNorma } from "@/lib/norme";
 import { requireUser } from "@/lib/tenant";
@@ -77,6 +77,10 @@ export default async function EstimatePage({
             separat={estimate.mode === "SEPARAT"}
             hasClient={Boolean(estimate.clientId)}
             hasLines={lines.length > 0}
+            canDelete={isDeletable({
+              invoiceCount: estimate.invoices.length,
+              progressCount: estimate._count.progressReports,
+            })}
           />
           {lines.length > 0 && (
             <Link href={`/devize/${estimate.id}/situatii`} className="link text-sm">

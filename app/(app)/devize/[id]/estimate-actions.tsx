@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { setEstimateStatus } from "@/app/actions/estimates";
+import { deleteEstimate, setEstimateStatus } from "@/app/actions/estimates";
 import { createInvoiceFromEstimate } from "@/app/actions/invoices";
 
 type InvoiceScope = "TOT" | "MATERIALE" | "MANOPERA";
@@ -26,17 +26,34 @@ export function EstimateActions({
   separat,
   hasClient,
   hasLines,
+  canDelete,
 }: {
   estimateId: string;
   status: string;
   separat: boolean;
   hasClient: boolean;
   hasLines: boolean;
+  /** Fals cind devizul are factura sau situatii — vezi `deleteEstimate`. */
+  canDelete: boolean;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [confirmingScope, setConfirmingScope] = useState<InvoiceScope | null>(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  function remove() {
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteEstimate(estimateId);
+      if (!result.ok) {
+        setError(result.error ?? "Stergerea a esuat");
+        setConfirmingDelete(false);
+        return;
+      }
+      router.push("/devize");
+    });
+  }
 
   function changeStatus(next: string) {
     setError(null);
@@ -166,7 +183,49 @@ export function EstimateActions({
               </button>
             ))
           ))}
+
+        {/* Stergerea sta la capatul rindului, dupa actiunile de zi cu zi: nu e
+            una dintre ele. Dispare cu totul cind devizul are factura sau
+            situatii — un buton care oricum ar refuza doar incurca. */}
+        {canDelete &&
+          (confirmingDelete ? (
+            <span className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setConfirmingDelete(false)}
+                disabled={pending}
+              >
+                Renunta
+              </button>
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={remove}
+                disabled={pending}
+              >
+                {pending ? "Se sterge..." : "Confirm stergerea"}
+              </button>
+            </span>
+          ) : (
+            <button
+              type="button"
+              className="btn-danger"
+              onClick={() => setConfirmingDelete(true)}
+              disabled={pending}
+            >
+              Sterge devizul
+            </button>
+          ))}
       </div>
+
+      {confirmingDelete && !error && (
+        <p className="text-xs text-ink-500 lg:max-w-xs lg:text-right">
+          Se sterg devizul, liniile si propunerile lui, definitiv. Numarul din
+          serie ramine consumat. Daca vrei doar sa-l scoti din lucru, marcheaza-l
+          respins — ramine in evidenta.
+        </p>
+      )}
 
       {confirmingScope && !error && (
         <p className="text-xs text-ink-500 lg:max-w-xs lg:text-right">

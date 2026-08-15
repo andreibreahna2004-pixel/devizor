@@ -216,8 +216,9 @@ export type EstimateForView = NonNullable<
   Awaited<ReturnType<typeof getEstimateForView>>
 >;
 
-// Regula de editare sta intr-un modul pur, ca sa poata fi testata direct.
-export { isEditable, lockReason } from "./editable";
+// Regulile de editare si de stergere stau intr-un modul pur, ca sa poata fi
+// testate direct.
+export { isDeletable, isEditable, lockReason } from "./editable";
 
 export function estimateWhere(orgId: string, id: string): Prisma.EstimateWhereInput {
   return { id, orgId };

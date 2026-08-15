@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isEditable, lockReason } from "./editable";
+import { isDeletable, isEditable, lockReason } from "./editable";
 
 /**
  * Cind se inchide un deviz pentru editare.
@@ -72,5 +72,37 @@ describe("lockReason", () => {
     // Situatiile duc la factura; daca exista amindoua, factura e motivul care
     // spune omului ce are de facut.
     expect(lockReason(cu("ACCEPTAT", 1, 3))).toContain("factura");
+  });
+});
+
+/**
+ * Stergerea e mai stricta decit editarea, si nu din prudenta: baza de date n-o
+ * opreste singura. `Invoice.estimateId` are `onDelete: SetNull`, deci o factura
+ * ar ramine fara sursa, iar `ProgressReport` cade in cascada, deci situatiile
+ * semnate ar disparea. Regula asta e singura aparare.
+ */
+describe("isDeletable", () => {
+  it("lasa sters un deviz din care n-a iesit nimic", () => {
+    expect(isDeletable({ invoiceCount: 0, progressCount: 0 })).toBe(true);
+  });
+
+  it("opreste stergerea cind exista factura", () => {
+    expect(isDeletable({ invoiceCount: 1, progressCount: 0 })).toBe(false);
+  });
+
+  it("opreste stergerea cind exista situatii de lucrari", () => {
+    expect(isDeletable({ invoiceCount: 0, progressCount: 1 })).toBe(false);
+  });
+
+  it("nu se lasa pacalit de o singura conditie indeplinita", () => {
+    expect(isDeletable({ invoiceCount: 2, progressCount: 3 })).toBe(false);
+  });
+
+  it("e mai stricta decit editarea: un deviz anulat curat se poate sterge", () => {
+    // Anularea e o decizie de lucru, nu un document emis. Blocheaza editarea,
+    // dar nu si stergerea.
+    const curat = { status: "ANULAT", invoiceCount: 0, progressCount: 0 };
+    expect(isEditable(curat)).toBe(false);
+    expect(isDeletable(curat)).toBe(true);
   });
 });

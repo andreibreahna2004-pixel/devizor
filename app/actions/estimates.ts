@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { isEditable, lockReason, recalculateEstimate } from "@/lib/estimates/service";
+import {
+  isDeletable,
+  isEditable,
+  lockReason,
+  recalculateEstimate,
+} from "@/lib/estimates/service";
 import { toDecimal } from "@/lib/money-db";
 import { type Norma, getNorma, searchNorme } from "@/lib/norme";
 import { computeEstimateLine } from "@/lib/pricing/calculator";
@@ -275,6 +280,63 @@ export async function addSuggestion(payload: unknown): Promise<ActionResult> {
 
   await recalculateEstimate(parsed.data.estimateId);
   revalidatePath(`/devize/${parsed.data.estimateId}`);
+  return { ok: true };
+}
+
+/**
+ * Stergerea unui deviz.
+ *
+ * Baza de date NU opreste asta singura, si de aceea garda sta aici:
+ *
+ *  - `Invoice.estimateId` are `onDelete: SetNull`, deci o factura emisa ar
+ *    supravietui stergerii, dar ar ramine fara devizul din care a iesit. Un
+ *    document trimis beneficiarului si la ANAF nu ramine fara sursa.
+ *  - `ProgressReport` cade in CASCADA, deci s-ar sterge cu totul situatiile de
+ *    lucrari — inclusiv unele semnate de dirigintele de santier.
+ *
+ * Sectiunile, liniile si propunerile cad in cascada si e in regula: nu exista
+ * fara devizul lor. `AiRun` ramine, cu legatura golita, ca sa nu se piarda
+ * urma consumului de tokeni.
+ *
+ * Devizul isi ia numarul din serie la creare, iar stergerea lasa un gol acolo.
+ * Pentru devize e acceptabil — sint documente comerciale, nu fiscale. Cine vrea
+ * numarul pastrat foloseste anularea, care lasa devizul in evidenta.
+ */
+export async function deleteEstimate(estimateId: string): Promise<ActionResult> {
+  const user = await requireUser();
+
+  const estimate = await prisma.estimate.findFirst({
+    where: { id: estimateId, orgId: user.orgId },
+    select: {
+      id: true,
+      fullNumber: true,
+      _count: { select: { invoices: true, progressReports: true } },
+    },
+  });
+
+  if (!estimate) return { ok: false, error: "Devizul nu a fost gasit" };
+
+  // Aceeasi regula ca in interfata, dintr-un singur loc. Mesajul spune care
+  // din cele doua conditii a oprit stergerea si ce are omul de facut.
+  if (
+    !isDeletable({
+      invoiceCount: estimate._count.invoices,
+      progressCount: estimate._count.progressReports,
+    })
+  ) {
+    return {
+      ok: false,
+      error:
+        estimate._count.invoices > 0
+          ? "Devizul are factura emisa si nu se sterge. Storneaza factura intii, sau marcheaza devizul anulat ca sa ramina in evidenta"
+          : "Devizul are situatii de lucrari, care s-ar sterge odata cu el. Marcheaza-l anulat in loc sa-l stergi",
+    };
+  }
+
+  await prisma.estimate.delete({ where: { id: estimate.id } });
+
+  revalidatePath("/devize");
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 

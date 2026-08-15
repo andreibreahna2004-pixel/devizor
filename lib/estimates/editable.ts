@@ -40,6 +40,27 @@ export function isEditable(estimate: {
 }
 
 /**
+ * Cind un deviz se poate sterge de tot.
+ *
+ * Mai strict decit editarea, si din motive pe care baza de date nu le apara
+ * singura:
+ *
+ *  - `Invoice.estimateId` are `onDelete: SetNull`, deci stergerea NU e oprita:
+ *    factura ar supravietui, dar fara devizul din care a iesit. Un document
+ *    ajuns la beneficiar si la ANAF nu ramine fara sursa.
+ *  - `ProgressReport` cade in CASCADA: s-ar sterge situatiile de lucrari cu
+ *    totul, inclusiv semnate.
+ *
+ * Un deviz anulat se poate sterge — anularea nu-l face document emis.
+ */
+export function isDeletable(estimate: {
+  invoiceCount: number;
+  progressCount: number;
+}): boolean {
+  return estimate.invoiceCount === 0 && estimate.progressCount === 0;
+}
+
+/**
  * De ce s-a inchis devizul, in cuvintele omului.
  *
  * "Nu mai e ciorna" nu spunea nimic util: acum devizul se inchide dintr-un
