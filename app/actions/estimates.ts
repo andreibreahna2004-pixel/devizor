@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { isEditable, recalculateEstimate } from "@/lib/estimates/service";
+import { isEditable, lockReason, recalculateEstimate } from "@/lib/estimates/service";
 import { toDecimal } from "@/lib/money-db";
 import { type Norma, getNorma, searchNorme } from "@/lib/norme";
 import { computeEstimateLine } from "@/lib/pricing/calculator";
@@ -19,12 +19,22 @@ async function loadEditable(estimateId: string) {
   const user = await requireUser();
   const estimate = await prisma.estimate.findFirst({
     where: { id: estimateId, orgId: user.orgId },
-    select: { id: true, status: true },
+    select: {
+      id: true,
+      status: true,
+      _count: { select: { invoices: true, progressReports: true } },
+    },
   });
 
   if (!estimate) return { error: "Devizul nu a fost gasit" as const };
-  if (!isEditable(estimate.status)) {
-    return { error: "Devizul nu mai e ciorna si nu poate fi modificat" as const };
+  if (
+    !isEditable({
+      status: estimate.status,
+      invoiceCount: estimate._count.invoices,
+      progressCount: estimate._count.progressReports,
+    })
+  ) {
+    return { error: lockReason(estimate) };
   }
   return { estimate, orgId: user.orgId };
 }

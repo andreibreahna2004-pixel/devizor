@@ -23,7 +23,11 @@ export default async function EstimatePage({
   const estimate = await getEstimateForView(user.orgId, id);
   if (!estimate) notFound();
 
-  const editable = isEditable(estimate.status);
+  const editable = isEditable({
+    status: estimate.status,
+    invoiceCount: estimate.invoices.length,
+    progressCount: estimate._count.progressReports,
+  });
 
   const lines: EditorLine[] = estimate.lines.map((line) => ({
     id: line.id,

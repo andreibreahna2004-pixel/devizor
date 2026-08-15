@@ -6,6 +6,7 @@ import {
   addEstimateLine,
   ensureSection,
   isEditable,
+  lockReason,
   recalculateEstimate,
 } from "@/lib/estimates/service";
 import { badRequest, notFound, requireUserApi, unauthorized } from "@/lib/tenant";
@@ -56,12 +57,23 @@ export async function POST(
   const { id } = await params;
   const estimate = await prisma.estimate.findFirst({
     where: { id, orgId: user.orgId },
-    select: { id: true, status: true, mode: true },
+    select: {
+      id: true,
+      status: true,
+      mode: true,
+      _count: { select: { invoices: true, progressReports: true } },
+    },
   });
 
   if (!estimate) return notFound("Devizul nu a fost gasit");
-  if (!isEditable(estimate.status)) {
-    return badRequest("Devizul nu mai e ciorna si nu poate fi modificat");
+  if (
+    !isEditable({
+      status: estimate.status,
+      invoiceCount: estimate._count.invoices,
+      progressCount: estimate._count.progressReports,
+    })
+  ) {
+    return badRequest(lockReason(estimate));
   }
 
   // Liniile noi intra la coada, dupa cele existente.
