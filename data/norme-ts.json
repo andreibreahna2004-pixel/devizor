@@ -1,0 +1,1162 @@
+[
+ {
+  "cod": "TS A 01",
+  "denumire": "Sapatura manuala de pamint in spatii intinse la deblee, la canale deschise, la gropi de imprumut, la indepartarea stratului vegetal de 10-30 cm grosime",
+  "um": null
+ },
+ {
+  "cod": "TS A 02",
+  "denumire": "Sapatura manuala de pamint in spatii limitate, avind sub 1,00 m sau peste 1,00 m latime, executata fara sprijiniri, cu taluz vertical",
+  "um": null
+ },
+ {
+  "cod": "TS A 03",
+  "denumire": "Sapatura manuala de pamint in spatii limitate, avind sub 1,00 m latime, executata fara sprijiniri, cu taluz inclinat",
+  "um": null
+ },
+ {
+  "cod": "TS A 04",
+  "denumire": "Sapatura manuala de pamint in spatii limitate, avind sub 1,00 m latime si maximum 4,50 m adincime, executata cu sprijiniri, cu evacuare manuala",
+  "um": null
+ },
+ {
+  "cod": "TS A 05",
+  "denumire": "Sapatura manuala de pamint in spatii limitate peste 1,00 m latime, executata cu taluz inclinat, fara sprijiniri, pina la 6,00 m adincime, cu evacuarea manuala",
+  "um": null
+ },
+ {
+  "cod": "TS A 06",
+  "denumire": "Sapatura manuala de pamint, de la 2,00 la 6,00 m adincime, in spatii limitate, peste 1,00 m latime, executata cu taluz inclinat, fara sprijiniri, pamintul fiind evacuat cu macara Pionier",
+  "um": null
+ },
+ {
+  "cod": "TS A 07",
+  "denumire": "Sapatura manuala de pamint, in spatii limitate, avind peste 1,00 m latime si maximum 6,00 m adincime, executata cu sprijiniri, cu evacuare manuala",
+  "um": null
+ },
+ {
+  "cod": "TS A 08",
+  "denumire": "Sapatura manuala de pamint in spatii limitate, avind peste 1,00 m latime si maximum 10,00 m adincime, executata cu sprijiniri, cu evacuarea pamintului cu macara Pionier",
+  "um": null
+ },
+ {
+  "cod": "TS A 09",
+  "denumire": "Sapatura manuala de pamint in drenuri cu latime de maximum 1,00 m, cu evacuarea manuala, in terenuri cu impingeri mari si sprijiniri puternice",
+  "um": null
+ },
+ {
+  "cod": "TS A 10",
+  "denumire": "Sapatura manuala de pamint in drenuri cu latimea peste 1,00 m, cu evacuare manuala, in terenuri cu impingeri mari si sprijiniri puternice",
+  "um": null
+ },
+ {
+  "cod": "TS A 11",
+  "denumire": "Sapatura manuala de pamint in drenuri cu latimea peste 1,00 m, cu evacuarea pamintului cu macara Pionier, in terenuri cu impingeri mari si sprijiniri puternice",
+  "um": null
+ },
+ {
+  "cod": "TS A 12",
+  "denumire": "Sapatura manuala de pamint pina la 6,00 m adincime, in gropi cu sectiune poligonala sau circulara, avind latimea sau diametrul cercului de 1,00...1,50 m, executata cu sprijiniri, cu evacuare manuala",
+  "um": null
+ },
+ {
+  "cod": "TS A 13",
+  "denumire": "Sapatura manuala de pamint pina la 14,00 m adincime, in gropi cu sectiune poligonala sau circulara, avind latimea sau diametrul cercului de 1,00 m...1,50 m, executata cu sprijiniri si evacuarea pamintului cu macara de fereastra",
+  "um": null
+ },
+ {
+  "cod": "TS A 14",
+  "denumire": "Sapatura manuala de pamint pina la 6,00 m adincime, in gropi cu sectiune poligonala sau circulara, avind latimea sau diametrul cercului de 1,50 m...6,00 m, executata cu sprijiniri, cu evacuare manuala",
+  "um": null
+ },
+ {
+  "cod": "TS A 15",
+  "denumire": "Sapatura manuala de pamint pina la 14,00 m adincime, in gropi cu sectiunea poligonala sau circulara, avind latimea sau diametrul cercului de 1,50...6,00 m, executata cu sprijiniri, cu evacuarea pamintului cu macara Pionier",
+  "um": null
+ },
+ {
+  "cod": "TS A 16",
+  "denumire": "Sapatura manuala de pamint in spatii limitate, in transee pina la 4,00 m adincime, pentru cabluri electrice de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS A 17",
+  "denumire": "Sapatura manuala de pamint in gropi de fundatii poligonale sau circulare monobloc pina la 4,00 m adincime, pentru linii electrice aeriene de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS A 18",
+  "denumire": "Sapatura manuala de pamint in urma excavarii mecanice, pentru aducerea la cotele din proiect a gropilor cvadribloc de fundatii pina la 4,00 m adincime pentru linii electrice aeriene de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS A 19",
+  "denumire": "Sapatura manuala a santurilor si rigolelor pentru scurgerea apelor",
+  "um": null
+ },
+ {
+  "cod": "TS A 20",
+  "denumire": "Sapatura manuala de pamint in taluzuri, la debleele sapate cu excavator sau screper, pentru completarea sapaturii la profilul taluzului",
+  "um": null
+ },
+ {
+  "cod": "TS A 21",
+  "denumire": "Sapatura manuala de pamint executata in cheson deschis, pina la 18,00 m adincime, cu evacuarea pamintului cu macara Pionier",
+  "um": null
+ },
+ {
+  "cod": "TS A 22",
+  "denumire": "Sapatura manuala de pamint in cheson inchis de 56-75 mp suprafata medie",
+  "um": null
+ },
+ {
+  "cod": "TS A 23",
+  "denumire": "Epuizarea cu pompa de mina a apelor din sapaturi in teren cu infiltratii moderate de apa",
+  "um": null
+ },
+ {
+  "cod": "TS A 24",
+  "denumire": "Epuizarea mecanica a apelor din sapaturi in teren cu infiltratii puternice de apa",
+  "um": null
+ },
+ {
+  "cod": "TS A 25",
+  "denumire": "Epuizarea mecanica a apei din sapaturi in terenuri nisipoase",
+  "um": null
+ },
+ {
+  "cod": "TS A 26",
+  "denumire": "Montarea si demontarea instalatiei de filtre aciculare tip Hudig sau L.I.U.",
+  "um": null
+ },
+ {
+  "cod": "TS A 27",
+  "denumire": "Functionarea instalatiei de aer comprimat pentru lucrul in cheson de aer comprimat sub presiune",
+  "um": null
+ },
+ {
+  "cod": "TS B 01",
+  "denumire": "Dislocari de stinca alterata, fara ajutorul explozivilor in volume totale de 2,00 mc...5 mc la un punct de lucru, executate cu unelte de munca in spatii limitate, in punctele dispersate pe versanti accidentati si greu accesibili, fara spargerea blocurilor mai mari de 25 kg",
+  "um": null
+ },
+ {
+  "cod": "TS B 02",
+  "denumire": "Sapatura in stinca in spatii largi executata in straturi de grosime pina la 1,00 m cu ajutorul explozivilor prin metoda gaurilor de mina forate manual, fara spargerea blocurilor mai mari de 25 kg",
+  "um": null
+ },
+ {
+  "cod": "TS B 03",
+  "denumire": "Sapatura in stinca in spatii largi, executata in straturi de grosime pina la 1,00 m, cu ajutorul explozivilor prin metoda gaurilor de mina forate mecanic, fara spargerea blocurilor mai mari de 25 kg",
+  "um": null
+ },
+ {
+  "cod": "TS B 04",
+  "denumire": "Sapatura in stinca in spatii largi, executata in straturi de grosime de 1,00 m...2,00 m, cu ajutorul explozivilor prin metoda gaurilor de mina forate mecanic, fara spargerea blocurilor mai mari de 25 kg",
+  "um": null
+ },
+ {
+  "cod": "TS B 05",
+  "denumire": "Sapatura in stinca in spatii largi, executata in straturi de grosime de 2,00 m...3,00 m, cu ajutorul explozivilor, prin metoda gaurilor de mina forate mecanic, fara spargerea blocurilor mai mari de 25 kg",
+  "um": null
+ },
+ {
+  "cod": "TS B 06",
+  "denumire": "Spargerea manuala a blocurilor mai mari de 25 kg provenite din sapaturile executate conform articolelor TS B 01, TS B 02, TS B 03, TS B 04, TS B 05, in cazul incarcarii manuale a materialului din derocare sau a folosirii lui in umpluturi compactate",
+  "um": null
+ },
+ {
+  "cod": "TS B 07",
+  "denumire": "Sapatura de finisaj in stinca in spatii largi, cu restrictie de exploziv, prin metoda gaurilor de mina, forate mecanic si explodare electrica",
+  "um": null
+ },
+ {
+  "cod": "TS B 08",
+  "denumire": "Sapatura in stinca in spatii largi pina la 7,00 m adincime de abataj, cu ajutorul explozivilor, prin metoda coloanelor forate, cu explodare electrica",
+  "um": null
+ },
+ {
+  "cod": "TS B 09",
+  "denumire": "Sapatura in stinca in spatii largi, pina la 10,00 m adincime de abataj, cu ajutorul explozivilor prin metoda coloanelor forate, cu explodare electrica",
+  "um": null
+ },
+ {
+  "cod": "TS B 10",
+  "denumire": "Sapatura in stinca in spatii largi, pina la 15,00 m adincime abataj, cu ajutorul explozivilor prin metoda coloanelor forate, cu explodare electrica",
+  "um": null
+ },
+ {
+  "cod": "TS B 11",
+  "denumire": "Sapatura in stinca in spatii largi, peste 15,00 m adincime de abataj, prin metoda exploziilor masive, cu puturi si galerii si forare mecanica",
+  "um": null
+ },
+ {
+  "cod": "TS B 12",
+  "denumire": "Sapatura in stinca in spatii limitate, pina la 2,00 m adincime, cu ajutorul explozivilor, prin metoda gaurilor de mina forate manual, cu explodare pirotehnica, in gropi de fundatie",
+  "um": null
+ },
+ {
+  "cod": "TS B 13",
+  "denumire": "Sapatura in stinca, in spatii limitate, peste 1,00 m latime, de la 2,00 m la 6,00 m adincime, cu ajutorul explozivilor, prin metoda gaurilor de mina forate manual, cu explodare pirotehnica, si evacuare manuala, in gropi de fundatie si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 14",
+  "denumire": "Sapatura in stinca, in spatii limitate, pina la 2,00 m adincime, cu ajutorul explozivilor prin metoda gaurilor de mina forate mecanic, cu explodare pirotehnica, in gropi de fundatie si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 15",
+  "denumire": "Sapatura in stinca, in spatii limitate peste 1,00 m latime, de la 2,00 m la 8,00 m adincime, cu ajutorul explozivilor, prin metoda gaurilor de mina forate mecanic, cu explodare pirotehnica si evacuare manuala, in gropi de fundatii si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 16",
+  "denumire": "Sapatura in stinca in spatii limitate peste 1,00 m latime, de la 2,00 m la 14,00 m adincime, cu ajutorul explozivilor prin metoda gaurilor de mina forate mecanic, cu explodare pirotehnica si evacuare cu macara Pionier, in gropi de fundatie si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 17",
+  "denumire": "Sapatura de finisaj in stinca in spatii limitate, cu restrictie de exploziv, prin metoda gaurilor de mina forate mecanic si explodare electrica",
+  "um": null
+ },
+ {
+  "cod": "TS B 18",
+  "denumire": "Sapatura in stinca in spatii largi, executata cu ciocanul de abataj pneumatic si cu unelte de mina (fara exploziv)",
+  "um": null
+ },
+ {
+  "cod": "TS B 19",
+  "denumire": "Sapatura in stinca in spatii limitate, in taluzurile cu inclinare mai mare 1:1, executata cu ciocanul pneumatic si unelte de mina (fara exploziv), pentru curatarea si indreptarea peretilor la fundatiile barajelor, precum si a taluzurilor prevazute a se consolida cu lucrari speciale",
+  "um": null
+ },
+ {
+  "cod": "TS B 20",
+  "denumire": "Sapatura in stinca in spatii limitate sub 1,00 m latime, pina la 1,50 m adincime, executata cu ciocanul pneumatic si unelte de mina (fara exploziv), cu evacuare manuala, in gropi de fundatie si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 21",
+  "denumire": "Sapatura in stinca in spatii limitate peste 1,00 m latime, pina la 4,00 m adincime, executata cu ciocanul de abataj pneumatic si unelte de mina (fara exploziv), cu evacuare manuala, in gropi de fundatie si lucrari similare",
+  "um": null
+ },
+ {
+  "cod": "TS B 22",
+  "denumire": "Sapatura in stinca in spatii limitate, peste 1,00 m latime, de la 2,00 m la 18,00 m adincime, executata cu ciocanul de abataj pneumatic si unelte de mina (fara exploziv) si evacuarea cu macara Pionier",
+  "um": null
+ },
+ {
+  "cod": "TS B 23",
+  "denumire": "Sapatura in stinca cu ciocanul de abataj pneumatic, la rigole cu sectiunea triunghiulara avind adincimea pina la 0,35 m",
+  "um": null
+ },
+ {
+  "cod": "TS B 24",
+  "denumire": "Politura suprafetei stincoase, cu mijloace manuale (numai cind este prescrisa)",
+  "um": null
+ },
+ {
+  "cod": "TS B 25",
+  "denumire": "Ranguirea suplimentara a taluzurilor de stinca de la fundatiile lucrarilor hidrotehnice, pentru indepartarea blocurilor desprinse din masiv, executata inainte de turnarea betonului de fundatie",
+  "um": null
+ },
+ {
+  "cod": "TS B 26",
+  "denumire": "Sapatura in stinca sub nivelul apei, in cheson inchis sub 45 mp suprafata",
+  "um": null
+ },
+ {
+  "cod": "TS B 27",
+  "denumire": "Sapatura in stinca sub nivelul apei, in cheson inchis de 46-55 mp suprafata",
+  "um": null
+ },
+ {
+  "cod": "TS B 28",
+  "denumire": "Sapatura in stinca sub nivelul apei, in cheson inchis de 56-75 mp suprafata",
+  "um": null
+ },
+ {
+  "cod": "TS B 29",
+  "denumire": "Sapatura in stinca sub nivelul apei, in cheson inchis, peste 75 mp suprafata",
+  "um": null
+ },
+ {
+  "cod": "TS C 01",
+  "denumire": "Scarificarea mecanica a terenului",
+  "um": null
+ },
+ {
+  "cod": "TS C 02",
+  "denumire": "Sapatura mecanica cu excavator pe pneuri de 0,21-0,39 mc, cu motor cu ardere interna, cu comanda hidraulica",
+  "um": null
+ },
+ {
+  "cod": "TS C 03",
+  "denumire": "Sapatura mecanica, cu excavator pe senile de 0,41-0,70 mc, cu motor cu ardere interna, cu comanda hidraulica",
+  "um": null
+ },
+ {
+  "cod": "TS C 04",
+  "denumire": "Sapatura mecanica cu excavator pe senile de 0,71-1,25 mc, cu motor cu ardere interna, cu comanda hidraulica",
+  "um": null
+ },
+ {
+  "cod": "TS C 05",
+  "denumire": "Sapatura mecanica, cu excavator pe senile de 2,5-2,9 mc, actionat electric",
+  "um": null
+ },
+ {
+  "cod": "TS C 06",
+  "denumire": "Sapatura mecanica, cu excavator pe senile de 0,5-0,8 mc, cu motor cu ardere interna, si comanda prin cabluri cu echipament de draglina",
+  "um": null
+ },
+ {
+  "cod": "TS C 07",
+  "denumire": "Sapatura mecanica, cu excavator pe senile de 0,81-1,20 mc, cu motor cu ardere interna si comanda prin cabluri cu echipament de draglina",
+  "um": null
+ },
+ {
+  "cod": "TS C 08",
+  "denumire": "Sapatura mecanica sub nivelul apei cu excavator pe senile, de 0,5-0,8 mc, cu motor cu ardere interna si comanda prin cabluri cu echipament de draglina",
+  "um": null
+ },
+ {
+  "cod": "TS C 09",
+  "denumire": "Sapatura mecanica sub nivelul apei cu excavator pe senile de 0,81-1,20 mc, cu motor cu ardere interna si comanda prin cabluri cu echipament de draglina",
+  "um": null
+ },
+ {
+  "cod": "TS C 10 A",
+  "denumire": "Panouri de platelaj ca suport pentru deplasarea excavatorului pe senile in teren mocirlos",
+  "um": null
+ },
+ {
+  "cod": "TS C 11",
+  "denumire": "Sapatura mecanica la santuri pentru conducte si cabluri, executata cu excavator cu mai multe cupe, cu sapare longitudinala cu rotor de 101-150 CP",
+  "um": null
+ },
+ {
+  "cod": "TS C 12",
+  "denumire": "Sapatura mecanica la santuri, pentru conducte si cabluri, executata cu excavator cu mai multe cupe, cu sapare longitudinala cu elinda",
+  "um": null
+ },
+ {
+  "cod": "TS C 13",
+  "denumire": "Sapatura mecanica la profilul taluzului pe o grosime de 0,5-0,8 m, de la fata taluzului cu excavator pe senile cu motor cu ardere interna si comanda prin cabluri, cu echipament de draglina",
+  "um": null
+ },
+ {
+  "cod": "TS C 14",
+  "denumire": "Sapatura mecanica in pamint cu excavator de 60-80 CP, cu echipament greifer de 0,5-0,6 mc",
+  "um": null
+ },
+ {
+  "cod": "TS C 15",
+  "denumire": "Sapatura mecanica in pamint cu excavator de 100-120 CP, cu echipament greifer de 0,7-1,00 mc",
+  "um": null
+ },
+ {
+  "cod": "TS C 16",
+  "denumire": "Sapatura mecanica in taluzurile debleelor, inclusiv indepartarea pamintului rezultat din sapaturi, precum si politura mecanica a taluzelor executate cu autogreder",
+  "um": null
+ },
+ {
+  "cod": "TS C 17",
+  "denumire": "Sapatura mecanica la rigole cu sectiune triunghiulara cu adincimea maxima de 0,40 m, executata cu autogreder pina la 175 CP",
+  "um": null
+ },
+ {
+  "cod": "TS C 18",
+  "denumire": "Sapatura mecanica, cu buldozer pe senile de 65-80 CP, inclusiv impingerea pamintului pina la 10 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 19",
+  "denumire": "Sapatura mecanica, cu buldozer pe senile de 81-180 CP, inclusiv impingerea pamintului pina la 10 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 20",
+  "denumire": "Săpătură mecanică În profile mixte, executată cu, ,'\\ buldozer cu tractor pe şenile de 81-180 CP, inclusiv Împingerea pământului până la 10 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 21",
+  "denumire": "Săpătură mecanică cu autogreder de până la 175 CP, inclusiv Împrăştierea pământului la 10 rn",
+  "um": null
+ },
+ {
+  "cod": "TS C 26",
+  "denumire": "Dislocarea mecanica a pamantului din depozit nou, necompactat si impingerea lui pana la 5 m A1 - cu buldozer pe tractor de 65-80 CP teren catg. I sau II A11 - cu buldozer pe tractor de 65-80 CP teren catg. I sau II În condiţiile.gospodaririi apelor. 81 - cu buldozer pe tractor 81-180 CP teren catg. I sau II",
+  "um": null
+ },
+ {
+  "cod": "TS C 28",
+  "denumire": "Excavarea mecanica a transeei pentru pereti mulati pentru ecrane de etansare sau fundatii adanci,sub protectia noroiului bentonitic, executata cu instalatiile ELSE si KELLY A 1 - instalaţii ELSE cupa 0,5 m la lucr. metrou A 11 - spor. ptentru fiecare m adâncime 18c24 m cu lat. cupă 0,5 m la instalaţii ELSE la lucr.",
+  "um": null
+ },
+ {
+  "cod": "TS C 29",
+  "denumire": "Excavarea baretelor pentru fundatii izolate si consolidari, executate sub protectia noroiului bentonitic, cu ajutorul instalatiei tip KELL Y cu cupa de A 1 _ teren categ. I 0,80 m, in: A2 - spor pentru deplasare inst. Kelly 18-30 m B1 - teren categ. II B2 - spor pentru deplasare inst. Kelly cu demontarea acesteia",
+  "um": null
+ },
+ {
+  "cod": "TS C 30",
+  "denumire": "Sapatura in fundatii, executata cu instalatie CALWELD, cu diametrul de 1300 mm, in: Al - teren categoria 1 şi 2 81 - teren categoria 3 C1 - stâncă moale",
+  "um": null
+ },
+ {
+  "cod": "TS C 31",
+  "denumire": "Excavarea cu instalatie cu rotor, cu productivitate maxima de 800 mc/h, in teren cu umiditate de sub 26% A 1 - teren necoeziv, inalt fâşiei sub 1 m A2 - teren necoeziv, inalt fâşiei sub 1-2 m A3 - teren necoeziv, Înalt fâşiei sub 2-3 m 81 - terenuri coezive cu indice de consistenţa IC <0,5 inalt. fâşiei < 1 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 32",
+  "denumire": "Excavarea cu instalatie cu rotor, cu productivitate maxima de 1600 mclh, in teren cu umiditate de sub 26% A1 - în terenuri necoezive Înălţimea tăsiei sub 1 m A2. - În terenuri necoezive Înălţimea făslei sub 1-2 m A3 - În terenuri necoezive Înălţimea fâşiei sub 2-3 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 33",
+  "denumire": "Exeavarea eu instalatie eu rotor, euproduetivitate maxima de 1800 melh, in teren eu umiditate de sub 26% A1 - terenuri necoezive înalţimea fâşiei sub 1 m A2 - terenuri necoezive înalţimea fâşiei între 1-2 m A3 - terenuri necoezive înalţimea fâşiei între 2-3 m A4 - terenuri necoezive înalţimea fâşiei între 3-4 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 34",
+  "denumire": "Exeavarea eu instalatie cu ratar, cu productivitate maxima de 1900 melh, in teren cu umiditate de sub 26% A 1 - terenuri necoeiive inălţimea fâşiei până la 1 m A2 - terenuri necoezive înălţimea fâşiei intre 1-2 m A3 - terenuri necoezive înalţimea fâşiei intre 2-3 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 35",
+  "denumire": "Excavat, transport, cu incarcator frontal, la distante de: Al - Încărcare În autovehicul cu Încărcător frontal pe şenile de 0,5-0,99 mc, pământ din teren categoria 1 la distanţa <10 m All - Încărcare În autovehicul cu Încărcător frontal pe şenile de 0,5-0,99 mc, pământ din teren",
+  "um": null
+ },
+ {
+  "cod": "TS C 36",
+  "denumire": "Sapatura mecanica cu screperul de 6,1-9 mc, cu tractor pe senile de 150 CP, in gropi de imprumut, inclusiv transportul pamantului pana la distanta de 100 m, cu descarcare in straturi uniforme, cu: A 1 - strat gros <20 cm teren catg. I A 11 - strat gros <20 cm teren catg. I În condiţiile gospodaririi apelor.",
+  "um": null
+ },
+ {
+  "cod": "TS C 39",
+  "denumire": "Saparea mecanica a gropilor, cu instalatie de torat pe tren de lucru, pentru: Al - gropi de stâlpi şi ancore de electrificare În teren catg. 2-3, adâncime 2,5 m A 11 - gropi de stâlpi şi ancore de electrificare În teren imbibat cu apa catg. 2-3, adâncime 2,5 m A2 - gropi de stâlpi şi ancore de electrificare În teren catg. 2-3, adâncime 3,5 m",
+  "um": null
+ },
+ {
+  "cod": "TS C 40",
+  "denumire": "Sapatura mecanica cu excavator pe senile de 3,0-3,9 mc, actionat electric, in: Al - in pămănt cu umiditate naturala cu descărcare În depozit teren catg. I A 11 - În pământ umed argilos cu descărcare in depozit teren catg. I Bl - in pământ cu umiditate naturală cu descărcare in depozit teren catg. II",
+  "um": null
+ },
+ {
+  "cod": "TS C 41",
+  "denumire": "Sapatura mecanica' cu excavator pe senile de 4,0-4,9 mc, actionat electric, in: A1 - pământ şi roca cu umiditate naturala cu descărcare in depozit teren catg.1 A11 - pământ umed argilos cu descarcare in depozit teren catg. I 81 - pământ şi roca cu umiditate naturala cu descarcare in depozit teren catg. II",
+  "um": null
+ },
+ {
+  "cod": "TS D 01",
+  "denumire": "Imprastierea cu lopata a pamintului afinat in straturi uniforme de 10-30 cm grosime",
+  "um": null
+ },
+ {
+  "cod": "TS D 02",
+  "denumire": "Imprastierea pamintului afinat provenit din teren categoria 1 sau 2 cu buldozer pe tractor pe senile de 65-80 CP",
+  "um": null
+ },
+ {
+  "cod": "TS D 03",
+  "denumire": "Imprastierea pamintului afinat cu buldozer pe tractor pe senile de 81-180 CP",
+  "um": null
+ },
+ {
+  "cod": "TS D 04",
+  "denumire": "Compactarea cu maiul de mina a umpluturilor executate in straturi cu udarea fiecarui strat de 10-20 cm",
+  "um": null
+ },
+ {
+  "cod": "TS D 05",
+  "denumire": "Compactarea cu maiul mecanic de 150-200 kg, a umpluturilor in straturi de 20-30 cm",
+  "um": null
+ },
+ {
+  "cod": "TS D 06",
+  "denumire": "Compactarea cu placa vibratoare a umpluturilor de pamint necoeziv in straturi de 20-30 cm",
+  "um": null
+ },
+ {
+  "cod": "TS D 07",
+  "denumire": "Compactarea mecanica a umpluturilor cu rulou compresor static autopropulsat de 10-12 t",
+  "um": null
+ },
+ {
+  "cod": "TS D 08",
+  "denumire": "Compactarea mecanica a umpluturilor cu compactor pe pneuri static autopropulsor de 10,1-16 t, in straturi de 15-25 cm grosime",
+  "um": null
+ },
+ {
+  "cod": "TS D 09",
+  "denumire": "Compactarea cu tavalug picior de oaie de 2,5-5 t, cu tractor de 65-80 CP a umpluturilor din pamint coeziv, in straturi de 20-30 cm",
+  "um": null
+ },
+ {
+  "cod": "TS D 10",
+  "denumire": "Compactarea cu tavalug picior de oaie de 10,1-16 t, cu tractor pe senile de 81-150 CP, a umpluturilor din pamint coeziv",
+  "um": null
+ },
+ {
+  "cod": "TS D 11",
+  "denumire": "Compactarea mecanica a umpluturilor cu rulou compresor vibrant, tractat, de 3,1-6 t, neted, cu picior de oaie, in straturi succesive de 40 cm grosime dupa compactare, prin 6 treceri suprapuse, exclusiv udarea fiecarui strat, umpluturile executandu-se cu pamant coeziv sau necoeziv",
+  "um": null
+ },
+ {
+  "cod": "TS D 11 A1",
+  "denumire": "Compactarea mecanica a umpluturilor, cu rulou compresor vibrant, tractat, de 81-150 CP, din pamint prin 6 treceri",
+  "um": null
+ },
+ {
+  "cod": "TS D 12",
+  "denumire": "Compactarea umpluturilor in straturi pina la 1,20 m grosime dupa compactare, cu placa batatoare actionata cu excavator pe senile de 0,71-1,25 m, cu motor termic",
+  "um": null
+ },
+ {
+  "cod": "TS D 13 A1",
+  "denumire": "Udarea manuala cu stropitoarea a straturilor de pamint si a suprafetelor insamintate sau brazduite",
+  "um": null
+ },
+ {
+  "cod": "TS D 14 A1",
+  "denumire": "Udarea mecanica a straturilor de pamint cu autocisterna de 5-8 t, prevazuta cu dispozitiv de stropire",
+  "um": null
+ },
+ {
+  "cod": "TS D 15",
+  "denumire": "Strat de repartitie din nisip sub prisma de balastare",
+  "um": null
+ },
+ {
+  "cod": "TS D 16",
+  "denumire": "Strat de repartitie din balast sub prisma de balastare",
+  "um": null
+ },
+ {
+  "cod": "TS D 17",
+  "denumire": "Umpluturi compacte la profilul taluzului de 0,5 m grosime executata manual odata cu executarea mecanica a rambleelor",
+  "um": null
+ },
+ {
+  "cod": "TS D 18",
+  "denumire": "Umplutura compactata in santuri pentru cablurile ingropate, ale liniilor electrice de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS D 19",
+  "denumire": "Umplutura de pamint compactata la fundatiile de la stilpii liniilor electrice aeriene de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS D 20 A1",
+  "denumire": "Consolidarea terenurilor naturale slabe de fundatii prin compactare dinamica cu mai de 10 t actionat de macara pe pneuri de 30,00-39,9 tf",
+  "um": null
+ },
+ {
+  "cod": "TS D 21",
+  "denumire": "Compactarea mecanica a umpluturilor cu compactor vibrator autopropulsat pe pneuri de 20 t",
+  "um": null
+ },
+ {
+  "cod": "TS D 22",
+  "denumire": "Umplutura fundatiilor poligonale la linii electrice ale cailor ferate",
+  "um": null
+ },
+ {
+  "cod": "TS D 23",
+  "denumire": "Compactarea umpluturilor la fundatii - gratar ale liniilor electrice de cale ferata",
+  "um": null
+ },
+ {
+  "cod": "TS D 24",
+  "denumire": "Compactarea terenurilor naturale cu excavator pe senile si mai de 5 si 10 t",
+  "um": null
+ },
+ {
+  "cod": "TS E 01",
+  "denumire": "Nivelarea manuala a terenurilor si platformelor",
+  "um": null
+ },
+ {
+  "cod": "TS E 02",
+  "denumire": "Finisarea (politura) manuala a platformelor",
+  "um": null
+ },
+ {
+  "cod": "TS E 03",
+  "denumire": "Finisarea (politura) manuala a taluzelor",
+  "um": null
+ },
+ {
+  "cod": "TS E 04",
+  "denumire": "Nivelarea terenului natural si a platformelor de terasamente cu buldozer pe tractor pe senile",
+  "um": null
+ },
+ {
+  "cod": "TS E 05",
+  "denumire": "Nivelarea cu autogreder a suprafetei terenului natural si a platformelor de terasamente",
+  "um": null
+ },
+ {
+  "cod": "TS E 06",
+  "denumire": "Pregatirea platformei de pamint in vederea asternerii unui strat izolator sau de repartitie din nisip sau balast, prin nivelarea manuala si compactarea cu rulou compresor de 10-12 t",
+  "um": null
+ },
+ {
+  "cod": "TS F 01",
+  "denumire": "Sprijiniri de maluri cu dulapi de fag asezati orizontal, la sapaturi executate in spatii limitate avind latimea pina la 1,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 02",
+  "denumire": "Sprijiniri de maluri cu dulapi de fag asezati orizontali, la sapaturi, executate in spatii limitate avind latimea de 1,51...2,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 03",
+  "denumire": "Sprijiniri de maluri cu dulapi asezati orizontal, la sapaturi executate in spatii limitate, avind peste 2,50 m latime intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 04",
+  "denumire": "Sprijiniri de maluri cu dulapi de fag verticali ascutiti la un capat si cadre de lemn, cu interspatii intre dulapi de maxim 0,05 m la sapaturi de fundatie, in teren usor sau mijlociu",
+  "um": null
+ },
+ {
+  "cod": "TS F 05",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici asezati orizontal, la sapaturi executate in spatii limitate, avind pina la 1,50 m latime",
+  "um": null
+ },
+ {
+  "cod": "TS F 06",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici asezati orizontal, la sapaturi executate in spatii limitate avind latimea de la 1,51...2,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 07",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici asezati orizontal, la sapaturi executate in spatii limitate avind latimea peste 2,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 08",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici asezati orizontal, la sapaturi in terenuri cu impingeri mari, executate in conditii speciale, la drenuri si canale de adincime, avind latimea pina la 1,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 09",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici asezati orizontal, la sapaturi in terenuri cu impingeri mari, executate in conditii speciale, la drenuri si canale de adincime, avind latimea de 1,51...2,50 m intre maluri",
+  "um": null
+ },
+ {
+  "cod": "TS F 10",
+  "denumire": "Sprijiniri de maluri cu dulapi metalici verticali, cu interspatii intre dulapi de maximum 0,05 m la sapaturi de fundatie, in teren usor sau mijlociu",
+  "um": null
+ },
+ {
+  "cod": "TS F 11",
+  "denumire": "Sprijiniri la peretii sapaturilor de fundatii, executate cu palplanse de lemn batute manual",
+  "um": null
+ },
+ {
+  "cod": "TS F 12 A",
+  "denumire": "Cadre din lemn de rasinoase pentru sprijinirea peretilor de palplanse",
+  "um": null
+ },
+ {
+  "cod": "TS F 13",
+  "denumire": "Sprijiniri de maluri cu dulapi de fag asezati orizontal, la sapaturi executate in spatii limitate, pentru linii electrice de inalta tensiune",
+  "um": null
+ },
+ {
+  "cod": "TS F 14",
+  "denumire": "Sprijiniri de maluri cu dulapi de fag verticali ascutiti la un capat si cadre de lemn la sapaturi de fundatie, pentru liniile electrice aeriene de inalta tensiune, executate cu interspatiile intre dulapi de maximum 0,05 m",
+  "um": null
+ },
+ {
+  "cod": "TS G 01 A1",
+  "denumire": "Degajarea terenului de frunze si crengi, stringerea in gramezi si arderea lor supravegheata",
+  "um": null
+ },
+ {
+  "cod": "TS G 02 A1",
+  "denumire": "Curatirea terenului de iarba si buruieni",
+  "um": null
+ },
+ {
+  "cod": "TS G 03",
+  "denumire": "Defrisarea manuala a suprafetelor impadurite cu tufisuri si arbusti cu diametrul pina la 10 cm, inclusiv transportul materialului lemnos in gramezi",
+  "um": null
+ },
+ {
+  "cod": "TS G 04",
+  "denumire": "Defrisarea mecanica cu defrisator pe tractor S-1500, a suprafetelor de tufisuri sau arbusti cu diametrul pina la 10 cm, inclusiv impingerea materialului lemnos in gramezi",
+  "um": null
+ },
+ {
+  "cod": "TS G 05",
+  "denumire": "Doborirea manuala a arborilor de rasinoase (exclusiv bradul) si foioase, inclusiv transportul manual al materialului in gramezi",
+  "um": null
+ },
+ {
+  "cod": "TS G 06",
+  "denumire": "Scoaterea cu mijloace manuale a cioatelor de rasinoase sau foioase moi si transportul materialului lemnos in depozite",
+  "um": null
+ },
+ {
+  "cod": "TS G 07",
+  "denumire": "Scoaterea cu mijloace manuale a cioatelor de foioase tari, de brad si transportul materialului lemnos in depozite",
+  "um": null
+ },
+ {
+  "cod": "TS G 08",
+  "denumire": "Doborirea cu fierastraul mecanic a arborilor de rasinoase, foioase tari si foioase moi, inclusiv transportul manual al materialului lemnos in depozite",
+  "um": null
+ },
+ {
+  "cod": "TS G 09",
+  "denumire": "Scoaterea cioatelor de rasinoase (exclusiv bradul) sau de foioase moi, cu defrisator montat pe tractorul S-1500, numarul cioatelor la hectar si diametrul mediu",
+  "um": null
+ },
+ {
+  "cod": "TS G 10",
+  "denumire": "Scoaterea cioatelor de foioase tari si de brad, cu defrisator montat pe tractorul S-1500, numarul cioatelor la hectar si diametrul mediu",
+  "um": null
+ },
+ {
+  "cod": "TS G 11",
+  "denumire": "Scarificarea mecanica a terenului defrisat, pina la adincimea de 0,50 m, cu 2 treceri perpendiculare, adunarea materialului in gramezi si incarcarea lui in remorca",
+  "um": null
+ },
+ {
+  "cod": "TS G 12",
+  "denumire": "Dezradacinarea cioatelor de rasinoase (exclusiv bradul) sau foioase moi, prin explodare",
+  "um": null
+ },
+ {
+  "cod": "TS G 13",
+  "denumire": "Dezradacinarea cioatelor de foioase tari si de brad, prin explodare",
+  "um": null
+ },
+ {
+  "cod": "TS G 14",
+  "denumire": "Cosirea vegetatiei",
+  "um": null
+ },
+ {
+  "cod": "TS G 15",
+  "denumire": "Depozitarea prin tirire a arborilor sau cioatelor izolate, pina la distanta de 150 m cu sufa sau troliul montate pe tractorul S-1500",
+  "um": null
+ },
+ {
+  "cod": "TS G 16",
+  "denumire": "Scarificarea mecanica a solului pe 2 sensuri perpendiculare",
+  "um": null
+ },
+ {
+  "cod": "TS G 17",
+  "denumire": "Scoaterea cu defrisator montat pe tractorul S-1500, de pe terenurile de lunca a arborilor taiati in scaun",
+  "um": null
+ },
+ {
+  "cod": "TS G 18",
+  "denumire": "Scoaterea cu defrisator montat pe tractorul S-1500, de pe terenurile nisipoase, a arborilor taiati in scaun",
+  "um": null
+ },
+ {
+  "cod": "TS G 19",
+  "denumire": "Indepartarea (evacuarea) mecanica a materialului defrisat sau a cioatelor",
+  "um": null
+ },
+ {
+  "cod": "TS G 20",
+  "denumire": "Executarea araturii la adincimea de 25-28 cm, dupa defrisare, cu plugul cu 2 trupite cuplat la tractorul rutier",
+  "um": null
+ },
+ {
+  "cod": "TS G 21 A1",
+  "denumire": "Transportul la distante de pina la 500 m, cu tractorul rutier tip forestier cu remorca de 3 t a resturilor lemnoase adunate de pe suprafetele defrisate",
+  "um": null
+ },
+ {
+  "cod": "TS G 22",
+  "denumire": "Comasarea depozitelor de resturi lemnoase (provenite din defrisare) cu o formatie cu 4 buldozere pe senile S-1500",
+  "um": null
+ },
+ {
+  "cod": "TS H 01 A1",
+  "denumire": "Degajarea terenului de corpuri straine",
+  "um": null
+ },
+ {
+  "cod": "TS H 02",
+  "denumire": "Taierea manuala a arborilor prin sectionare succesiva a crengilor, ramurilor si tulpinei",
+  "um": null
+ },
+ {
+  "cod": "TS H 03",
+  "denumire": "Extragerea pamintului necesar amenajarii spatiilor verzi cu pastrarea structurii",
+  "um": null
+ },
+ {
+  "cod": "TS H 04",
+  "denumire": "Mobilizarea manuala a solului in vederea asigurarii prizei cu stratul vegetal, nivelarea si finisarea suprafetelor dupa mobilizarea solului",
+  "um": null
+ },
+ {
+  "cod": "TS H 05",
+  "denumire": "Asternerea uniforma a stratului de pamint vegetal pe teren orizontal sau cu panta la 20% cu pastrarea structurii in straturi",
+  "um": null
+ },
+ {
+  "cod": "TS H 06",
+  "denumire": "Imbracarea taluzurilor cu pamint vegetal compactat in vederea consolidarii lor, executata pe taluzuri cu inaltimea pina la 4 m, cu grosimea stratului din pamint vegetal",
+  "um": null
+ },
+ {
+  "cod": "TS H 07",
+  "denumire": "Imbracarea taluzurilor cu pamint vegetal compactat in vederea consolidarii lor, executata pe taluz la inaltimea cuprinsa intre 4 m si 8 m cu grosimea stratului",
+  "um": null
+ },
+ {
+  "cod": "TS H 08",
+  "denumire": "Spor la consumurile de forte de munca la art. TS H 07, pentru imbracare cu pamint vegetal pe fiecare 4 m inaltime de taluz peste inaltimea de 8 m din articolul respectiv, corespunzator grosimii stratului din pamint vegetal",
+  "um": null
+ },
+ {
+  "cod": "TS H 09",
+  "denumire": "Semanarea gazonului",
+  "um": null
+ },
+ {
+  "cod": "TS H 10",
+  "denumire": "Brazduiri",
+  "um": null
+ },
+ {
+  "cod": "TS H 11",
+  "denumire": "Spor la normele TS H 10 B si TS H 10 D pentru brazduirea de consolidare, pe fiecare 4 m inaltime de taluz peste cea de 8 m prevazuta in normele respective",
+  "um": null
+ },
+ {
+  "cod": "TS H 12",
+  "denumire": "Udarea suprafetelor cu furtunul",
+  "um": null
+ },
+ {
+  "cod": "TS H 13",
+  "denumire": "Administrarea ingrasamintelor",
+  "um": null
+ },
+ {
+  "cod": "TS H 14",
+  "denumire": "Cosirea manuala a gazonului",
+  "um": null
+ },
+ {
+  "cod": "TS H 15 A1",
+  "denumire": "Plivirea buruienilor in peluze",
+  "um": null
+ },
+ {
+  "cod": "TS H 16 A1",
+  "denumire": "Rectificarea marginilor la peluze si rabate",
+  "um": null
+ },
+ {
+  "cod": "TS H 17",
+  "denumire": "Saparea manuala a gropilor poligonale pentru plantari izolate, cu pastrarea structurii solului si separarea stratului de pamint vegetal, gropile avind largimea pina la 2 m si adincimea pina la 1,50 m",
+  "um": null
+ },
+ {
+  "cod": "TS H 18",
+  "denumire": "Extragerea manuala a arborilor si puietilor de arbori fara balot de pamint la radacina",
+  "um": null
+ },
+ {
+  "cod": "TS H 19",
+  "denumire": "Extragerea manuala a tufelor de arbusti si a rasinoaselor pina la h = 2 m, avind balot de pamint la radacina de diametru 0,50 m si h = 0,40 m",
+  "um": null
+ },
+ {
+  "cod": "TS H 20",
+  "denumire": "Pregatirea sistemului radicular la arbori in vederea transplantarii",
+  "um": null
+ },
+ {
+  "cod": "TS H 21",
+  "denumire": "Extragerea mecanizata a arborilor cu diametrul peste 10 cm, cu balot de pamint la radacina, ambalat in plasa de sirma si doage",
+  "um": null
+ },
+ {
+  "cod": "TS H 22",
+  "denumire": "Extragerea mecanizata a arborilor cu diametrul peste 10 cm, cu balot de pamint la radacina, ambalat in plasa de sirma si doage",
+  "um": null
+ },
+ {
+  "cod": "TS H 23",
+  "denumire": "Extragerea manuala de buxus, forme cu balot de pamint la radacina cu inaltimea plantei",
+  "um": null
+ },
+ {
+  "cod": "TS H 24",
+  "denumire": "Plantari",
+  "um": null
+ },
+ {
+  "cod": "TS H 25",
+  "denumire": "Transplantari cu balot de pamint",
+  "um": null
+ },
+ {
+  "cod": "TS H 26",
+  "denumire": "Plantari pentru gard viu",
+  "um": null
+ },
+ {
+  "cod": "TS H 27",
+  "denumire": "Udatul plantatiilor",
+  "um": null
+ },
+ {
+  "cod": "TS H 28",
+  "denumire": "Taieri de corectie",
+  "um": null
+ },
+ {
+  "cod": "TS H 29",
+  "denumire": "Tunderea gardurilor vii, borduri, chenare",
+  "um": null
+ },
+ {
+  "cod": "TS H 30",
+  "denumire": "Plantarea florilor si plantelor perene",
+  "um": null
+ },
+ {
+  "cod": "TS H 31",
+  "denumire": "Combaterea bolilor si daunatorilor in plantatii, executata manual",
+  "um": null
+ },
+ {
+  "cod": "TS H 32",
+  "denumire": "Amenajari alei de parc si terenuri de joc pentru copii",
+  "um": null
+ },
+ {
+  "cod": "TS H 33",
+  "denumire": "Drenuri",
+  "um": null
+ },
+ {
+  "cod": "TS H 34",
+  "denumire": "Amenajarea pistelor de atletism",
+  "um": null
+ },
+ {
+  "cod": "TS H 35",
+  "denumire": "Amenajarea terenurilor pentru sport, din zgura",
+  "um": null
+ },
+ {
+  "cod": "TS H 36 A1",
+  "denumire": "Amenajarea gropilor pentru sarituri",
+  "um": null
+ },
+ {
+  "cod": "TS H 37",
+  "denumire": "Terenuri de sport din mixturi cauciucate",
+  "um": null
+ },
+ {
+  "cod": "TS H 38",
+  "denumire": "Confectionarea si montarea de panouri, porti si stilpi la terenuri de sport",
+  "um": null
+ },
+ {
+  "cod": "TS H 39",
+  "denumire": "Stincarie ornamentala",
+  "um": null
+ },
+ {
+  "cod": "TS H 40",
+  "denumire": "Stincarie ornamentala din blocuri grupate, executata cu blocurile",
+  "um": null
+ },
+ {
+  "cod": "TS H 41",
+  "denumire": "Protejarea si inierbarea taluzelor cu inclinare maxima 2:3, expuse la eroziune, cu \"Netezon\" (material netesut inierbat)",
+  "um": null
+ },
+ {
+  "cod": "TS I 01",
+  "denumire": "Transportul materialului excavat cu instalatia de transportat cu benzi de 1400 mm latime",
+  "um": null
+ },
+ {
+  "cod": "TS I 02",
+  "denumire": "Transportul materialului excavat cu instalatia de transportat cu benzi de 1600 mm latime",
+  "um": null
+ },
+ {
+  "cod": "TS I 03",
+  "denumire": "Transportul materialului excavat cu instalatia de transportat cu benzi de 1800 mm latime",
+  "um": null
+ },
+ {
+  "cod": "TS I 04",
+  "denumire": "Transportul materialului excavat cu instalatia de transportat cu benzi de 2000 mm latime",
+  "um": null
+ },
+ {
+  "cod": "TS I 05",
+  "denumire": "Transportul materialului excavat cu instalatia de transportat cu benzi de 2250 mm latime",
+  "um": null
+ },
+ {
+  "cod": "TS I 06",
+  "denumire": "Depunerea materialului excavat cu instalatia de haldat cu productivitatea de 4400 mc/h",
+  "um": null
+ },
+ {
+  "cod": "TS I 07",
+  "denumire": "Depunerea materialului excavat, cu instalatia de haldat cu productivitatea de 6500 mc/h",
+  "um": null
+ },
+ {
+  "cod": "TS I 08",
+  "denumire": "Depunerea materialului excavat cu instalatia de haldat cu productivitatea de 12500 mc/h",
+  "um": null
+ },
+ {
+  "cod": "TS I 09",
+  "denumire": "Descarcarea sau incarcarea cu utilaj combinat de depozite - tip Ks - 1600/3600",
+  "um": null
+ },
+ {
+  "cod": "TS I 10",
+  "denumire": "Ripare benzi transport in conditii medii de amenajare a vetrei de vehiculare a utilajelor conducatoare - categoria transportoarelor",
+  "um": null
+ },
+ {
+  "cod": "TS J 01",
+  "denumire": "Stabilizarea terasamentelor in amplasament cu var bulgari, cenuse de termocentrala, ciment sau piloti din var bulgari",
+  "um": null
+ },
+ {
+  "cod": "TS J 02",
+  "denumire": "Consolidarea terasamentelor prin inlocuirea materialului din terasament in slituri, in inchidere de linie c.f.",
+  "um": null
+ },
+ {
+  "cod": "TS J 03",
+  "denumire": "Consolidarea terasamentelor prin decaparea platformei, realizarea pantelor de scurgere si umplutura de inlocuire cu loess sau balast, in inchidere de linie c.f.",
+  "um": null
+ },
+ {
+  "cod": "TS J 04",
+  "denumire": "Hidroizolarea platformei caii ferate cu sape din pamint cu ciment sau asfalt",
+  "um": null
+ },
+ {
+  "cod": "TS J 05",
+  "denumire": "Protejarea terasamentelor cu pinza netesuta tip NETESIN pe taluze, platforme sau in drenuri ca filtru invers",
+  "um": null
+ },
+ {
+  "cod": "TS J 06",
+  "denumire": "Pozarea avantuburilor pentru injectii si cimentarea lor",
+  "um": null
+ },
+ {
+  "cod": "TS J 07",
+  "denumire": "Foraj rotativ cu circulatie directa, netubat, cu diametrul de la 90 la 130 mm, pentru consolidari si etansari de terenuri, de la categ. 1 la 7",
+  "um": null
+ },
+ {
+  "cod": "TS J 08",
+  "denumire": "Foraj rotativ cu circulatia directa, cu tub de protectie D maxim = 146 mm, antrenat de instalatia de foraj in terenuri, de la categ. 1 la 4",
+  "um": null
+ },
+ {
+  "cod": "TS J 09",
+  "denumire": "Tuburi inglobate in masa suspensiei la foraje pentru consolidarea sau etansarea terenurilor cu tuburi PVC brosate sau cu mansete",
+  "um": null
+ },
+ {
+  "cod": "TS J 10",
+  "denumire": "Obturator gonflabil in foraje",
+  "um": null
+ },
+ {
+  "cod": "TS J 11",
+  "denumire": "Prepararea suspensiilor pentru injectare in foraje",
+  "um": null
+ },
+ {
+  "cod": "TS J 12",
+  "denumire": "Injectarea suspensiilor pentru consolidare sau etansare a terenurilor",
+  "um": null
+ },
+ {
+  "cod": "TS J 13",
+  "denumire": "Extragerea tubajului de protectie",
+  "um": null
+ },
+ {
+  "cod": "TS J 14",
+  "denumire": "Degajarea capului pierdut de la talpa forajului cu tub antrenat",
+  "um": null
+ },
+ {
+  "cod": "TS J 15",
+  "denumire": "Spalarea cu apa a forajului inaintea injectiei de umplere",
+  "um": null
+ },
+ {
+  "cod": "TS J 16",
+  "denumire": "Injectarea de umplere cu suspensie de ciment a forajului pentru tiranti de ancorare fixati in teren",
+  "um": null
+ },
+ {
+  "cod": "TS J 17",
+  "denumire": "Tiranti de ancorare in teren, pretensionati, confectionati din fascicole SBP",
+  "um": null
+ },
+ {
+  "cod": "TS J 18",
+  "denumire": "Teaca de protectie din polietilena cu D = 75 mm pentru tiranti pretensionati ancorati in teren",
+  "um": null
+ },
+ {
+  "cod": "TS J 19",
+  "denumire": "Teava metalica de injectie pentru tiranti de ancorare pretensionati fixati in teren",
+  "um": null
+ },
+ {
+  "cod": "TS J 20",
+  "denumire": "Introducerea tirantului in foraj",
+  "um": null
+ },
+ {
+  "cod": "TS J 21",
+  "denumire": "Injectarea cu presiune a suspensiei de ciment pentru formarea bulbului de scelment la tiranti ancorati in teren",
+  "um": null
+ },
+ {
+  "cod": "TS J 22",
+  "denumire": "Injectarea de protectie in zona libera a tirantului in interiorul tecii de polietilena",
+  "um": null
+ },
+ {
+  "cod": "TS J 23",
+  "denumire": "Tensionari de proba a tirantilor de ancorare pentru verificarea stabilitatii bulbului si mentinerea fortei de tensionare",
+  "um": null
+ },
+ {
+  "cod": "TS J 24",
+  "denumire": "Tensionarea tirantilor ancorati in teren si blocarea cu ancoraje con-inel",
+  "um": null
+ }
+]

@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+# Tot ce incepe cu .env ramane local, cu o singura exceptie: sablonul fara
+# valori. Regula era pe nume exacte si .env.bak — copia cu cheile adevarate —
+# trecea pe linga ea direct in commit.
+.env*
+!.env.example
+*.log
+npm-debug.log*
+.DS_Store
+coverage/
+.vercel
+next-env.d.ts
+*.tsbuildinfo

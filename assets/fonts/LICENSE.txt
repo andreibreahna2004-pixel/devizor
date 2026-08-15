@@ -1,0 +1,12 @@
+Liberation(tm) Fonts — SIL Open Font License, Version 1.1
+
+Copyright (c) 2012 Red Hat, Inc.
+Liberation is a trademark of Red Hat, Inc. registered in U.S. Patent and
+Trademark Office and certain other jurisdictions.
+
+Aceste fonturi sunt incluse in proiect pentru generarea documentelor PDF:
+acopera complet diacriticele romanesti, inclusiv formele corecte cu virgula
+dedesubt (ș U+0219, ț U+021B), pe care fonturile implicite din
+@react-pdf/renderer nu le au.
+
+Textul integral al licentei: https://openfontlicense.org

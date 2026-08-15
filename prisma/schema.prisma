@@ -1,0 +1,575 @@
+// Devizor — schema bazei de date
+//
+// Reguli de aur:
+//  1. Orice tabel de business poarta `orgId`. Izolarea intre firme se face la
+//     nivel de query, prin helperele din lib/tenant.ts — nu se adauga ulterior.
+//  2. Banii se tin in Decimal, niciodata in float. Preturile unitare au 4
+//     zecimale (se inmultesc cu cantitati), totalurile au 2 (se raporteaza).
+//  3. Nu exista catalog de articole, materiale sau tarife. Fiecare linie de
+//     deviz isi poarta propriul pret, scris de om. Nu exista nicio a doua
+//     sursa de adevar din care sa se recalculeze ceva in spate.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Firme si utilizatori
+// ---------------------------------------------------------------------------
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Organization {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  // Identificare fiscala
+  cui      String // fara prefixul RO; `vatPayer` decide daca se prefixeaza
+  vatPayer Boolean  @default(true)
+  regCom   String? // J40/1234/2020
+  capital  Decimal? @db.Decimal(14, 2)
+
+  // Sediu — countyCode e cod ISO 3166-2:RO (ex. "RO-B", "RO-CJ"),
+  // obligatoriu in e-Factura.
+  address    String
+  city       String
+  countyCode String
+  postalCode String?
+  country    String  @default("RO")
+
+  // Contact & banca
+  email String?
+  phone String?
+  iban  String?
+  bank  String?
+
+  logoUrl String?
+
+  // Valori implicite folosite la crearea devizelor
+  defaultVatRate Decimal @default(21) @db.Decimal(5, 2)
+  /// Cum se scriu preturile in devizele noi ale firmei. Se poate schimba pe
+  /// fiecare deviz in parte, cat timp e ciorna.
+  defaultMode    EstimateMode @default(COMBINAT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships     Membership[]
+  clients         Client[]
+  projects        Project[]
+  estimates       Estimate[]
+  invoices        Invoice[]
+  series          DocumentSeries[]
+  progressReports ProgressReport[]
+  aiRuns          AiRun[]
+
+  @@index([slug])
+}
+
+model User {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+  name         String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+  aiRuns      AiRun[]
+}
+
+model Membership {
+  id     String @id @default(cuid())
+  userId String
+  orgId  String
+  role   Role   @default(MEMBER)
+
+  createdAt DateTime @default(now())
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+  @@index([orgId])
+}
+
+// ---------------------------------------------------------------------------
+// Serii de documente — numerotare fara goluri, per firma
+// ---------------------------------------------------------------------------
+
+enum SeriesKind {
+  DEVIZ
+  FACTURA
+  PROFORMA
+  SITUATIE
+}
+
+model DocumentSeries {
+  id         String     @id @default(cuid())
+  orgId      String
+  kind       SeriesKind
+  series     String // ex. "DVZ", "FCT"
+  // Urmatorul numar care va fi alocat. Alocarea se face intr-o tranzactie
+  // cu lock pe rand (vezi lib/numbering/series.ts).
+  nextNumber Int        @default(1)
+  isDefault  Boolean    @default(false)
+
+  createdAt DateTime @default(now())
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, kind, series])
+  @@index([orgId, kind])
+}
+
+// ---------------------------------------------------------------------------
+// Cote TVA — tabel national, cu valabilitate pe interval de date, ca
+// schimbarile legislative sa nu rescrie facturile vechi.
+// ---------------------------------------------------------------------------
+
+model VatRate {
+  id        String    @id @default(cuid())
+  label     String // "Cota standard", "Cota redusa"
+  rate      Decimal   @db.Decimal(5, 2)
+  validFrom DateTime
+  validTo   DateTime?
+  isDefault Boolean   @default(false)
+
+  @@index([validFrom, validTo])
+}
+
+// ---------------------------------------------------------------------------
+// Beneficiari si proiecte
+// ---------------------------------------------------------------------------
+
+enum ClientType {
+  PERSOANA_FIZICA
+  PERSOANA_JURIDICA
+}
+
+model Client {
+  id    String     @id @default(cuid())
+  orgId String
+  type  ClientType @default(PERSOANA_JURIDICA)
+
+  name     String
+  cui      String? // CUI pentru PJ
+  vatPayer Boolean @default(false)
+  regCom   String?
+  cnp      String? // pentru PF
+
+  address    String?
+  city       String?
+  countyCode String?
+  postalCode String?
+  country    String  @default("RO")
+
+  email String?
+  phone String?
+  iban  String?
+  bank  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  projects  Project[]
+  estimates Estimate[]
+  invoices  Invoice[]
+
+  @@index([orgId, name])
+}
+
+model Project {
+  id       String  @id @default(cuid())
+  orgId    String
+  clientId String?
+
+  name        String // "Casa P+1 Snagov"
+  description String?
+  address     String?
+  city        String?
+  countyCode  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  client    Client?      @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  estimates Estimate[]
+  invoices  Invoice[]
+
+  @@index([orgId, name])
+}
+
+// ---------------------------------------------------------------------------
+// Devize
+// ---------------------------------------------------------------------------
+
+enum EstimateStatus {
+  CIORNA
+  TRIMIS
+  ACCEPTAT
+  RESPINS
+  ANULAT
+}
+
+/// Cum se scriu preturile intr-un deviz.
+///
+/// COMBINAT — un singur pret pe linie, cu materialul si manopera la un loc.
+/// SEPARAT  — doua preturi pe linie. Devizul se tipareste ca doua documente
+///            (materiale si manopera) si se poate factura separat pe fiecare.
+enum EstimateMode {
+  COMBINAT
+  SEPARAT
+}
+
+model Estimate {
+  id    String @id @default(cuid())
+  orgId String
+
+  series     String
+  number     Int
+  /// "DVZ-000012" — precalculat pentru cautare si afisare.
+  fullNumber String
+
+  title     String
+  clientId  String?
+  projectId String?
+
+  status EstimateStatus @default(CIORNA)
+  mode   EstimateMode   @default(COMBINAT)
+
+  issueDate  DateTime  @default(now())
+  validUntil DateTime?
+
+  /// Cota de TVA, inghetata pe document. Pretul de pe linie e final: nu se mai
+  /// adauga nimic peste el in recapitulatie.
+  vatRate Decimal @db.Decimal(5, 2)
+
+  /// Totalurile calculate la ultima salvare (lib/pricing/calculator.ts).
+  /// Stocate ca sa nu recalculam la fiecare listare; sursa de adevar raman
+  /// liniile.
+  totalMaterial Decimal @default(0) @db.Decimal(14, 2)
+  totalLabor    Decimal @default(0) @db.Decimal(14, 2)
+  netTotal      Decimal @default(0) @db.Decimal(14, 2)
+  vatAmount     Decimal @default(0) @db.Decimal(14, 2)
+  grandTotal    Decimal @default(0) @db.Decimal(14, 2)
+
+  notes   String?
+  /// Descrierea in limbaj natural din care AI-ul a generat devizul.
+  aiBrief String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org             Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  client          Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project         Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  sections        EstimateSection[]
+  lines           EstimateLine[]
+  invoices        Invoice[]
+  progressReports ProgressReport[]
+  aiRuns          AiRun[]
+
+  @@unique([orgId, series, number])
+  @@index([orgId, status])
+  @@index([orgId, createdAt])
+}
+
+/// Capitol de deviz / stadiu fizic: "Infrastructura", "Finisaje", ...
+model EstimateSection {
+  id         String @id @default(cuid())
+  estimateId String
+
+  name      String
+  sortOrder Int    @default(0)
+
+  estimate Estimate       @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+  lines    EstimateLine[]
+
+  @@index([estimateId, sortOrder])
+}
+
+enum AiConfidence {
+  MARE
+  MEDIE
+  MICA
+}
+
+model EstimateLine {
+  id         String  @id @default(cuid())
+  estimateId String
+  sectionId  String?
+
+  /// Cod optional, scris de om. Nu refera nimic — nu exista catalog.
+  code String?
+  name String
+  unit String
+
+  quantity Decimal @db.Decimal(14, 4)
+
+  /// Preturile scrise de om. In modul COMBINAT se foloseste doar
+  /// `materialUnitPrice`, care poarta atunci pretul intreg al lucrarii.
+  materialUnitPrice Decimal @default(0) @db.Decimal(12, 4)
+  laborUnitPrice    Decimal @default(0) @db.Decimal(12, 4)
+
+  /// Suma celor doua, inghetata la salvare.
+  unitPrice Decimal @default(0) @db.Decimal(12, 4)
+  total     Decimal @default(0) @db.Decimal(14, 2)
+
+  sortOrder Int @default(0)
+
+  // --- provenienta AI ---
+  aiGenerated     Boolean       @default(false)
+  /// Cum a ajuns AI-ul la cantitate: "perimetru 46 ml x h 2.80 m - goluri 18 mp".
+  aiJustification String?
+  aiConfidence    AiConfidence?
+  /// Normele gasite potrivite pentru aceeasi lucrare, intre care descrierea nu
+  /// departajeaza — inclusiv cea pusa pe linie, ca sa se poata reveni la ea.
+  /// Doar coduri: denumirea si unitatea se citesc din indicator la afisare.
+  aiAlternativeCodes String[]
+  /// Bifat de om dupa ce a verificat linia.
+  reviewed        Boolean       @default(false)
+
+  estimate      Estimate         @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+  section       EstimateSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  progressLines ProgressLine[]
+
+  @@index([estimateId, sortOrder])
+  @@index([sectionId])
+}
+
+// ---------------------------------------------------------------------------
+// Situatii de lucrari (facturare in transe pe stadiu fizic)
+// ---------------------------------------------------------------------------
+
+enum ProgressStatus {
+  CIORNA
+  APROBATA
+  FACTURATA
+}
+
+model ProgressReport {
+  id         String @id @default(cuid())
+  orgId      String
+  estimateId String
+
+  series     String
+  number     Int
+  fullNumber String
+
+  /// Perioada la care se refera situatia.
+  periodStart DateTime
+  periodEnd   DateTime
+
+  status ProgressStatus @default(CIORNA)
+  notes  String?
+
+  /// Valoarea lucrarilor din aceasta situatie, fara TVA.
+  netTotal Decimal @default(0) @db.Decimal(14, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org      Organization   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  estimate Estimate       @relation(fields: [estimateId], references: [id], onDelete: Cascade)
+  lines    ProgressLine[]
+  invoices Invoice[]
+
+  @@unique([orgId, series, number])
+  @@index([estimateId])
+}
+
+model ProgressLine {
+  id               String @id @default(cuid())
+  progressReportId String
+  estimateLineId   String
+
+  /// Cantitatea executata IN ACEASTA perioada (nu cumulat).
+  /// Cumulatul se obtine insumand situatiile anterioare.
+  quantity Decimal @db.Decimal(14, 4)
+
+  /// Preturile preluate din linia de deviz la momentul situatiei. Se pastreaza
+  /// defalcate ca situatia sa poata fi facturata separat pe materiale si pe
+  /// manopera, la fel ca devizul din care vine.
+  materialUnitPrice Decimal @default(0) @db.Decimal(12, 4)
+  laborUnitPrice    Decimal @default(0) @db.Decimal(12, 4)
+
+  unitPrice Decimal @db.Decimal(12, 4)
+  total     Decimal @db.Decimal(14, 2)
+
+  report       ProgressReport @relation(fields: [progressReportId], references: [id], onDelete: Cascade)
+  estimateLine EstimateLine   @relation(fields: [estimateLineId], references: [id], onDelete: Cascade)
+
+  @@unique([progressReportId, estimateLineId])
+  @@index([estimateLineId])
+}
+
+// ---------------------------------------------------------------------------
+// Facturi
+// ---------------------------------------------------------------------------
+
+enum InvoiceStatus {
+  CIORNA
+  EMISA
+  TRIMISA
+  PLATITA
+  STORNATA
+  ANULATA
+}
+
+enum EfacturaStatus {
+  NEGENERATA
+  GENERATA
+  DESCARCATA
+}
+
+/// Ce parte a devizului acopera factura. Pentru un deviz in modul SEPARAT se
+/// pot emite doua facturi — una de materiale, una de manopera — fiecare cu
+/// numarul ei si cu XML-ul ei de e-Factura.
+enum InvoiceScope {
+  TOT
+  MATERIALE
+  MANOPERA
+}
+
+model Invoice {
+  id    String @id @default(cuid())
+  orgId String
+
+  series     String
+  number     Int
+  fullNumber String
+
+  clientId         String
+  projectId        String?
+  /// Devizul din care a fost emisa, daca e cazul.
+  estimateId       String?
+  /// Situatia de lucrari facturata, pentru facturarea in transe.
+  progressReportId String?
+
+  status InvoiceStatus @default(CIORNA)
+  scope  InvoiceScope  @default(TOT)
+
+  issueDate  DateTime  @default(now())
+  dueDate    DateTime
+  /// Data livrarii / prestarii serviciului (obligatorie in e-Factura daca
+  /// difera de data emiterii).
+  supplyDate DateTime?
+
+  currency     String   @default("RON")
+  /// Curs BNR, completat doar cand moneda nu e RON.
+  exchangeRate Decimal? @db.Decimal(12, 6)
+
+  /// Datele partilor, inghetate la emitere: daca firma isi schimba sediul,
+  /// facturile vechi trebuie sa ramana cum au fost emise.
+  supplierSnapshot Json
+  clientSnapshot   Json
+
+  netTotal   Decimal @default(0) @db.Decimal(14, 2)
+  vatAmount  Decimal @default(0) @db.Decimal(14, 2)
+  grandTotal Decimal @default(0) @db.Decimal(14, 2)
+
+  notes String?
+
+  efacturaStatus      EfacturaStatus @default(NEGENERATA)
+  efacturaXml         String?
+  efacturaGeneratedAt DateTime?
+
+  /// Factura de storno care anuleaza aceasta factura.
+  reversalOfId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org            Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  client         Client          @relation(fields: [clientId], references: [id])
+  project        Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  estimate       Estimate?       @relation(fields: [estimateId], references: [id], onDelete: SetNull)
+  progressReport ProgressReport? @relation(fields: [progressReportId], references: [id], onDelete: SetNull)
+  reversalOf     Invoice?        @relation("Storno", fields: [reversalOfId], references: [id], onDelete: SetNull)
+  reversedBy     Invoice?        @relation("Storno")
+  lines          InvoiceLine[]
+
+  @@unique([orgId, series, number])
+  @@index([orgId, status])
+  @@index([orgId, issueDate])
+}
+
+model InvoiceLine {
+  id        String @id @default(cuid())
+  invoiceId String
+
+  code String?
+  name String
+  unit String
+
+  quantity  Decimal @db.Decimal(14, 4)
+  unitPrice Decimal @db.Decimal(12, 4)
+
+  /// Cota TVA a liniei — o factura poate avea linii cu cote diferite.
+  vatRate Decimal @db.Decimal(5, 2)
+
+  netAmount Decimal @db.Decimal(14, 2)
+  vatAmount Decimal @db.Decimal(14, 2)
+  total     Decimal @db.Decimal(14, 2)
+
+  sortOrder Int @default(0)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId, sortOrder])
+}
+
+// ---------------------------------------------------------------------------
+// Audit AI
+// ---------------------------------------------------------------------------
+
+enum AiRunKind {
+  DEVIZ
+  FACTURA
+}
+
+model AiRun {
+  id     String  @id @default(cuid())
+  orgId  String
+  userId String?
+
+  kind  AiRunKind
+  model String
+
+  brief     String  @db.Text
+  rawOutput Json?
+  error     String?
+
+  inputTokens      Int @default(0)
+  outputTokens     Int @default(0)
+  cacheReadTokens  Int @default(0)
+  cacheWriteTokens Int @default(0)
+
+  /// Cate linii a propus si cate au ramas in document dupa verificarea omului.
+  linesProposed Int @default(0)
+
+  estimateId String?
+  durationMs Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  org      Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user     User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  estimate Estimate?    @relation(fields: [estimateId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, createdAt])
+}
