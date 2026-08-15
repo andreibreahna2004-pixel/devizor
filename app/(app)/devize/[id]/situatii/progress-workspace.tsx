@@ -5,6 +5,7 @@ import { useMemo, useState, useTransition } from "react";
 import { invoiceProgressReport, saveProgress } from "@/app/actions/progress";
 import { FormError, FormSuccess } from "@/components/form-feedback";
 import { formatLei, formatQty, round2, round4 } from "@/lib/money";
+import { computeEstimateLine } from "@/lib/pricing/calculator";
 
 /**
  * Introducerea unei situatii de lucrari.
@@ -22,7 +23,31 @@ interface LineState {
   contracted: number;
   previouslyDone: number;
   currentQuantity: number;
+  /**
+   * Componentele se tin separat, nu doar suma lor: valoarea liniei e suma
+   * materialului si a manoperei rotunjite fiecare in parte, nu produsul
+   * cantitatii cu pretul intreg. Vezi `valoareLinie`.
+   */
+  materialUnitPrice: number;
+  laborUnitPrice: number;
   unitPrice: number;
+}
+
+/**
+ * Valoarea unei linii de situatie, prin acelasi motor ca serverul.
+ *
+ * `cantitate × unitPrice` pare acelasi lucru si nu este: motorul rotunjeste
+ * material si manopera separat, apoi le aduna, iar pretul intreg e deja rotunjit
+ * la patru zecimale. Pe preturi cu zecimale (12,345 + 7,895 la trei bucati) cele
+ * doua formule dau 60,73 fata de 60,72 — un ban pe linie, care se aduna peste
+ * toate liniile. Omul ar vedea in ecran un total, iar in situatia salvata altul.
+ */
+function valoareLinie(line: LineState, cantitate: number): number {
+  return computeEstimateLine({
+    quantity: cantitate,
+    materialUnitPrice: line.materialUnitPrice,
+    laborUnitPrice: line.laborUnitPrice,
+  }).total;
 }
 
 interface PendingReport {
@@ -65,11 +90,13 @@ export function ProgressWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  // Aceeasi insumare ca pe server: valori de linie din motor, adunate si
+  // rotunjite la final.
   const total = useMemo(
     () =>
       round2(
         lines.reduce(
-          (sum, line) => sum + round2((quantities[line.estimateLineId] ?? 0) * line.unitPrice),
+          (sum, line) => sum + valoareLinie(line, quantities[line.estimateLineId] ?? 0),
           0,
         ),
       ),
@@ -292,7 +319,7 @@ export function ProgressWorkspace({
                   )}
                 </label>
                 <p className="tabular shrink-0 pb-2 text-sm font-semibold text-ink-900">
-                  {current > 0 ? `${formatLei(round2(current * line.unitPrice))} lei` : "—"}
+                  {current > 0 ? `${formatLei(valoareLinie(line, current))} lei` : "—"}
                 </p>
               </div>
             </li>
@@ -346,7 +373,7 @@ export function ProgressWorkspace({
                     />
                   </td>
                   <td className="td tabular text-right font-medium">
-                    {current > 0 ? formatLei(round2(current * line.unitPrice)) : "—"}
+                    {current > 0 ? formatLei(valoareLinie(line, current)) : "—"}
                   </td>
                 </tr>
               );
