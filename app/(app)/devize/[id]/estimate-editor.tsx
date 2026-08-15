@@ -1,18 +1,19 @@
 "use client";
 
 import { Fragment, useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   addEstimateLineManual,
-  addSuggestedSteps,
+  addSuggestion,
   deleteEstimateLine,
+  dismissSuggestion,
   saveEstimateLines,
   searchNormeAction,
   updateEstimateMode,
   updateEstimateVatRate,
 } from "@/app/actions/estimates";
 import { ConfidenceBadge } from "@/components/status-badge";
-import type { ProposedStep } from "@/lib/ai/map-tool-output";
 import { consumeEventStream } from "@/lib/event-stream";
 import { formatLei, formatQty } from "@/lib/money";
 import type { Norma } from "@/lib/norme";
@@ -67,6 +68,17 @@ interface Section {
   name: string;
 }
 
+/** O linie optionala propusa de AI. Traieste in baza de date, nu doar pe ecran. */
+export interface Suggestion {
+  id: string;
+  code: string | null;
+  name: string;
+  unit: string;
+  /** null cind AI-ul n-a putut-o deduce: o pune omul inainte de a adauga. */
+  quantity: number | null;
+  reason: string;
+}
+
 export function EstimateEditor({
   estimateId,
   editable,
@@ -74,6 +86,7 @@ export function EstimateEditor({
   aiConfigured,
   sections,
   lines: initialLines,
+  suggestions,
   vatRate: initialVatRate,
 }: {
   estimateId: string;
@@ -82,6 +95,7 @@ export function EstimateEditor({
   aiConfigured: boolean;
   sections: Section[];
   lines: EditorLine[];
+  suggestions: Suggestion[];
   vatRate: number;
 }) {
   const router = useRouter();
@@ -203,9 +217,17 @@ export function EstimateEditor({
         /* Se opreste sub antetul de pe telefon (`top-14`), care e si el lipit;
            la `lg` antetul nu mai e lipit, deci bara urca la marginea de sus. */
         <div className="sticky top-14 z-10 -mx-1 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface-glass)] px-4 py-2.5 backdrop-blur lg:top-0">
-          <p className="text-sm text-ink-600">
-            {dirty ? "Ai modificari nesalvate" : "Toate modificarile sunt salvate"}
-          </p>
+          {/* Iesirea sta in bara lipita, nu doar in antetul paginii: pe un deviz
+              de saizeci de linii, calea de intoarcere trebuie sa fie la vedere
+              fara sa derulezi pina sus. */}
+          <div className="flex items-center gap-3">
+            <Link href="/devize" className="link text-sm whitespace-nowrap">
+              ← Devize
+            </Link>
+            <p className="text-sm text-ink-600">
+              {dirty ? "Ai modificari nesalvate" : "Toate modificarile sunt salvate"}
+            </p>
+          </div>
           <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
             {message && <span className="text-sm text-emerald-700">{message}</span>}
             {error && <span className="text-sm text-red-700">{error}</span>}
@@ -391,12 +413,22 @@ export function EstimateEditor({
         })
       )}
 
+      {/* Sub tot devizul, inainte de uneltele de adaugare: se citeste ca o
+          prelungire a lucrarii, nu ca inca un formular. */}
+      {editable && suggestions.length > 0 && (
+        <OptionalLines
+          estimateId={estimateId}
+          suggestions={suggestions}
+          sections={sections}
+          onChanged={() => router.refresh()}
+        />
+      )}
+
       {editable && (
         <>
           <SpokenWork
             estimateId={estimateId}
             aiConfigured={aiConfigured}
-            sections={sections}
             onFinished={() => router.refresh()}
           />
           <AddLineForm
@@ -529,6 +561,7 @@ function LineCard({
       <TextCell
         value={line.name}
         editable={editable}
+        multiline
         className="font-medium text-ink-900"
         onChange={(name) => onPatch({ name })}
       />
@@ -696,19 +729,17 @@ const EMPTY_LINE = {
 function SpokenWork({
   estimateId,
   aiConfigured,
-  sections,
   onFinished,
 }: {
   estimateId: string;
   aiConfigured: boolean;
-  sections: Section[];
   onFinished: () => void;
 }) {
   const [text, setText] = useState("");
   const [running, setRunning] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [added, setAdded] = useState<string[]>([]);
-  const [steps, setSteps] = useState<ProposedStep[]>([]);
+  const [proposed, setProposed] = useState(0);
   const [question, setQuestion] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -717,7 +748,7 @@ function SpokenWork({
     setRunning(true);
     setStatus("AI-ul cauta lucrarile in indicator...");
     setAdded([]);
-    setSteps([]);
+    setProposed(0);
     setQuestion(null);
     setSummary(null);
     setError(null);
@@ -751,8 +782,10 @@ function SpokenWork({
             ]);
             break;
           }
+          // Propunerile s-au salvat pe server; aici doar numaram, ca omul sa
+          // stie ca il asteapta o lista sub deviz.
           case "steps":
-            setSteps(event.steps as ProposedStep[]);
+            setProposed((event.steps as unknown[]).length);
             break;
           case "question":
             setQuestion(event.question as string);
@@ -824,6 +857,14 @@ function SpokenWork({
         </ul>
       )}
 
+      {proposed > 0 && (
+        <p className="mt-3 text-sm text-blue-800">
+          {proposed === 1
+            ? "Un pas in plus te asteapta in lista de sub deviz."
+            : `Inca ${proposed} pasi te asteapta in lista de sub deviz.`}
+        </p>
+      )}
+
       {question && (
         <p className="mt-3 rounded-lg border border-blue-200 bg-blue-50 px-3.5 py-2.5 text-sm text-blue-900">
           {question}
@@ -835,179 +876,93 @@ function SpokenWork({
           {summary}
         </p>
       )}
-
-      {steps.length > 0 && (
-        <StepsBox
-          estimateId={estimateId}
-          steps={steps}
-          sections={sections}
-          onAdded={() => {
-            setSteps([]);
-            onFinished();
-          }}
-          onDismiss={() => setSteps([])}
-        />
-      )}
     </div>
   );
 }
 
 /**
- * Ordinea lucrarilor: pasii pe care AI-ul i-a dedus, dar pe care omul nu i-a
- * spus.
+ * Liniile optionale: pasii pe care AI-ul i-a dedus, dar pe care omul nu i-a spus.
  *
- * Nimic de aici nu e in deviz. Sint propuneri, in ordinea in care se executa pe
- * santier, si intra doar cele bifate — de aceea nimic nu e bifat de la inceput.
- * Un pas dedus gresit care ar intra singur in deviz ar deveni munca facturata
- * si neexecutata.
+ * Stau sub deviz, in ordinea in care se executa pe santier, si nu sint linii de
+ * deviz: nu se aduna nicaieri si nu apar pe niciun PDF. Fiecare intra doar cind
+ * omul apasa plusul de pe rindul ei.
+ *
+ * Din deviz iese o factura, iar un pas dedus gresit care ar intra singur ar fi
+ * munca facturata si neexecutata. De aceea plusul e o apasare deliberata, si de
+ * aceea o propunere fara cantitate nu poate fi adaugata pina nu o masoara omul.
  */
-function StepsBox({
+function OptionalLines({
   estimateId,
-  steps,
+  suggestions,
   sections,
-  onAdded,
-  onDismiss,
+  onChanged,
 }: {
   estimateId: string;
-  steps: ProposedStep[];
+  suggestions: Suggestion[];
   sections: Section[];
-  onAdded: () => void;
-  onDismiss: () => void;
+  onChanged: () => void;
 }) {
   const [pending, startTransition] = useTransition();
-  const [chosen, setChosen] = useState<Set<number>>(new Set());
-  const [quantities, setQuantities] = useState<Record<number, string>>({});
+  const [quantities, setQuantities] = useState<Record<string, string>>({});
   const [sectionId, setSectionId] = useState("");
+  const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  function toggle(index: number) {
-    setChosen((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
-    setError(null);
+  function cantitatea(s: Suggestion): string {
+    return quantities[s.id] ?? (s.quantity === null ? "" : formatQty(s.quantity));
   }
 
-  function handleAdd() {
+  function handleAdd(s: Suggestion) {
     setError(null);
-    const alese = [...chosen].sort((a, b) => a - b);
-
+    setBusy(s.id);
     startTransition(async () => {
-      const result = await addSuggestedSteps({
+      const result = await addSuggestion({
         estimateId,
+        suggestionId: s.id,
         sectionId: sectionId === "" ? null : sectionId,
-        pasi: alese.map((i) => ({
-          code: steps[i].code,
-          name: steps[i].name,
-          unit: steps[i].unit,
-          quantity: parseDecimal(quantities[i] ?? "") || steps[i].quantity || 0,
-        })),
+        quantity: parseDecimal(cantitatea(s)),
       });
-
+      setBusy(null);
       if (!result.ok) {
-        setError(result.error ?? "Pasii nu au putut fi adaugati");
+        setError(result.error ?? "Linia nu a putut fi adaugata");
         return;
       }
-      onAdded();
+      onChanged();
+    });
+  }
+
+  function handleDismiss(s: Suggestion) {
+    setError(null);
+    setBusy(s.id);
+    startTransition(async () => {
+      const result = await dismissSuggestion({ estimateId, suggestionId: s.id });
+      setBusy(null);
+      if (!result.ok) {
+        setError(result.error ?? "Propunerea nu a putut fi stearsa");
+        return;
+      }
+      onChanged();
     });
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <h3 className="text-sm font-semibold text-blue-900">Ordinea lucrarilor</h3>
-          <p className="mt-0.5 text-xs text-blue-900/80">
-            Pasii astia fac parte din lucrare, dar nu i-ai spus. Bifeaza ce s-a
-            executat — restul nu intra nicaieri.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="text-xs text-blue-900/70 underline-offset-2 hover:underline"
-        >
-          Nu-mi trebuie
-        </button>
-      </div>
+    <section className="card overflow-hidden">
+      <header className="border-b border-[var(--border)] bg-blue-50 px-4 py-3">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="text-sm font-semibold text-blue-900">Linii optionale</h2>
+            <p className="mt-0.5 text-xs text-blue-900/80">
+              Pasii astia fac parte din lucrare, dar nu i-ai spus. Apasa plusul pe
+              cei care s-au executat — nu intra nimic singur.
+            </p>
+          </div>
 
-      <ol className="mt-3 space-y-1.5">
-        {steps.map((step, index) => {
-          const bifat = chosen.has(index);
-
-          return (
-            <li key={`${step.name}-${index}`}>
-              <div
-                className={`rounded-lg border bg-[var(--surface)] p-3 transition-colors ${
-                  bifat ? "border-brand-400" : "border-[var(--border)]"
-                }`}
-              >
-                <label className="flex cursor-pointer items-start gap-2.5">
-                  <input
-                    type="checkbox"
-                    checked={bifat}
-                    onChange={() => toggle(index)}
-                    className="mt-0.5 h-4 w-4 shrink-0"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-ink-900">
-                      <span className="tabular text-ink-500">{index + 1}.</span>{" "}
-                      {step.name}
-                    </span>
-                    {step.code && (
-                      <span className="tabular mt-0.5 block text-xs text-brand-700">
-                        {step.code}
-                      </span>
-                    )}
-                    <span className="mt-0.5 block text-xs text-ink-500">
-                      {step.reason}
-                    </span>
-                  </span>
-                </label>
-
-                {bifat && (
-                  <div className="mt-2.5 flex items-center gap-2 border-t border-[var(--border)] pt-2.5">
-                    <label className="text-xs text-ink-500">Cantitate</label>
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      className="cell-input tabular w-24 text-right"
-                      placeholder={step.quantity === null ? "de pus" : undefined}
-                      value={
-                        quantities[index] ??
-                        (step.quantity === null ? "" : formatQty(step.quantity))
-                      }
-                      onChange={(e) =>
-                        setQuantities((prev) => ({ ...prev, [index]: e.target.value }))
-                      }
-                    />
-                    <span className="text-xs text-ink-500">{step.unit}</span>
-                    {step.quantity === null && (
-                      <span className="text-xs text-amber-800">
-                        AI-ul n-a putut-o deduce
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-
-      <div className="mt-3 flex flex-wrap items-end gap-3">
-        {sections.length > 0 && (
-          <div>
-            <label className="label text-xs" htmlFor="steps-section">
-              Sectiune
-            </label>
+          {sections.length > 0 && (
             <select
-              id="steps-section"
-              className="input"
+              className="input w-auto"
               value={sectionId}
               onChange={(e) => setSectionId(e.target.value)}
+              title="In ce sectiune intra liniile adaugate"
             >
               <option value="">Alte lucrari</option>
               {sections.map((s) => (
@@ -1016,29 +971,95 @@ function StepsBox({
                 </option>
               ))}
             </select>
-          </div>
+          )}
+        </div>
+      </header>
+
+      <ol className="divide-y divide-[var(--border)]">
+        {suggestions.map((s, index) => {
+          const text = cantitatea(s);
+          const gata = parseDecimal(text) > 0;
+          const lucreaza = busy === s.id && pending;
+
+          return (
+            <li key={s.id} className="p-4">
+              <div className="flex items-start gap-3">
+                <span className="tabular shrink-0 pt-0.5 text-sm text-ink-500">
+                  {index + 1}.
+                </span>
+
+                {/* Denumirea curge pe cite rinduri ii trebuie: pe telefon, un
+                    nume de norma taiat la jumatate nu spune ce s-a executat. */}
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium leading-snug text-ink-900">
+                    {s.name}
+                  </p>
+                  {s.code && (
+                    <p className="tabular mt-0.5 text-xs text-brand-700">{s.code}</p>
+                  )}
+                  <p className="mt-1 text-xs leading-relaxed text-ink-500">
+                    {s.reason}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleDismiss(s)}
+                  disabled={lucreaza}
+                  title="Nu s-a executat"
+                  aria-label={`Scoate ${s.name} din propuneri`}
+                  className="-mr-1 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-400 hover:bg-ink-50 hover:text-ink-700"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-center gap-2 pl-6">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  aria-label={`Cantitate pentru ${s.name}`}
+                  className="cell-input tabular w-24 text-right"
+                  placeholder={s.quantity === null ? "de pus" : undefined}
+                  value={text}
+                  onChange={(e) =>
+                    setQuantities((prev) => ({ ...prev, [s.id]: e.target.value }))
+                  }
+                />
+                <span className="text-xs text-ink-500">{s.unit}</span>
+
+                {s.quantity === null && !gata && (
+                  <span className="text-xs text-amber-800">
+                    AI-ul n-a putut deduce cantitatea
+                  </span>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => handleAdd(s)}
+                  disabled={!gata || lucreaza}
+                  title={gata ? "Adauga in deviz" : "Pune intii cantitatea"}
+                  className="btn-secondary ml-auto"
+                >
+                  {lucreaza ? "Se adauga..." : "+ Adauga in deviz"}
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+
+      <footer className="border-t border-[var(--border)] px-4 py-3">
+        {error ? (
+          <p className="text-sm text-red-700">{error}</p>
+        ) : (
+          <p className="text-xs text-ink-500">
+            Liniile adaugate intra la coada devizului, fara pret si marcate pentru
+            verificare. Pretul il scrii tu pe linie.
+          </p>
         )}
-
-        <button
-          type="button"
-          className="btn-primary w-full sm:w-auto"
-          onClick={handleAdd}
-          disabled={pending || chosen.size === 0}
-        >
-          {pending
-            ? "Se adauga..."
-            : chosen.size === 0
-              ? "Bifeaza pasii de adaugat"
-              : `Adauga ${chosen.size} ${chosen.size === 1 ? "pas" : "pasi"} in deviz`}
-        </button>
-
-        {error && <span className="text-sm text-red-700">{error}</span>}
-      </div>
-
-      <p className="mt-2 text-xs text-ink-500">
-        Intra fara pret, marcati pentru verificare. Pretul il scrii tu pe linie.
-      </p>
-    </div>
+      </footer>
+    </section>
   );
 }
 
@@ -1364,31 +1385,79 @@ function TextCell({
   value,
   editable,
   className,
+  multiline,
   onChange,
 }: {
   value: string;
   editable: boolean;
   className?: string;
+  /**
+   * Creste pe verticala cu textul. Folosit pe telefon, unde denumirile de norma
+   * — "Pardoseli din placi de gresie ceramica montate cu adeziv" — nu incap pe
+   * un rind si un cimp de o linie ar arata din ele doar un sfert.
+   */
+  multiline?: boolean;
   onChange: (value: string) => void;
 }) {
   const [draft, setDraft] = useState<string | null>(null);
+  const shown = draft ?? value;
+
+  /**
+   * Inaltimea urmeaza continutul.
+   *
+   * Se face din callback-ul de `ref` si din `onChange`, nu dintr-un efect:
+   * `useLayoutEffect` ar da avertisment la randarea pe server, iar `useEffect`
+   * ar potrivi inaltimea abia dupa pictura, deci un nume lung ar clipi pe un
+   * rind inainte sa se aseze.
+   */
+  function autosize(el: HTMLTextAreaElement | null) {
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }
 
   // `block` ca sa se poata alinia la dreapta in cardul de pe telefon, unde
   // eticheta e deasupra si valoarea sub ea, pe toata latimea coloanei.
   if (!editable) return <span className={`block ${className ?? ""}`}>{value}</span>;
 
+  function commit() {
+    if (draft === null) return;
+    const trimmed = draft.trim();
+    if (trimmed !== "" && trimmed !== value) onChange(trimmed);
+    setDraft(null);
+  }
+
+  if (multiline) {
+    return (
+      <textarea
+        ref={autosize}
+        rows={1}
+        className={`cell-input w-full resize-none leading-snug ${className ?? ""}`}
+        value={shown}
+        onChange={(e) => {
+          setDraft(e.target.value);
+          autosize(e.target);
+        }}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          // Enter incheie editarea; denumirea unei lucrari e un rind, oricit de
+          // lung ar fi, nu un paragraf.
+          if (e.key === "Enter") {
+            e.preventDefault();
+            e.currentTarget.blur();
+          }
+        }}
+      />
+    );
+  }
+
   return (
     <input
       type="text"
       className={`cell-input w-full ${className ?? ""}`}
-      value={draft ?? value}
+      value={shown}
       onChange={(e) => setDraft(e.target.value)}
-      onBlur={() => {
-        if (draft === null) return;
-        const trimmed = draft.trim();
-        if (trimmed !== "" && trimmed !== value) onChange(trimmed);
-        setDraft(null);
-      }}
+      onBlur={commit}
     />
   );
 }

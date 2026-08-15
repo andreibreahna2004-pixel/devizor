@@ -131,6 +131,14 @@ export default async function EstimatePage({
         aiConfigured={isAiConfigured()}
         sections={estimate.sections.map((s) => ({ id: s.id, name: s.name }))}
         lines={lines}
+        suggestions={estimate.suggestions.map((s) => ({
+          id: s.id,
+          code: s.code,
+          name: s.name,
+          unit: s.unit,
+          quantity: s.quantity === null ? null : toNumber(s.quantity),
+          reason: s.reason,
+        }))}
         vatRate={toNumber(estimate.vatRate)}
       />
     </div>

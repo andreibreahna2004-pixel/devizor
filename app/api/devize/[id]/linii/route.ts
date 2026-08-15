@@ -8,6 +8,7 @@ import {
   isEditable,
   lockReason,
   recalculateEstimate,
+  replaceSuggestions,
 } from "@/lib/estimates/service";
 import { badRequest, notFound, requireUserApi, unauthorized } from "@/lib/tenant";
 
@@ -136,6 +137,12 @@ export async function POST(
             lineCount += 1;
             send({ ...event, line: { ...line, id: saved.id } });
             continue;
+          }
+
+          // Propunerile se salveaza pe deviz, nu doar se trimit spre browser:
+          // omul genereaza pe santier si foloseste lista mai tirziu.
+          if (event.type === "steps") {
+            await replaceSuggestions(estimate.id, event.steps);
           }
 
           if (event.type === "error") failure = event.message;

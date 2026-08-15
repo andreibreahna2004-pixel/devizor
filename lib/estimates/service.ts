@@ -174,8 +174,42 @@ export async function getEstimateForView(orgId: string, estimateId: string) {
       // Numarul situatiilor decide, alaturi de facturi, daca devizul mai poate
       // fi editat — vezi `isEditable`.
       _count: { select: { progressReports: true } },
+      suggestions: { orderBy: { sortOrder: "asc" } },
     },
   });
+}
+
+/**
+ * Propunerile devizului, rescrise de la zero.
+ *
+ * O generare noua inlocuieste lista veche in loc s-o completeze: altfel s-ar
+ * aduna propuneri peste propuneri de la fraze diferite, iar omul n-ar mai sti
+ * care pas vine de la ce a spus.
+ */
+export async function replaceSuggestions(
+  estimateId: string,
+  steps: {
+    code: string | null;
+    name: string;
+    unit: string;
+    quantity: number | null;
+    reason: string;
+  }[],
+): Promise<void> {
+  await prisma.$transaction([
+    prisma.estimateSuggestion.deleteMany({ where: { estimateId } }),
+    prisma.estimateSuggestion.createMany({
+      data: steps.map((step, index) => ({
+        estimateId,
+        code: step.code,
+        name: step.name,
+        unit: step.unit,
+        quantity: step.quantity === null ? null : toDecimal(step.quantity, 4),
+        reason: step.reason,
+        sortOrder: index,
+      })),
+    }),
+  ]);
 }
 
 export type EstimateForView = NonNullable<

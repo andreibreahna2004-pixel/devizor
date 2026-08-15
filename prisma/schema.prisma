@@ -279,6 +279,7 @@ model Estimate {
   project         Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
   sections        EstimateSection[]
   lines           EstimateLine[]
+  suggestions     EstimateSuggestion[]
   invoices        Invoice[]
   progressReports ProgressReport[]
   aiRuns          AiRun[]
@@ -298,6 +299,39 @@ model EstimateSection {
 
   estimate Estimate       @relation(fields: [estimateId], references: [id], onDelete: Cascade)
   lines    EstimateLine[]
+
+  @@index([estimateId, sortOrder])
+}
+
+/// Pasii pe care AI-ul i-a dedus, dar pe care omul nu i-a spus.
+///
+/// Nu sint linii de deviz si nu se aduna nicaieri: stau intr-o lista sub deviz,
+/// in ordinea executiei, si intra doar cind omul apasa plusul. Din deviz iese o
+/// factura, iar un pas dedus gresit care ar intra singur ar fi munca facturata
+/// si neexecutata.
+///
+/// Se salveaza, nu traiesc doar in browser: omul genereaza pe santier si
+/// foloseste lista mai tirziu, de pe alt dispozitiv.
+model EstimateSuggestion {
+  id         String @id @default(cuid())
+  estimateId String
+
+  /// Codul din indicator, cind norma s-a potrivit. Verificat inainte de scriere.
+  code String?
+  name String
+  unit String
+
+  /// null cind nu rezulta din ce a spus omul — o completeaza el la adaugare.
+  /// O cifra inventata ar parea masurata.
+  quantity Decimal? @db.Decimal(14, 4)
+
+  /// De ce pasul face parte din lucrare, in cuvintele AI-ului.
+  reason String
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  estimate Estimate @relation(fields: [estimateId], references: [id], onDelete: Cascade)
 
   @@index([estimateId, sortOrder])
 }

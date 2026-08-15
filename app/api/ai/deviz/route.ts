@@ -7,6 +7,7 @@ import {
   createDraftEstimate,
   ensureSection,
   recalculateEstimate,
+  replaceSuggestions,
 } from "@/lib/estimates/service";
 import { badRequest, requireUserApi, unauthorized } from "@/lib/tenant";
 
@@ -151,6 +152,12 @@ export async function POST(request: Request) {
             await recordAiRun(user, estimate.id, input.brief, event.usage, null);
             send(event);
             continue;
+          }
+
+          // La fel ca la adaugarea in deviz existent: propunerile se salveaza,
+          // ca sa le gaseasca omul in editor dupa ce se deschide devizul.
+          if (event.type === "steps") {
+            await replaceSuggestions(estimate.id, event.steps);
           }
 
           if (event.type === "error") failure = event.message;

@@ -198,40 +198,39 @@ export async function addEstimateLineManual(
   return { ok: true };
 }
 
-const addStepsSchema = z.object({
+const suggestionSchema = z.object({
   estimateId: z.string().min(1),
+  suggestionId: z.string().min(1),
+});
+
+const addSuggestionSchema = suggestionSchema.extend({
   sectionId: z.string().min(1).nullable().optional(),
-  pasi: z
-    .array(
-      z.object({
-        code: z.string().min(1).nullable().optional(),
-        name: z.string().min(1).max(300),
-        unit: z.string().min(1).max(16),
-        quantity: z.number().nonnegative(),
-      }),
-    )
-    .min(1)
-    .max(20),
+  quantity: z.number().positive("Pune o cantitate"),
 });
 
 /**
- * Pasii bifati de om din caseta de propuneri.
+ * Propunerea urcata in deviz, cu plusul de pe rind.
  *
- * Intra fara pret si nemarcati ca verificati: pasul e propus de AI, cantitatea
- * de multe ori pusa de om cu ochiul, iar pretul nu l-a scris nimeni inca. Asa
- * apar in editor cerand atentie, nu ca linii gata de facturat.
+ * Intra fara pret si nemarcata ca verificata: pasul e propus de AI, cantitatea
+ * de multe ori pusa de om cu ochiul, iar pretul nu l-a scris inca nimeni. Asa
+ * apare in editor cerand atentie, nu ca linie gata de facturat.
  *
- * Ce nu a bifat omul nu ajunge aici — propunerile traiesc doar in browser, pina
- * cind le alege cineva.
+ * Propunerea se sterge dupa ce a devenit linie — nu mai e o optiune, e in deviz.
  */
-export async function addSuggestedSteps(payload: unknown): Promise<ActionResult> {
-  const parsed = addStepsSchema.safeParse(payload);
+export async function addSuggestion(payload: unknown): Promise<ActionResult> {
+  const parsed = addSuggestionSchema.safeParse(payload);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Date invalide" };
   }
 
   const guard = await loadEditable(parsed.data.estimateId);
   if ("error" in guard) return { ok: false, error: guard.error };
+
+  // Id-ul vine din browser: verificam ca propunerea e chiar a acestui deviz.
+  const suggestion = await prisma.estimateSuggestion.findFirst({
+    where: { id: parsed.data.suggestionId, estimateId: parsed.data.estimateId },
+  });
+  if (!suggestion) return { ok: false, error: "Propunerea nu mai exista" };
 
   if (parsed.data.sectionId) {
     const owned = await prisma.estimateSection.count({
@@ -246,36 +245,53 @@ export async function addSuggestedSteps(payload: unknown): Promise<ActionResult>
     select: { sortOrder: true },
   });
 
-  let sortOrder = (last?.sortOrder ?? -1) + 1;
+  // Codul a fost verificat la propunere, dar se verifica din nou: intre timp
+  // nu s-a schimbat nimic, insa o linie nu pleaca niciodata cu un cod pe care
+  // nu l-am gasit noi in indicator.
+  const norma = suggestion.code ? getNorma(suggestion.code) : null;
 
-  // Ordinea din caseta e ordinea de executie de pe santier; se pastreaza in
-  // deviz, altfel propunerea isi pierde tocmai sensul pentru care a fost facuta.
-  for (const pas of parsed.data.pasi) {
-    const norma = pas.code ? getNorma(pas.code) : null;
-
-    await prisma.estimateLine.create({
+  await prisma.$transaction([
+    prisma.estimateLine.create({
       data: {
         estimateId: parsed.data.estimateId,
         sectionId: parsed.data.sectionId ?? null,
         code: norma?.cod ?? null,
-        name: norma?.denumire ?? pas.name,
-        unit: norma?.um ?? pas.unit,
-        quantity: toDecimal(pas.quantity, 4),
+        name: norma?.denumire ?? suggestion.name,
+        unit: norma?.um ?? suggestion.unit,
+        quantity: toDecimal(parsed.data.quantity, 4),
         materialUnitPrice: toDecimal(0, 4),
         laborUnitPrice: toDecimal(0, 4),
         unitPrice: toDecimal(0, 4),
         total: toDecimal(0, 2),
-        sortOrder: sortOrder++,
+        sortOrder: (last?.sortOrder ?? -1) + 1,
         aiGenerated: true,
         aiConfidence: "MICA",
-        aiJustification:
-          "Pas propus de AI si confirmat de tine. Pretul si cantitatea le pui tu.",
+        aiJustification: `Pas propus de AI, adaugat de tine: ${suggestion.reason}. Pretul il pui tu.`,
         reviewed: false,
       },
-    });
-  }
+    }),
+    prisma.estimateSuggestion.delete({ where: { id: suggestion.id } }),
+  ]);
 
   await recalculateEstimate(parsed.data.estimateId);
+  revalidatePath(`/devize/${parsed.data.estimateId}`);
+  return { ok: true };
+}
+
+/** Propunerea refuzata. Dispare din lista, nimic nu intra in deviz. */
+export async function dismissSuggestion(payload: unknown): Promise<ActionResult> {
+  const parsed = suggestionSchema.safeParse(payload);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Date invalide" };
+  }
+
+  const guard = await loadEditable(parsed.data.estimateId);
+  if ("error" in guard) return { ok: false, error: guard.error };
+
+  await prisma.estimateSuggestion.deleteMany({
+    where: { id: parsed.data.suggestionId, estimateId: parsed.data.estimateId },
+  });
+
   revalidatePath(`/devize/${parsed.data.estimateId}`);
   return { ok: true };
 }
