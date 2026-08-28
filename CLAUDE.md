@@ -239,6 +239,18 @@ exceptii spre interfata.
 omul in timp ce tasteaza e ce se salveaza. Salvarea e explicita, nu la fiecare
 tasta: devizul e un document financiar.
 
+Linia arata denumirea, cantitatea, U.M., pretul unitar si valoarea. **Cele patru
+componente se editeaza in randul care se deschide sub linie**, impreuna cu
+justificarea AI si variantele de norma. Pretul unitar ramine in tabel, read-only,
+ca suma celor patru: fara el, `cantitate x pret = valoare` nu se mai poate
+verifica dintr-o privire, si asa se citeste un rind de deviz.
+
+Deci **butonul de expandare din `LineMeta` trebuie sa fie pe fiecare linie**. A
+fost cindva conditionat de existenta datelor de la AI, iar o linie scrisa de mina
+iesea pe `return null`. Cu preturile mutate sub linie, conditia aceea ar face
+liniile scrise de mina imposibil de editat — n-ai cum sa ajungi la cifre. La fel,
+randul de detalii se deschide neconditionat: preturi are orice linie.
+
 **Testele** acopera ce se strica tacut: rotunjiri, numerotare sub concurenta,
 integritatea indicatoarelor, maparea apelurilor AI, generatorul e-Factura,
 geometria graficelor. Cind un test pica dupa o schimbare de date, intreaba-te
