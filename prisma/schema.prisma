@@ -57,9 +57,6 @@ model Organization {
 
   // Valori implicite folosite la crearea devizelor
   defaultVatRate Decimal @default(21) @db.Decimal(5, 2)
-  /// Cum se scriu preturile in devizele noi ale firmei. Se poate schimba pe
-  /// fiecare deviz in parte, cat timp e ciorna.
-  defaultMode    EstimateMode @default(COMBINAT)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -225,16 +222,6 @@ enum EstimateStatus {
   ANULAT
 }
 
-/// Cum se scriu preturile intr-un deviz.
-///
-/// COMBINAT — un singur pret pe linie, cu materialul si manopera la un loc.
-/// SEPARAT  — doua preturi pe linie. Devizul se tipareste ca doua documente
-///            (materiale si manopera) si se poate factura separat pe fiecare.
-enum EstimateMode {
-  COMBINAT
-  SEPARAT
-}
-
 model Estimate {
   id    String @id @default(cuid())
   orgId String
@@ -249,7 +236,6 @@ model Estimate {
   projectId String?
 
   status EstimateStatus @default(CIORNA)
-  mode   EstimateMode   @default(COMBINAT)
 
   issueDate  DateTime  @default(now())
   validUntil DateTime?
@@ -261,11 +247,13 @@ model Estimate {
   /// Totalurile calculate la ultima salvare (lib/pricing/calculator.ts).
   /// Stocate ca sa nu recalculam la fiecare listare; sursa de adevar raman
   /// liniile.
-  totalMaterial Decimal @default(0) @db.Decimal(14, 2)
-  totalLabor    Decimal @default(0) @db.Decimal(14, 2)
-  netTotal      Decimal @default(0) @db.Decimal(14, 2)
-  vatAmount     Decimal @default(0) @db.Decimal(14, 2)
-  grandTotal    Decimal @default(0) @db.Decimal(14, 2)
+  totalMaterial  Decimal @default(0) @db.Decimal(14, 2)
+  totalLabor     Decimal @default(0) @db.Decimal(14, 2)
+  totalEquipment Decimal @default(0) @db.Decimal(14, 2)
+  totalTransport Decimal @default(0) @db.Decimal(14, 2)
+  netTotal       Decimal @default(0) @db.Decimal(14, 2)
+  vatAmount      Decimal @default(0) @db.Decimal(14, 2)
+  grandTotal     Decimal @default(0) @db.Decimal(14, 2)
 
   notes   String?
   /// Descrierea in limbaj natural din care AI-ul a generat devizul.
@@ -354,12 +342,16 @@ model EstimateLine {
 
   quantity Decimal @db.Decimal(14, 4)
 
-  /// Preturile scrise de om. In modul COMBINAT se foloseste doar
-  /// `materialUnitPrice`, care poarta atunci pretul intreg al lucrarii.
-  materialUnitPrice Decimal @default(0) @db.Decimal(12, 4)
-  laborUnitPrice    Decimal @default(0) @db.Decimal(12, 4)
+  /// Cele patru componente ale pretului, scrise de om, fiecare pe unitatea de
+  /// masura a liniei. Utilajul si transportul sint 0 pe majoritatea lucrarilor —
+  /// un 0 nu e o scapare, e raspunsul corect cind lucrarea nu are utilaj imputat
+  /// sau transport facturat separat.
+  materialUnitPrice  Decimal @default(0) @db.Decimal(12, 4)
+  laborUnitPrice     Decimal @default(0) @db.Decimal(12, 4)
+  equipmentUnitPrice Decimal @default(0) @db.Decimal(12, 4)
+  transportUnitPrice Decimal @default(0) @db.Decimal(12, 4)
 
-  /// Suma celor doua, inghetata la salvare.
+  /// Suma celor patru, inghetata la salvare.
   unitPrice Decimal @default(0) @db.Decimal(12, 4)
   total     Decimal @default(0) @db.Decimal(14, 2)
 
@@ -436,10 +428,12 @@ model ProgressLine {
   quantity Decimal @db.Decimal(14, 4)
 
   /// Preturile preluate din linia de deviz la momentul situatiei. Se pastreaza
-  /// defalcate ca situatia sa poata fi facturata separat pe materiale si pe
-  /// manopera, la fel ca devizul din care vine.
-  materialUnitPrice Decimal @default(0) @db.Decimal(12, 4)
-  laborUnitPrice    Decimal @default(0) @db.Decimal(12, 4)
+  /// defalcate pe cele patru componente, ca recapitulatia situatiei sa se
+  /// citeasca la fel cu cea a devizului din care vine.
+  materialUnitPrice  Decimal @default(0) @db.Decimal(12, 4)
+  laborUnitPrice     Decimal @default(0) @db.Decimal(12, 4)
+  equipmentUnitPrice Decimal @default(0) @db.Decimal(12, 4)
+  transportUnitPrice Decimal @default(0) @db.Decimal(12, 4)
 
   unitPrice Decimal @db.Decimal(12, 4)
   total     Decimal @db.Decimal(14, 2)
@@ -470,9 +464,10 @@ enum EfacturaStatus {
   DESCARCATA
 }
 
-/// Ce parte a devizului acopera factura. Pentru un deviz in modul SEPARAT se
-/// pot emite doua facturi — una de materiale, una de manopera — fiecare cu
-/// numarul ei si cu XML-ul ei de e-Factura.
+/// Istoric. Cat timp devizul avea doua moduri, dintr-unul separat se puteau emite
+/// doua facturi — una de materiale, una de manopera. Azi devizul e unul singur si
+/// tot ce se emite e `TOT`; valorile celelalte raman pentru facturile deja emise,
+/// care nu se modifica (nici macar o eticheta pe ele).
 enum InvoiceScope {
   TOT
   MATERIALE
@@ -495,6 +490,7 @@ model Invoice {
   progressReportId String?
 
   status InvoiceStatus @default(CIORNA)
+  /// Vezi `InvoiceScope`: doar facturile vechi mai poarta altceva decat TOT.
   scope  InvoiceScope  @default(TOT)
 
   issueDate  DateTime  @default(now())

@@ -4,13 +4,14 @@ import { round2, round4 } from "@/lib/money";
  * Motorul de calcul al devizului. Sursa unica de adevar: interfata, PDF-ul,
  * XML-ul de e-Factura si generatorul AI trec toate pe aici.
  *
- * Pretul de pe linie e pretul final catre client. Nu exista catalog din care
- * sa se recompuna si nu exista coeficienti care sa se adauge peste el in
- * recapitulatie — ce scrie omul pe linie e ce plateste beneficiarul.
+ * Linia de deviz are patru componente — material, manopera, utilaj, transport —
+ * fiecare cu pretul ei unitar, scris de om. Suma lor e pretul final catre client:
+ * nu exista catalog din care sa se recompuna si nu exista coeficienti care sa se
+ * adauge peste ele in recapitulatie.
  *
  * Valoarea unei linii e suma componentelor rotunjite separat, nu
- * `cantitate x pret_total`. Asa recapitulatia se inchide pe coloane, iar
- * facturile emise separat pe materiale si pe manopera aduna exact cat devizul.
+ * `cantitate x pret_total`. Asa recapitulatia se inchide: cele patru coloane
+ * totalizate aduna exact cat totalul devizului, ban cu ban.
  */
 
 // ---------------------------------------------------------------------------
@@ -19,29 +20,41 @@ import { round2, round4 } from "@/lib/money";
 
 export interface EstimateLineInput {
   quantity: number;
-  /** In modul COMBINAT poarta pretul intreg al lucrarii. */
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
 }
 
 export interface EstimateLineTotals {
   unitPrice: number;
   material: number;
   labor: number;
+  equipment: number;
+  transport: number;
   total: number;
 }
 
 export function computeEstimateLine(line: EstimateLineInput): EstimateLineTotals {
   const material = round2(line.quantity * line.materialUnitPrice);
   const labor = round2(line.quantity * line.laborUnitPrice);
+  const equipment = round2(line.quantity * line.equipmentUnitPrice);
+  const transport = round2(line.quantity * line.transportUnitPrice);
 
   return {
-    unitPrice: round4(line.materialUnitPrice + line.laborUnitPrice),
+    unitPrice: round4(
+      line.materialUnitPrice +
+        line.laborUnitPrice +
+        line.equipmentUnitPrice +
+        line.transportUnitPrice,
+    ),
     material,
     labor,
+    equipment,
+    transport,
     // Suma componentelor rotunjite, nu `qty * unitPrice`: asa raman coloanele
     // recapitulatiei consistente cu totalul.
-    total: round2(material + labor),
+    total: round2(material + labor + equipment + transport),
   };
 }
 
@@ -52,7 +65,9 @@ export function computeEstimateLine(line: EstimateLineInput): EstimateLineTotals
 export interface EstimateTotals {
   totalMaterial: number;
   totalLabor: number;
-  /** Total fara TVA — suma liniilor, fara nimic adaugat peste. */
+  totalEquipment: number;
+  totalTransport: number;
+  /** Total fara TVA — suma celor patru coloane, fara nimic adaugat peste. */
   netTotal: number;
   vatAmount: number;
   grandTotal: number;
@@ -64,22 +79,32 @@ export function computeEstimateTotals(
 ): EstimateTotals {
   let totalMaterial = 0;
   let totalLabor = 0;
+  let totalEquipment = 0;
+  let totalTransport = 0;
 
   for (const line of lines) {
     const t = computeEstimateLine(line);
     totalMaterial += t.material;
     totalLabor += t.labor;
+    totalEquipment += t.equipment;
+    totalTransport += t.transport;
   }
 
   totalMaterial = round2(totalMaterial);
   totalLabor = round2(totalLabor);
+  totalEquipment = round2(totalEquipment);
+  totalTransport = round2(totalTransport);
 
-  const netTotal = round2(totalMaterial + totalLabor);
+  const netTotal = round2(
+    totalMaterial + totalLabor + totalEquipment + totalTransport,
+  );
   const vatAmount = round2((netTotal * vatRate) / 100);
 
   return {
     totalMaterial,
     totalLabor,
+    totalEquipment,
+    totalTransport,
     netTotal,
     vatAmount,
     grandTotal: round2(netTotal + vatAmount),

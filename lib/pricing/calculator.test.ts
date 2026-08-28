@@ -31,29 +31,36 @@ describe("round", () => {
 });
 
 describe("computeEstimateLine", () => {
-  it("calculeaza valoarea liniei din cele doua preturi scrise de om", () => {
+  it("calculeaza valoarea liniei din cele patru preturi scrise de om", () => {
     const line = computeEstimateLine({
       quantity: 110.8,
       materialUnitPrice: 287.4,
       laborUnitPrice: 140.5,
+      equipmentUnitPrice: 12.3,
+      transportUnitPrice: 8.75,
     });
 
     expect(line.material).toBe(31843.92);
     expect(line.labor).toBe(15567.4);
-    expect(line.total).toBe(47411.32);
-    expect(line.unitPrice).toBe(427.9);
+    expect(line.equipment).toBe(1362.84);
+    expect(line.transport).toBe(969.5);
+    expect(line.total).toBe(49743.66);
+    expect(line.unitPrice).toBe(448.95);
   });
 
-  it("in modul combinat pretul intreg sta pe material", () => {
+  it("lucrarea fara utilaj si fara transport are doar material si manopera", () => {
     const line = computeEstimateLine({
       quantity: 48,
       materialUnitPrice: 95,
-      laborUnitPrice: 0,
+      laborUnitPrice: 40,
+      equipmentUnitPrice: 0,
+      transportUnitPrice: 0,
     });
 
-    expect(line.labor).toBe(0);
-    expect(line.unitPrice).toBe(95);
-    expect(line.total).toBe(4560);
+    expect(line.equipment).toBe(0);
+    expect(line.transport).toBe(0);
+    expect(line.unitPrice).toBe(135);
+    expect(line.total).toBe(6480);
   });
 
   it("pastreaza totalul egal cu suma componentelor si la cantitati urate", () => {
@@ -61,16 +68,32 @@ describe("computeEstimateLine", () => {
       quantity: 7.333,
       materialUnitPrice: 13.337,
       laborUnitPrice: 9.111,
+      equipmentUnitPrice: 2.555,
+      transportUnitPrice: 1.777,
     });
 
-    expect(line.total).toBe(round2(line.material + line.labor));
+    expect(line.total).toBe(
+      round2(line.material + line.labor + line.equipment + line.transport),
+    );
   });
 });
 
 describe("computeEstimateTotals", () => {
   const lines = [
-    { quantity: 100, materialUnitPrice: 50, laborUnitPrice: 30 },
-    { quantity: 20, materialUnitPrice: 200, laborUnitPrice: 100 },
+    {
+      quantity: 100,
+      materialUnitPrice: 50,
+      laborUnitPrice: 30,
+      equipmentUnitPrice: 5,
+      transportUnitPrice: 2,
+    },
+    {
+      quantity: 20,
+      materialUnitPrice: 200,
+      laborUnitPrice: 100,
+      equipmentUnitPrice: 15,
+      transportUnitPrice: 10,
+    },
   ];
 
   it("aduna liniile fara sa adauge nimic peste ele", () => {
@@ -78,39 +101,58 @@ describe("computeEstimateTotals", () => {
 
     expect(t.totalMaterial).toBe(9000); // 5000 + 4000
     expect(t.totalLabor).toBe(5000); // 3000 + 2000
-    expect(t.netTotal).toBe(14000);
-    expect(t.vatAmount).toBe(2940); // 14000 x 21%
-    expect(t.grandTotal).toBe(16940);
+    expect(t.totalEquipment).toBe(800); // 500 + 300
+    expect(t.totalTransport).toBe(400); // 200 + 200
+    expect(t.netTotal).toBe(15200);
+    expect(t.vatAmount).toBe(3192); // 15200 x 21%
+    expect(t.grandTotal).toBe(18392);
   });
 
-  it("recapitulatia se inchide: totalul = materiale + manopera", () => {
-    const t = computeEstimateTotals(lines, 11);
+  it("recapitulatia se inchide pe cele patru coloane, si la cifre urate", () => {
+    const urate = [
+      {
+        quantity: 7.333,
+        materialUnitPrice: 13.337,
+        laborUnitPrice: 9.111,
+        equipmentUnitPrice: 2.555,
+        transportUnitPrice: 1.777,
+      },
+      {
+        quantity: 0.125,
+        materialUnitPrice: 1234.5678,
+        laborUnitPrice: 0.005,
+        equipmentUnitPrice: 99.995,
+        transportUnitPrice: 0,
+      },
+    ];
 
-    expect(t.netTotal).toBe(round2(t.totalMaterial + t.totalLabor));
+    const t = computeEstimateTotals(urate, 11);
+
+    expect(t.netTotal).toBe(
+      round2(
+        t.totalMaterial + t.totalLabor + t.totalEquipment + t.totalTransport,
+      ),
+    );
     expect(t.grandTotal).toBe(round2(t.netTotal + t.vatAmount));
   });
 
-  it("suma facturii pe materiale si a celei pe manopera da exact devizul", () => {
+  it("factura pe tot devizul aduna cat devizul", () => {
     const t = computeEstimateTotals(lines, 21);
 
-    const materialInvoice = computeInvoiceTotals(
+    const invoice = computeInvoiceTotals(
       lines.map((l) => ({
         quantity: l.quantity,
-        unitPrice: l.materialUnitPrice,
-        vatRate: 21,
-      })),
-    );
-    const laborInvoice = computeInvoiceTotals(
-      lines.map((l) => ({
-        quantity: l.quantity,
-        unitPrice: l.laborUnitPrice,
+        unitPrice: round2(
+          l.materialUnitPrice +
+            l.laborUnitPrice +
+            l.equipmentUnitPrice +
+            l.transportUnitPrice,
+        ),
         vatRate: 21,
       })),
     );
 
-    expect(round2(materialInvoice.netTotal + laborInvoice.netTotal)).toBe(
-      t.netTotal,
-    );
+    expect(invoice.netTotal).toBe(t.netTotal);
   });
 
   it("intoarce zerouri pentru un deviz gol", () => {

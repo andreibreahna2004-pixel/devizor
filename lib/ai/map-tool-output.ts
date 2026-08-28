@@ -1,7 +1,6 @@
 import {
-  type EstimateMode,
   TOOL_NAMES,
-  addLinesSchemaFor,
+  addLinesSchema,
   clarificationInputSchema,
   proposeStepsSchema,
 } from "./tools";
@@ -29,9 +28,10 @@ export interface GeneratedLine {
   name: string;
   unit: string;
   quantity: number;
-  /** In modul COMBINAT poarta pretul intreg al lucrarii. */
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
   unitPrice: number;
   total: number;
   justification: string;
@@ -69,29 +69,25 @@ const CONFIDENCE_MAP = {
  * Intoarce lista goala pentru orice apel pe care nu-l putem interpreta:
  * modelul primeste separat, prin `tool_result`, explicatia a ce a gresit.
  */
-export function mapToolCall(
-  toolName: string,
-  input: unknown,
-  mode: EstimateMode,
-): MappedEvent[] {
+export function mapToolCall(toolName: string, input: unknown): MappedEvent[] {
   if (toolName === TOOL_NAMES.addLines) {
-    const parsed = addLinesSchemaFor(mode).safeParse(input);
+    const parsed = addLinesSchema.safeParse(input);
     if (!parsed.success) return [];
 
     const events: MappedEvent[] = [{ type: "section", name: parsed.data.sectiune }];
 
     for (const line of parsed.data.linii) {
-      const materialUnitPrice = round4(
-        "pret_material" in line ? line.pret_material : line.pret_unitar,
-      );
-      const laborUnitPrice = round4(
-        "pret_manopera" in line ? line.pret_manopera : 0,
-      );
+      const materialUnitPrice = round4(line.pret_material);
+      const laborUnitPrice = round4(line.pret_manopera);
+      const equipmentUnitPrice = round4(line.pret_utilaj);
+      const transportUnitPrice = round4(line.pret_transport);
 
       const totals = computeEstimateLine({
         quantity: line.cantitate,
         materialUnitPrice,
         laborUnitPrice,
+        equipmentUnitPrice,
+        transportUnitPrice,
       });
 
       // Cand codul exista in indicator, denumirea si unitatea vin de acolo:
@@ -110,6 +106,8 @@ export function mapToolCall(
           quantity: round4(line.cantitate),
           materialUnitPrice,
           laborUnitPrice,
+          equipmentUnitPrice,
+          transportUnitPrice,
           unitPrice: totals.unitPrice,
           total: totals.total,
           justification: line.justificare,
@@ -185,8 +183,8 @@ function resolveAlternatives(
  * cod e mai utila decat nimic — dar modelul afla prin `tool_result` care coduri
  * a inventat, ca sa le caute corect.
  */
-export function unknownNormCodes(input: unknown, mode: EstimateMode): string[] {
-  const parsed = addLinesSchemaFor(mode).safeParse(input);
+export function unknownNormCodes(input: unknown): string[] {
+  const parsed = addLinesSchema.safeParse(input);
   if (!parsed.success) return [];
 
   return parsed.data.linii
@@ -201,15 +199,17 @@ export function unknownNormCodes(input: unknown, mode: EstimateMode): string[] {
  * bine trimisa cu 0 decat cu o cifra inventata — dar modelul afla prin
  * `tool_result` cate au ramas asa, ca sa le poata completa daca poate.
  */
-export function pricelessLines(input: unknown, mode: EstimateMode): string[] {
-  const parsed = addLinesSchemaFor(mode).safeParse(input);
+export function pricelessLines(input: unknown): string[] {
+  const parsed = addLinesSchema.safeParse(input);
   if (!parsed.success) return [];
 
   return parsed.data.linii
-    .filter((line) =>
-      "pret_material" in line
-        ? line.pret_material === 0 && line.pret_manopera === 0
-        : line.pret_unitar === 0,
+    .filter(
+      (line) =>
+        line.pret_material === 0 &&
+        line.pret_manopera === 0 &&
+        line.pret_utilaj === 0 &&
+        line.pret_transport === 0,
     )
     .map((line) => line.denumire);
 }

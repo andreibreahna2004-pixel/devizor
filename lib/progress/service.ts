@@ -28,10 +28,12 @@ export interface ProgressLineState {
   previouslyDone: number;
   /** Executat in situatia curenta (0 pentru una noua). */
   currentQuantity: number;
-  /** Preturile din linia de deviz, pastrate defalcate pentru facturare. */
+  /** Preturile din linia de deviz, pastrate defalcate pe cele patru componente. */
   materialUnitPrice: number;
   laborUnitPrice: number;
-  /** Suma celor doua — pretul cu care se deconteaza cantitatea executata. */
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
+  /** Suma celor patru — pretul cu care se deconteaza cantitatea executata. */
   unitPrice: number;
 }
 
@@ -86,6 +88,8 @@ export async function getProgressState(
     currentQuantity: currentByLine.get(line.id) ?? 0,
     materialUnitPrice: toNumber(line.materialUnitPrice),
     laborUnitPrice: toNumber(line.laborUnitPrice),
+    equipmentUnitPrice: toNumber(line.equipmentUnitPrice),
+    transportUnitPrice: toNumber(line.transportUnitPrice),
     unitPrice: toNumber(line.unitPrice),
   }));
 }
@@ -120,6 +124,8 @@ export async function saveProgressReport(
     quantity: number;
     materialUnitPrice: number;
     laborUnitPrice: number;
+    equipmentUnitPrice: number;
+    transportUnitPrice: number;
     unitPrice: number;
     total: number;
   }[] = [];
@@ -143,6 +149,8 @@ export async function saveProgressReport(
       quantity: line.quantity,
       materialUnitPrice: info.materialUnitPrice,
       laborUnitPrice: info.laborUnitPrice,
+      equipmentUnitPrice: info.equipmentUnitPrice,
+      transportUnitPrice: info.transportUnitPrice,
     });
 
     kept.push({
@@ -150,6 +158,8 @@ export async function saveProgressReport(
       quantity: line.quantity,
       materialUnitPrice: info.materialUnitPrice,
       laborUnitPrice: info.laborUnitPrice,
+      equipmentUnitPrice: info.equipmentUnitPrice,
+      transportUnitPrice: info.transportUnitPrice,
       unitPrice: info.unitPrice,
       total: totals.total,
     });
@@ -173,6 +183,8 @@ export async function saveProgressReport(
     quantity: toDecimal(l.quantity, 4),
     materialUnitPrice: toDecimal(l.materialUnitPrice, 4),
     laborUnitPrice: toDecimal(l.laborUnitPrice, 4),
+    equipmentUnitPrice: toDecimal(l.equipmentUnitPrice, 4),
+    transportUnitPrice: toDecimal(l.transportUnitPrice, 4),
     unitPrice: toDecimal(l.unitPrice, 4),
     total: toDecimal(l.total),
   }));
@@ -268,7 +280,6 @@ export async function getProgressReport(orgId: string, reportId: string) {
           id: true,
           fullNumber: true,
           title: true,
-          mode: true,
           clientId: true,
           projectId: true,
           vatRate: true,

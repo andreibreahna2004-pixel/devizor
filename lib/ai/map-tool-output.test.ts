@@ -13,16 +13,7 @@ function addLines(linii: unknown[], sectiune = "Suprastructura") {
   return { sectiune, linii };
 }
 
-const combinedLine = {
-  denumire: "Zidarie din BCA de 30 cm cu adeziv",
-  um: "mc",
-  cantitate: 34.5,
-  pret_unitar: 627.05,
-  justificare: "perimetru 46 ml x h 2,80 x 0,30 m grosime = 38,6 mc, minus goluri",
-  incredere: "medie",
-};
-
-const splitLine = {
+const tencuiala = {
   denumire: "Tencuiala mecanizata cu gips la interior",
   um: "mp",
   cantitate: 220,
@@ -32,79 +23,80 @@ const splitLine = {
   incredere: "mare",
 };
 
-describe("mapToolCall — deviz cu un singur pret", () => {
-  it("pune pretul intreg pe material si lasa manopera la zero", () => {
-    const events = mapToolCall(
-      TOOL_NAMES.addLines,
-      addLines([combinedLine]),
-      "COMBINAT",
-    );
+/** Lucrare cu utilaj si transport: sapatura mecanica cu evacuare. */
+const sapatura = {
+  denumire: "Sapatura mecanica in spatii limitate",
+  um: "mc",
+  cantitate: 34.5,
+  pret_material: 0,
+  pret_manopera: 8.5,
+  pret_utilaj: 22.4,
+  pret_transport: 11.15,
+  justificare: "46 ml x 0,75 m latime x 1,00 m adancime",
+  incredere: "medie",
+};
+
+describe("mapToolCall — liniile de deviz", () => {
+  it("pastreaza cele patru preturi si insumeaza componentele rotunjite", () => {
+    const events = mapToolCall(TOOL_NAMES.addLines, addLines([tencuiala]));
 
     expect(events[0]).toEqual({ type: "section", name: "Suprastructura" });
 
-    const line = events[1];
-    if (line?.type !== "line") throw new Error("asteptam o linie");
+    const mapped = events[1];
+    if (mapped?.type !== "line") throw new Error("asteptam o linie");
 
-    expect(line.line.materialUnitPrice).toBe(627.05);
-    expect(line.line.laborUnitPrice).toBe(0);
-    expect(line.line.unitPrice).toBe(627.05);
-    expect(line.line.total).toBe(21633.23); // 34.5 x 627.05
-    expect(line.line.confidence).toBe("MEDIE");
-    expect(line.line.justification).toBe(combinedLine.justificare);
-  });
-
-  it("intra fara cod cand modelul nu a gasit norma", () => {
-    const events = mapToolCall(
-      TOOL_NAMES.addLines,
-      addLines([combinedLine]),
-      "COMBINAT",
-    );
-
-    const line = events.find((e) => e.type === "line");
-    if (line?.type !== "line") throw new Error("asteptam o linie");
-    expect(line.line.code).toBeNull();
-    expect(line.line.name).toBe(combinedLine.denumire);
-  });
-
-  it("refuza o linie care vine cu preturi separate in modul combinat", () => {
-    const events = mapToolCall(TOOL_NAMES.addLines, addLines([splitLine]), "COMBINAT");
-    expect(events).toEqual([]);
-  });
-});
-
-describe("mapToolCall — deviz cu materiale si manopera separate", () => {
-  it("pastreaza cele doua preturi si insumeaza componentele rotunjite", () => {
-    const events = mapToolCall(TOOL_NAMES.addLines, addLines([splitLine]), "SEPARAT");
-
-    const line = events.find((e) => e.type === "line");
-    if (line?.type !== "line") throw new Error("asteptam o linie");
-
-    expect(line.line.materialUnitPrice).toBe(14.42);
-    expect(line.line.laborUnitPrice).toBe(15.4);
-    expect(line.line.unitPrice).toBe(29.82);
+    expect(mapped.line.materialUnitPrice).toBe(14.42);
+    expect(mapped.line.laborUnitPrice).toBe(15.4);
+    expect(mapped.line.unitPrice).toBe(29.82);
     // 220 x 14.42 = 3172.4 si 220 x 15.4 = 3388
-    expect(line.line.total).toBe(6560.4);
+    expect(mapped.line.total).toBe(6560.4);
+    expect(mapped.line.confidence).toBe("MARE");
+    expect(mapped.line.justification).toBe(tencuiala.justificare);
   });
 
-  it("refuza o linie fara defalcare cand devizul e separat", () => {
-    const events = mapToolCall(
-      TOOL_NAMES.addLines,
-      addLines([combinedLine]),
-      "SEPARAT",
-    );
-    expect(events).toEqual([]);
+  it("utilajul si transportul lipsa intra ca zero, nu blocheaza linia", () => {
+    const events = mapToolCall(TOOL_NAMES.addLines, addLines([tencuiala]));
+
+    const mapped = events.find((e) => e.type === "line");
+    if (mapped?.type !== "line") throw new Error("asteptam o linie");
+
+    expect(mapped.line.equipmentUnitPrice).toBe(0);
+    expect(mapped.line.transportUnitPrice).toBe(0);
+  });
+
+  it("duce utilajul si transportul pe linie cand modelul le trimite", () => {
+    const events = mapToolCall(TOOL_NAMES.addLines, addLines([sapatura]));
+
+    const mapped = events.find((e) => e.type === "line");
+    if (mapped?.type !== "line") throw new Error("asteptam o linie");
+
+    expect(mapped.line.materialUnitPrice).toBe(0);
+    expect(mapped.line.laborUnitPrice).toBe(8.5);
+    expect(mapped.line.equipmentUnitPrice).toBe(22.4);
+    expect(mapped.line.transportUnitPrice).toBe(11.15);
+    expect(mapped.line.unitPrice).toBe(42.05);
+    // 34.5 x 8.5 = 293.25, x 22.4 = 772.8, x 11.15 = 384.68
+    expect(mapped.line.total).toBe(1450.73);
   });
 
   it("accepta 0 pe manopera pentru o linie de pura furnizare", () => {
     const events = mapToolCall(
       TOOL_NAMES.addLines,
-      addLines([{ ...splitLine, pret_manopera: 0 }]),
-      "SEPARAT",
+      addLines([{ ...tencuiala, pret_manopera: 0 }]),
     );
 
-    const line = events.find((e) => e.type === "line");
-    if (line?.type !== "line") throw new Error("asteptam o linie");
-    expect(line.line.laborUnitPrice).toBe(0);
+    const mapped = events.find((e) => e.type === "line");
+    if (mapped?.type !== "line") throw new Error("asteptam o linie");
+    expect(mapped.line.laborUnitPrice).toBe(0);
+  });
+
+  it("intra fara cod cand modelul nu a gasit norma", () => {
+    const events = mapToolCall(TOOL_NAMES.addLines, addLines([tencuiala]));
+
+    const mapped = events.find((e) => e.type === "line");
+    if (mapped?.type !== "line") throw new Error("asteptam o linie");
+    expect(mapped.line.code).toBeNull();
+    expect(mapped.line.name).toBe(tencuiala.denumire);
   });
 });
 
@@ -114,13 +106,12 @@ describe("mapToolCall — codul de norma", () => {
       TOOL_NAMES.addLines,
       addLines([
         {
-          ...combinedLine,
+          ...tencuiala,
           cod_norma: "CA01A1",
           denumire: "ceva scris de model",
           um: "kg",
         },
       ]),
-      "COMBINAT",
     );
 
     const line = events.find((e) => e.type === "line");
@@ -129,25 +120,26 @@ describe("mapToolCall — codul de norma", () => {
     expect(line.line.code).toBe("CA01A1");
     expect(line.line.name).toContain("TURNARE BETON SIMPLU IN FUNDATII");
     expect(line.line.unit).toBe("mc");
-    // Cantitatea si pretul raman ale modelului.
-    expect(line.line.quantity).toBe(34.5);
+    // Cantitatea si preturile raman ale modelului.
+    expect(line.line.quantity).toBe(220);
+    expect(line.line.materialUnitPrice).toBe(14.42);
   });
 
   it("pastreaza linia, dar fara cod, cand codul e inventat", () => {
-    const input = addLines([{ ...combinedLine, cod_norma: "XX99Z9" }]);
-    const events = mapToolCall(TOOL_NAMES.addLines, input, "COMBINAT");
+    const input = addLines([{ ...tencuiala, cod_norma: "XX99Z9" }]);
+    const events = mapToolCall(TOOL_NAMES.addLines, input);
 
     const line = events.find((e) => e.type === "line");
     if (line?.type !== "line") throw new Error("asteptam o linie");
 
     expect(line.line.code).toBeNull();
-    expect(line.line.name).toBe(combinedLine.denumire);
-    expect(unknownNormCodes(input, "COMBINAT")).toEqual(["XX99Z9"]);
+    expect(line.line.name).toBe(tencuiala.denumire);
+    expect(unknownNormCodes(input)).toEqual(["XX99Z9"]);
   });
 
   it("nu raporteaza drept inventate codurile care exista", () => {
-    const input = addLines([{ ...combinedLine, cod_norma: "CA01A1" }]);
-    expect(unknownNormCodes(input, "COMBINAT")).toEqual([]);
+    const input = addLines([{ ...tencuiala, cod_norma: "CA01A1" }]);
+    expect(unknownNormCodes(input)).toEqual([]);
   });
 });
 
@@ -156,8 +148,7 @@ describe("mapToolCall — validarea liniilor", () => {
     for (const cantitate of [0, -5, Number.NaN]) {
       const events = mapToolCall(
         TOOL_NAMES.addLines,
-        addLines([{ ...combinedLine, cantitate }]),
-        "COMBINAT",
+        addLines([{ ...tencuiala, cantitate }]),
       );
       expect(events).toEqual([]);
     }
@@ -167,8 +158,7 @@ describe("mapToolCall — validarea liniilor", () => {
     for (const patch of [{ justificare: "" }, { denumire: "" }, { um: "" }]) {
       const events = mapToolCall(
         TOOL_NAMES.addLines,
-        addLines([{ ...combinedLine, ...patch }]),
-        "COMBINAT",
+        addLines([{ ...tencuiala, ...patch }]),
       );
       expect(events).toEqual([]);
     }
@@ -177,8 +167,7 @@ describe("mapToolCall — validarea liniilor", () => {
   it("respinge un pret negativ", () => {
     const events = mapToolCall(
       TOOL_NAMES.addLines,
-      addLines([{ ...combinedLine, pret_unitar: -10 }]),
-      "COMBINAT",
+      addLines([{ ...tencuiala, pret_material: -10 }]),
     );
     expect(events).toEqual([]);
   });
@@ -186,30 +175,28 @@ describe("mapToolCall — validarea liniilor", () => {
   it("respinge un nivel de incredere inventat", () => {
     const events = mapToolCall(
       TOOL_NAMES.addLines,
-      addLines([{ ...combinedLine, incredere: "absoluta" }]),
-      "COMBINAT",
+      addLines([{ ...tencuiala, incredere: "absoluta" }]),
     );
     expect(events).toEqual([]);
   });
 });
 
 describe("pricelessLines", () => {
-  it("raporteaza liniile intrate cu pretul zero", () => {
+  it("o linie e fara pret doar cand toate patru componentele sunt zero", () => {
     const input = addLines([
-      { ...combinedLine, pret_unitar: 0 },
-      combinedLine,
+      // Are manopera: e o demolare, nu o linie fara pret.
+      { ...tencuiala, pret_material: 0 },
+      // Are doar utilaj: tot pret e.
+      { ...tencuiala, denumire: "Ore excavator", pret_material: 0, pret_manopera: 0, pret_utilaj: 45 },
+      {
+        ...tencuiala,
+        denumire: "Hidroizolatie terasa",
+        pret_material: 0,
+        pret_manopera: 0,
+      },
     ]);
 
-    expect(pricelessLines(input, "COMBINAT")).toEqual([combinedLine.denumire]);
-  });
-
-  it("o linie separata e fara pret doar cand ambele preturi sunt zero", () => {
-    const input = addLines([
-      { ...splitLine, pret_material: 0 },
-      { ...splitLine, denumire: "Demolare zidarie", pret_material: 0, pret_manopera: 0 },
-    ]);
-
-    expect(pricelessLines(input, "SEPARAT")).toEqual(["Demolare zidarie"]);
+    expect(pricelessLines(input)).toEqual(["Hidroizolatie terasa"]);
   });
 });
 
@@ -218,7 +205,6 @@ describe("mapToolCall — cere_clarificare", () => {
     const events = mapToolCall(
       TOOL_NAMES.clarify,
       { intrebare: "Fundatia e continua sau radier general?" },
-      "COMBINAT",
     );
     expect(events).toEqual([
       { type: "question", question: "Fundatia e continua sau radier general?" },
@@ -231,8 +217,7 @@ describe("mapToolCall — variantele de norma", () => {
   function lineWith(coduri: string[] | undefined, cod_norma = "CA01A1") {
     const events = mapToolCall(
       TOOL_NAMES.addLines,
-      addLines([{ ...combinedLine, cod_norma, coduri_alternative: coduri }]),
-      "COMBINAT",
+      addLines([{ ...tencuiala, cod_norma, coduri_alternative: coduri }]),
     );
     const line = events.find((e) => e.type === "line");
     if (line?.type !== "line") throw new Error("asteptam o linie");
@@ -270,8 +255,7 @@ describe("mapToolCall — variantele de norma", () => {
   it("merge si cand linia nu are cod: alegerea e intre normele propuse", () => {
     const events = mapToolCall(
       TOOL_NAMES.addLines,
-      addLines([{ ...combinedLine, coduri_alternative: ["CA01A1", "CA02B1"] }]),
-      "COMBINAT",
+      addLines([{ ...tencuiala, coduri_alternative: ["CA01A1", "CA02B1"] }]),
     );
     const line = events.find((e) => e.type === "line");
     if (line?.type !== "line") throw new Error("asteptam o linie");
@@ -283,12 +267,12 @@ describe("mapToolCall — variantele de norma", () => {
 
 describe("mapToolCall — apeluri necunoscute", () => {
   it("ignora o unealta pe care nu o cunoastem", () => {
-    expect(mapToolCall("stergere_deviz", { tot: true }, "COMBINAT")).toEqual([]);
+    expect(mapToolCall("stergere_deviz", { tot: true })).toEqual([]);
   });
 
   it("ignora un apel fara argumente", () => {
-    expect(mapToolCall(TOOL_NAMES.addLines, {}, "COMBINAT")).toEqual([]);
-    expect(mapToolCall(TOOL_NAMES.addLines, null, "COMBINAT")).toEqual([]);
+    expect(mapToolCall(TOOL_NAMES.addLines, {})).toEqual([]);
+    expect(mapToolCall(TOOL_NAMES.addLines, null)).toEqual([]);
   });
 });
 
@@ -305,7 +289,7 @@ describe("mapToolCall — propune_pasi", () => {
   };
 
   it("intoarce pasii ca propuneri, nu ca linii", () => {
-    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] }, "COMBINAT");
+    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] });
 
     expect(events).toHaveLength(1);
     expect(events[0].type).toBe("steps");
@@ -322,7 +306,6 @@ describe("mapToolCall — propune_pasi", () => {
           { ...pas, denumire: "Chituire rosturi" },
         ],
       },
-      "COMBINAT",
     );
 
     const steps = events[0].type === "steps" ? events[0].steps : [];
@@ -336,7 +319,7 @@ describe("mapToolCall — propune_pasi", () => {
   it("lasa cantitatea null cand modelul nu o trimite", () => {
     // Cifra lipsa e un semnal, nu o scapare: pasul depinde de starea de pe
     // teren si il masoara omul.
-    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] }, "COMBINAT");
+    const events = mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [pas] });
     const steps = events[0].type === "steps" ? events[0].steps : [];
 
     expect(steps[0].quantity).toBeNull();
@@ -346,7 +329,6 @@ describe("mapToolCall — propune_pasi", () => {
     const events = mapToolCall(
       TOOL_NAMES.proposeSteps,
       { pasi: [{ ...pas, cantitate: 6 }] },
-      "COMBINAT",
     );
     const steps = events[0].type === "steps" ? events[0].steps : [];
 
@@ -357,7 +339,6 @@ describe("mapToolCall — propune_pasi", () => {
     const events = mapToolCall(
       TOOL_NAMES.proposeSteps,
       { pasi: [{ ...pas, cod_norma: "CA01A1" }] },
-      "COMBINAT",
     );
     const steps = events[0].type === "steps" ? events[0].steps : [];
 
@@ -369,7 +350,6 @@ describe("mapToolCall — propune_pasi", () => {
     const events = mapToolCall(
       TOOL_NAMES.proposeSteps,
       { pasi: [{ ...pas, cod_norma: "XX99Z9" }] },
-      "COMBINAT",
     );
     const steps = events[0].type === "steps" ? events[0].steps : [];
 
@@ -378,7 +358,7 @@ describe("mapToolCall — propune_pasi", () => {
   });
 
   it("ignora un apel fara pasi", () => {
-    expect(mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [] }, "COMBINAT")).toEqual([]);
-    expect(mapToolCall(TOOL_NAMES.proposeSteps, {}, "COMBINAT")).toEqual([]);
+    expect(mapToolCall(TOOL_NAMES.proposeSteps, { pasi: [] })).toEqual([]);
+    expect(mapToolCall(TOOL_NAMES.proposeSteps, {})).toEqual([]);
   });
 });

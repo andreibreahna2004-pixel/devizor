@@ -40,7 +40,6 @@ async function main() {
       iban: "RO49AAAA1B31007593840000",
       bank: "Banca Transilvania",
       defaultVatRate: 21,
-      defaultMode: "SEPARAT",
     },
   });
 

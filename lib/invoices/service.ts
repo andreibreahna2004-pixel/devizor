@@ -1,9 +1,16 @@
 import "server-only";
 import type { InvoiceScope, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { round2, toNumber } from "@/lib/money";
+import { toNumber } from "@/lib/money";
 import { toDecimal } from "@/lib/money-db";
 import { allocateDocumentNumber } from "@/lib/numbering/series";
+// Forma liniei de factura si conversia din deviz sunt pure si stau intr-un modul
+// fara `server-only`, ca sa poata fi testate direct — vezi `lib/estimates/editable.ts`.
+import {
+  type InvoiceLineDraft,
+  type PricedLine,
+  estimateLinesToInvoiceLines,
+} from "./lines";
 import {
   type InvoiceLineInput,
   computeInvoiceLine,
@@ -81,20 +88,16 @@ export async function buildClientSnapshot(
   };
 }
 
-export interface InvoiceLineDraft {
-  code: string | null;
-  name: string;
-  unit: string;
-  quantity: number;
-  unitPrice: number;
-  vatRate: number;
-}
-
 export interface CreateInvoiceInput {
   clientId: string;
   projectId?: string | null;
   estimateId?: string | null;
   progressReportId?: string | null;
+  /**
+   * Doar pentru storno, care copiaza scope-ul facturii initiale. O emitere noua
+   * il lasa gol si primeste TOT: devizul nu se mai imparte pe materiale si
+   * manopera. Vezi `InvoiceScope` in schema.
+   */
   scope?: InvoiceScope;
   issueDate?: Date;
   dueDate?: Date;
@@ -170,62 +173,7 @@ export async function createInvoice(orgId: string, input: CreateInvoiceInput) {
   });
 }
 
-export interface PricedLine {
-  code: string | null;
-  name: string;
-  unit: string;
-  quantity: unknown;
-  materialUnitPrice: unknown;
-  laborUnitPrice: unknown;
-}
-
-/** Sufixul care spune pe factura ce parte a devizului se deconteaza. */
-export const SCOPE_LABEL: Record<InvoiceScope, string | null> = {
-  TOT: null,
-  MATERIALE: "materiale",
-  MANOPERA: "manopera",
-};
-
-/**
- * Transforma liniile unui deviz in linii de factura.
- *
- * Pretul de pe linia de deviz e deja pretul final catre client, deci nu se
- * aplica niciun coeficient peste el: factura aduna exact cat devizul.
- *
- * Pentru un deviz cu materialele si manopera separate, `scope` alege ce se
- * factureaza. Liniile care nu au nimic pe partea ceruta se sar — o linie de
- * demolare n-are ce cauta pe factura de materiale.
- */
-export function estimateLinesToInvoiceLines(
-  lines: PricedLine[],
-  scope: InvoiceScope,
-  vatRate: number,
-): InvoiceLineDraft[] {
-  return lines
-    .map((line) => {
-      const material = toNumber(line.materialUnitPrice as never);
-      const labor = toNumber(line.laborUnitPrice as never);
-
-      const unitPrice =
-        scope === "MATERIALE"
-          ? material
-          : scope === "MANOPERA"
-            ? labor
-            : round2(material + labor);
-
-      const suffix = SCOPE_LABEL[scope];
-
-      return {
-        code: line.code,
-        name: suffix ? `${line.name} — ${suffix}` : line.name,
-        unit: line.unit,
-        quantity: toNumber(line.quantity as never),
-        unitPrice,
-        vatRate,
-      };
-    })
-    .filter((line) => line.unitPrice > 0);
-}
+export { type InvoiceLineDraft, type PricedLine, estimateLinesToInvoiceLines };
 
 /** Factura completa, pentru pagina de detaliu, PDF si e-Factura. */
 export async function getInvoiceForView(orgId: string, invoiceId: string) {

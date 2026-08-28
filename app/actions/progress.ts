@@ -73,7 +73,6 @@ export async function saveProgress(payload: unknown): Promise<ProgressResult> {
 
 const invoiceSchema = z.object({
   reportId: z.string().min(1),
-  scope: z.enum(["TOT", "MATERIALE", "MANOPERA"]).default("TOT"),
 });
 
 /** Emite factura pentru o situatie de lucrari. */
@@ -84,7 +83,6 @@ export async function invoiceProgressReport(
   if (!parsed.success) return { ok: false, error: "Date invalide" };
 
   const user = await requireUser();
-  const scope = parsed.data.scope;
   const report = await getProgressReport(user.orgId, parsed.data.reportId);
 
   if (!report) return { ok: false, error: "Situatia nu a fost gasita" };
@@ -94,13 +92,6 @@ export async function invoiceProgressReport(
   if (!report.estimate.clientId) {
     return { ok: false, error: "Devizul nu are beneficiar" };
   }
-  if (scope !== "TOT" && report.estimate.mode !== "SEPARAT") {
-    return {
-      ok: false,
-      error: "Devizul are un singur pret pe linie, deci situatia nu se poate imparti.",
-    };
-  }
-
   const vatRate = toNumber(report.estimate.vatRate);
 
   const lines = estimateLinesToInvoiceLines(
@@ -111,13 +102,14 @@ export async function invoiceProgressReport(
       quantity: line.quantity,
       materialUnitPrice: line.materialUnitPrice,
       laborUnitPrice: line.laborUnitPrice,
+      equipmentUnitPrice: line.equipmentUnitPrice,
+      transportUnitPrice: line.transportUnitPrice,
     })),
-    scope,
     vatRate,
   );
 
   if (lines.length === 0) {
-    return { ok: false, error: "Situatia nu are nimic de facturat pe aceasta parte" };
+    return { ok: false, error: "Situatia nu are nimic de facturat" };
   }
 
   try {
@@ -126,7 +118,6 @@ export async function invoiceProgressReport(
       projectId: report.estimate.projectId,
       estimateId: report.estimate.id,
       progressReportId: report.id,
-      scope,
       notes: `Situatia de lucrari ${report.fullNumber}, conform devizului ${report.estimate.fullNumber}`,
       lines,
     });

@@ -38,6 +38,8 @@ export default async function EstimatePage({
     quantity: toNumber(line.quantity),
     materialUnitPrice: toNumber(line.materialUnitPrice),
     laborUnitPrice: toNumber(line.laborUnitPrice),
+    equipmentUnitPrice: toNumber(line.equipmentUnitPrice),
+    transportUnitPrice: toNumber(line.transportUnitPrice),
     aiGenerated: line.aiGenerated,
     aiJustification: line.aiJustification,
     aiConfidence: line.aiConfidence,
@@ -74,7 +76,6 @@ export default async function EstimatePage({
           <EstimateActions
             estimateId={estimate.id}
             status={estimate.status}
-            separat={estimate.mode === "SEPARAT"}
             hasClient={Boolean(estimate.clientId)}
             hasLines={lines.length > 0}
             canDelete={isDeletable({
@@ -131,7 +132,6 @@ export default async function EstimatePage({
       <EstimateEditor
         estimateId={estimate.id}
         editable={editable}
-        mode={estimate.mode}
         aiConfigured={isAiConfigured()}
         sections={estimate.sections.map((s) => ({ id: s.id, name: s.name }))}
         lines={lines}

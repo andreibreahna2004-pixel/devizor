@@ -32,7 +32,6 @@ export default async function ProgressPage({
       title: true,
       netTotal: true,
       clientId: true,
-      mode: true,
     },
   });
   if (!estimate) notFound();
@@ -202,7 +201,6 @@ export default async function ProgressPage({
       <ProgressWorkspace
         estimateId={estimate.id}
         hasClient={Boolean(estimate.clientId)}
-        separat={estimate.mode === "SEPARAT"}
         lines={state}
         pendingReport={reports.find((r) => r.status === "CIORNA") ?? null}
       />

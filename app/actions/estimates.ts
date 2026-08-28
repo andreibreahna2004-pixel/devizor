@@ -52,6 +52,8 @@ const lineUpdateSchema = z.object({
   quantity: z.number().nonnegative().finite(),
   materialUnitPrice: z.number().nonnegative().finite(),
   laborUnitPrice: z.number().nonnegative().finite(),
+  equipmentUnitPrice: z.number().nonnegative().finite(),
+  transportUnitPrice: z.number().nonnegative().finite(),
 });
 
 const saveLinesSchema = z.object({
@@ -96,6 +98,8 @@ export async function saveEstimateLines(payload: unknown): Promise<ActionResult>
           quantity: toDecimal(line.quantity, 4),
           materialUnitPrice: toDecimal(line.materialUnitPrice, 4),
           laborUnitPrice: toDecimal(line.laborUnitPrice, 4),
+          equipmentUnitPrice: toDecimal(line.equipmentUnitPrice, 4),
+          transportUnitPrice: toDecimal(line.transportUnitPrice, 4),
           unitPrice: toDecimal(totals.unitPrice, 4),
           total: toDecimal(totals.total, 2),
           // O linie atinsa de om nu mai e o propunere neverificata.
@@ -147,6 +151,8 @@ const addLineSchema = z.object({
   quantity: z.number().positive().finite(),
   materialUnitPrice: z.number().nonnegative().finite(),
   laborUnitPrice: z.number().nonnegative().finite(),
+  equipmentUnitPrice: z.number().nonnegative().finite(),
+  transportUnitPrice: z.number().nonnegative().finite(),
 });
 
 /** Adauga in deviz o linie scrisa de mana. */
@@ -191,6 +197,8 @@ export async function addEstimateLineManual(
       quantity: toDecimal(parsed.data.quantity, 4),
       materialUnitPrice: toDecimal(parsed.data.materialUnitPrice, 4),
       laborUnitPrice: toDecimal(parsed.data.laborUnitPrice, 4),
+      equipmentUnitPrice: toDecimal(parsed.data.equipmentUnitPrice, 4),
+      transportUnitPrice: toDecimal(parsed.data.transportUnitPrice, 4),
       unitPrice: toDecimal(totals.unitPrice, 4),
       total: toDecimal(totals.total, 2),
       sortOrder: (last?.sortOrder ?? -1) + 1,
@@ -377,54 +385,6 @@ export async function updateEstimateVatRate(
   await prisma.estimate.update({
     where: { id: parsed.data.estimateId },
     data: { vatRate: toDecimal(parsed.data.vatRate, 2) },
-  });
-
-  await recalculateEstimate(parsed.data.estimateId);
-  revalidatePath(`/devize/${parsed.data.estimateId}`);
-  return { ok: true };
-}
-
-const modeSchema = z.object({
-  estimateId: z.string().min(1),
-  mode: z.enum(["COMBINAT", "SEPARAT"]),
-});
-
-/**
- * Comuta devizul intre un pret pe linie si preturi separate.
- *
- * Trecerea SEPARAT -> COMBINAT aduna manopera peste material, ca totalul sa
- * ramana acelasi. Invers nu se poate ghici nimic: valorile existente stau in
- * continuare pe coloana de materiale, iar omul le desface cum vrea.
- */
-export async function updateEstimateMode(payload: unknown): Promise<ActionResult> {
-  const parsed = modeSchema.safeParse(payload);
-  if (!parsed.success) return { ok: false, error: "Mod invalid" };
-
-  const guard = await loadEditable(parsed.data.estimateId);
-  if ("error" in guard) return { ok: false, error: guard.error };
-
-  if (parsed.data.mode === "COMBINAT") {
-    const lines = await prisma.estimateLine.findMany({
-      where: { estimateId: parsed.data.estimateId, laborUnitPrice: { gt: 0 } },
-      select: { id: true, materialUnitPrice: true, laborUnitPrice: true },
-    });
-
-    await prisma.$transaction(
-      lines.map((line) =>
-        prisma.estimateLine.update({
-          where: { id: line.id },
-          data: {
-            materialUnitPrice: line.materialUnitPrice.add(line.laborUnitPrice),
-            laborUnitPrice: toDecimal(0, 4),
-          },
-        }),
-      ),
-    );
-  }
-
-  await prisma.estimate.update({
-    where: { id: parsed.data.estimateId },
-    data: { mode: parsed.data.mode },
   });
 
   await recalculateEstimate(parsed.data.estimateId);

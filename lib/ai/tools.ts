@@ -19,8 +19,6 @@ import { z } from "zod";
 
 const CONFIDENCE = ["mare", "medie", "mica"] as const;
 
-export type EstimateMode = "COMBINAT" | "SEPARAT";
-
 // --- schemele cu care validam ce intoarce modelul ---------------------------
 
 const baseLineShape = {
@@ -38,30 +36,28 @@ const baseLineShape = {
   incredere: z.enum(CONFIDENCE),
 };
 
-export const combinedLineSchema = z.object({
-  ...baseLineShape,
-  pret_unitar: z.number().nonnegative().finite(),
-});
-
-export const splitLineSchema = z.object({
+/**
+ * Linia are patru preturi unitare, ca articolul dintr-un deviz romanesc:
+ * material, manopera, utilaj, transport.
+ *
+ * Materialul si manopera sint obligatorii — orice lucrare are macar una dintre
+ * ele, si un 0 explicit e informatie (o demolare n-are material). Utilajul si
+ * transportul lipsesc de pe majoritatea liniilor, deci sint optionale si intra
+ * cu 0: a cere modelului sa scrie doua zerouri pe fiecare linie ar umple
+ * raspunsul cu zgomot fara sa adauge nimic.
+ */
+export const lineSchema = z.object({
   ...baseLineShape,
   pret_material: z.number().nonnegative().finite(),
   pret_manopera: z.number().nonnegative().finite(),
+  pret_utilaj: z.number().nonnegative().finite().optional().default(0),
+  pret_transport: z.number().nonnegative().finite().optional().default(0),
 });
 
-export const combinedAddLinesSchema = z.object({
+export const addLinesSchema = z.object({
   sectiune: z.string().min(1),
-  linii: z.array(combinedLineSchema).min(1),
+  linii: z.array(lineSchema).min(1),
 });
-
-export const splitAddLinesSchema = z.object({
-  sectiune: z.string().min(1),
-  linii: z.array(splitLineSchema).min(1),
-});
-
-export function addLinesSchemaFor(mode: EstimateMode) {
-  return mode === "SEPARAT" ? splitAddLinesSchema : combinedAddLinesSchema;
-}
 
 export const clarificationInputSchema = z.object({
   intrebare: z.string().min(1),
@@ -217,103 +213,71 @@ const baseLineProperties = {
 } as const;
 
 /**
- * Uneltele pentru un deviz cu un singur pret pe linie.
+ * Unealta de adaugare a liniilor.
  *
- * Sunt constante per mod, deci raman in prefixul care se citeste din cache la
- * generarile urmatoare.
+ * E o constanta, nu se construieste per cerere, deci ramane in prefixul care se
+ * citeste din cache la generarile urmatoare.
  */
-const combinedTools: Anthropic.Tool[] = [
-  {
-    name: TOOL_NAMES.addLines,
-    description:
-      "Adauga linii in deviz, grupate intr-o sectiune (stadiu fizic). Apeleaza-l de mai multe ori, " +
-      "cate o data pentru fiecare sectiune, pe masura ce parcurgi lucrarea. Fiecare linie care are " +
-      "norma in indicator poarta codul ei, gasit intai cu 'cauta_norma'.Fiecare linie poarta " +
-      "un pret unitar orientativ, cu materialul si manopera la un loc; omul il corecteaza in editor.",
-    input_schema: {
-      type: "object",
-      properties: {
-        sectiune: { type: "string", description: SECTION_DESCRIPTION },
-        linii: {
-          type: "array",
-          description: "Liniile de adaugat in aceasta sectiune.",
-          items: {
-            type: "object",
-            properties: {
-              ...baseLineProperties,
-              pret_unitar: {
-                type: "number",
-                description:
-                  "Pret unitar orientativ in lei, fara TVA, cu materialul si manopera incluse, " +
-                  "la nivelul de piata al judetului. Daca nu ai un reper rezonabil, trimite 0 " +
-                  "si scrie in justificare de ce.",
-              },
+const addLinesTool: Anthropic.Tool = {
+  name: TOOL_NAMES.addLines,
+  description:
+    "Adauga linii in deviz, grupate intr-o sectiune (stadiu fizic). Apeleaza-l de mai multe ori, " +
+    "cate o data pentru fiecare sectiune, pe masura ce parcurgi lucrarea. Fiecare linie care are " +
+    "norma in indicator poarta codul ei, gasit intai cu 'cauta_norma'. Pretul unei linii se scrie " +
+    "defalcat pe patru componente: material, manopera, utilaj si transport.",
+  input_schema: {
+    type: "object",
+    properties: {
+      sectiune: { type: "string", description: SECTION_DESCRIPTION },
+      linii: {
+        type: "array",
+        description: "Liniile de adaugat in aceasta sectiune.",
+        items: {
+          type: "object",
+          properties: {
+            ...baseLineProperties,
+            pret_material: {
+              type: "number",
+              description:
+                "Costul orientativ al materialelor pe unitatea de masura, in lei fara TVA. " +
+                "0 pentru lucrarile pur de manopera (demolari, sapaturi manuale, montaj).",
             },
-            required: [
-              "denumire",
-              "um",
-              "cantitate",
-              "pret_unitar",
-              "justificare",
-              "incredere",
-            ],
+            pret_manopera: {
+              type: "number",
+              description:
+                "Costul orientativ al manoperei pe unitatea de masura, in lei fara TVA. " +
+                "0 pentru liniile care sunt doar furnizare de material.",
+            },
+            pret_utilaj: {
+              type: "number",
+              description:
+                "Costul utilajului imputat unei unitati de masura, in lei fara TVA: chiria si " +
+                "ora de functionare a excavatorului, macaralei, maiului compactor, betonierei, " +
+                "schelei inchiriate. Lasa-l gol la lucrarile executate manual — majoritatea.",
+            },
+            pret_transport: {
+              type: "number",
+              description:
+                "Costul transportului imputat unei unitati de masura, in lei fara TVA: aducerea " +
+                "materialului la santier si evacuarea molozului, cand se factureaza separat, nu " +
+                "cand e deja inclus in pretul materialului. Lasa-l gol daca nu e cazul.",
+            },
           },
+          required: [
+            "denumire",
+            "um",
+            "cantitate",
+            "pret_material",
+            "pret_manopera",
+            "justificare",
+            "incredere",
+          ],
         },
       },
-      required: ["sectiune", "linii"],
     },
+    required: ["sectiune", "linii"],
   },
-];
-
-/** Uneltele pentru un deviz cu materialele si manopera pe coloane separate. */
-const splitTools: Anthropic.Tool[] = [
-  {
-    name: TOOL_NAMES.addLines,
-    description:
-      "Adauga linii in deviz, grupate intr-o sectiune (stadiu fizic). Apeleaza-l de mai multe ori, " +
-      "cate o data pentru fiecare sectiune, pe masura ce parcurgi lucrarea. Fiecare linie care are " +
-      "norma in indicator poarta codul ei, gasit intai cu 'cauta_norma'.Devizul se intocmeste " +
-      "cu materialele si manopera separate, deci fiecare linie are doua preturi unitare.",
-    input_schema: {
-      type: "object",
-      properties: {
-        sectiune: { type: "string", description: SECTION_DESCRIPTION },
-        linii: {
-          type: "array",
-          description: "Liniile de adaugat in aceasta sectiune.",
-          items: {
-            type: "object",
-            properties: {
-              ...baseLineProperties,
-              pret_material: {
-                type: "number",
-                description:
-                  "Costul orientativ al materialelor pe unitatea de masura, in lei fara TVA. " +
-                  "0 pentru lucrarile pur de manopera (demolari, sapaturi manuale, montaj).",
-              },
-              pret_manopera: {
-                type: "number",
-                description:
-                  "Costul orientativ al manoperei pe unitatea de masura, in lei fara TVA. " +
-                  "0 pentru liniile care sunt doar furnizare de material.",
-              },
-            },
-            required: [
-              "denumire",
-              "um",
-              "cantitate",
-              "pret_material",
-              "pret_manopera",
-              "justificare",
-              "incredere",
-            ],
-          },
-        },
-      },
-      required: ["sectiune", "linii"],
-    },
-  },
-];
+};
 
 const searchNormTool: Anthropic.Tool = {
   name: TOOL_NAMES.searchNorm,
@@ -360,11 +324,9 @@ const clarifyTool: Anthropic.Tool = {
   },
 };
 
-export function estimateToolsFor(mode: EstimateMode): Anthropic.Tool[] {
-  return [
-    searchNormTool,
-    ...(mode === "SEPARAT" ? splitTools : combinedTools),
-    proposeStepsTool,
-    clarifyTool,
-  ];
-}
+export const estimateTools: Anthropic.Tool[] = [
+  searchNormTool,
+  addLinesTool,
+  proposeStepsTool,
+  clarifyTool,
+];

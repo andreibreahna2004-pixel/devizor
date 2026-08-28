@@ -2,8 +2,8 @@
  * Creeaza un deviz demonstrativ, scris de mana.
  *
  * Util pentru a umbla prin aplicatie fara a consuma o generare AI, si pentru
- * a verifica PDF-ul si exportul e-Factura pe date realiste. Devizul e in modul
- * SEPARAT, ca sa se poata incerca si cele doua PDF-uri, si cele doua facturi.
+ * a verifica PDF-ul si exportul e-Factura pe date realiste. Citeva linii poarta
+ * utilaj si transport, ca recapitulatia sa aiba toate patru coloanele populate.
  * Ruleaza dupa `npm run db:seed`, cu: npm run demo:deviz
  */
 import { PrismaClient } from "@prisma/client";
@@ -15,20 +15,31 @@ const prisma = new PrismaClient();
 
 /**
  * O linie demo: cod de norma (sau null pentru lucrarile care nu au norma in
- * indicatorul C), denumire de rezerva, U.M., cantitate si cele doua preturi.
+ * indicatorul C), denumire de rezerva, U.M., cantitate, apoi preturile pe
+ * material, manopera, utilaj si transport. Ultimele doua se pot omite: pe
+ * majoritatea lucrarilor sint 0, la fel ca in aplicatie.
  *
  * Cand exista cod, denumirea si unitatea vin din indicator — exact ca in
  * aplicatie, unde linia cu cod oficial spune ce spune norma.
  */
-type Pick = [string | null, string, string, number, number, number];
+type Pick = [
+  string | null,
+  string,
+  string,
+  number,
+  number,
+  number,
+  number?,
+  number?,
+];
 
 const SECTIONS: { name: string; lines: Pick[] }[] = [
   {
     name: "Infrastructura",
     lines: [
-      [null, "Sapatura mecanizata in teren mijlociu", "mc", 42, 0, 28],
+      [null, "Sapatura mecanizata in teren mijlociu", "mc", 42, 0, 8, 22, 11],
       ["CA01J1", "Beton de egalizare sub fundatii", "mc", 4.2, 380, 95],
-      ["CA02C1", "Beton armat in fundatii continue", "mc", 18.5, 460, 180],
+      ["CA02C1", "Beton armat in fundatii continue", "mc", 18.5, 460, 180, 24, 15],
       ["CC01A1", "Armatura din otel beton, fasonata si montata", "kg", 1450, 4.9, 1.8],
       ["CB11E1", "Cofraje din panouri in elevatie", "mp", 96, 22, 38],
     ],
@@ -36,22 +47,22 @@ const SECTIONS: { name: string; lines: Pick[] }[] = [
   {
     name: "Suprastructura",
     lines: [
-      ["CD07C1", "Zidarie din blocuri BCA", "mc", 34.5, 463, 164],
+      ["CD07C1", "Zidarie din blocuri BCA", "mc", 34.5, 463, 164, 0, 9],
       [null, "Stalpisori si centuri din beton armat C20/25", "mc", 8.2, 470, 210],
-      ["CA07H1", "Planseu din beton armat de 15 cm", "mc", 14.4, 480, 195],
+      ["CA07H1", "Planseu din beton armat de 15 cm", "mc", 14.4, 480, 195, 38, 15],
     ],
   },
   {
     name: "Invelitoare",
     lines: [
-      ["CE17C1", "Sarpanta din lemn ecarisat, cu astereala", "mp", 155, 118, 62],
+      ["CE17C1", "Sarpanta din lemn ecarisat, cu astereala", "mp", 155, 118, 62, 14, 6],
       ["CE01A1", "Invelitoare din tigla ceramica, inclusiv accesorii", "mp", 155, 96, 44],
     ],
   },
   {
     name: "Termoizolatii si fatade",
     lines: [
-      [null, "Termosistem 10 cm polistiren expandat pe fatada", "mp", 186, 58, 42],
+      [null, "Termosistem 10 cm polistiren expandat pe fatada", "mp", 186, 58, 42, 7, 0],
       [null, "Tencuiala decorativa siliconica, strat final", "mp", 186, 24, 26],
     ],
   },
@@ -102,7 +113,6 @@ async function main() {
       number: nr.number,
       fullNumber: nr.fullNumber,
       title: "Casa P+1 Floresti — structura si finisaje",
-      mode: "SEPARAT",
       clientId: client.id,
       projectId: project.id,
       vatRate: org.defaultVatRate,
@@ -119,11 +129,22 @@ async function main() {
   for (const [index, section] of SECTIONS.entries()) {
     const sectionId = estimate.sections[index].id;
 
-    for (const [cod, fallbackName, fallbackUnit, quantity, material, labor] of section.lines) {
+    for (const [
+      cod,
+      fallbackName,
+      fallbackUnit,
+      quantity,
+      material,
+      labor,
+      equipment = 0,
+      transport = 0,
+    ] of section.lines) {
       const totals = computeEstimateLine({
         quantity,
         materialUnitPrice: material,
         laborUnitPrice: labor,
+        equipmentUnitPrice: equipment,
+        transportUnitPrice: transport,
       });
 
       const norma = cod ? getNorma(cod) : null;
@@ -139,6 +160,8 @@ async function main() {
           quantity,
           materialUnitPrice: material,
           laborUnitPrice: labor,
+          equipmentUnitPrice: equipment,
+          transportUnitPrice: transport,
           unitPrice: totals.unitPrice,
           total: totals.total,
           sortOrder: order++,
@@ -158,6 +181,8 @@ async function main() {
       quantity: Number(l.quantity),
       materialUnitPrice: Number(l.materialUnitPrice),
       laborUnitPrice: Number(l.laborUnitPrice),
+      equipmentUnitPrice: Number(l.equipmentUnitPrice),
+      transportUnitPrice: Number(l.transportUnitPrice),
     })),
     Number(org.defaultVatRate),
   );
@@ -167,6 +192,8 @@ async function main() {
     data: {
       totalMaterial: totals.totalMaterial,
       totalLabor: totals.totalLabor,
+      totalEquipment: totals.totalEquipment,
+      totalTransport: totals.totalTransport,
       netTotal: totals.netTotal,
       vatAmount: totals.vatAmount,
       grandTotal: totals.grandTotal,
@@ -176,6 +203,8 @@ async function main() {
   console.log("ESTIMATE_ID=" + estimate.id);
   console.log("MATERIALE=" + totals.totalMaterial);
   console.log("MANOPERA=" + totals.totalLabor);
+  console.log("UTILAJ=" + totals.totalEquipment);
+  console.log("TRANSPORT=" + totals.totalTransport);
   console.log("TOTAL=" + totals.grandTotal);
 }
 

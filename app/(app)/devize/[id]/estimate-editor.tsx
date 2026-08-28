@@ -10,7 +10,6 @@ import {
   dismissSuggestion,
   saveEstimateLines,
   searchNormeAction,
-  updateEstimateMode,
   updateEstimateVatRate,
 } from "@/app/actions/estimates";
 import { ConfidenceBadge } from "@/components/status-badge";
@@ -32,8 +31,6 @@ import { computeEstimateLine, computeEstimateTotals } from "@/lib/pricing/calcul
  * financiar, iar omul trebuie sa stie cand a comis o modificare.
  */
 
-export type EstimateMode = "COMBINAT" | "SEPARAT";
-
 /** O norma din indicator, rezolvata pe server pentru afisare. */
 export interface NormaVariant {
   cod: string;
@@ -49,9 +46,10 @@ export interface EditorLine {
   name: string;
   unit: string;
   quantity: number;
-  /** In modul COMBINAT poarta pretul intreg al lucrarii. */
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
   aiGenerated: boolean;
   aiJustification: string | null;
   aiConfidence: "MARE" | "MEDIE" | "MICA" | null;
@@ -82,7 +80,6 @@ export interface Suggestion {
 export function EstimateEditor({
   estimateId,
   editable,
-  mode: initialMode,
   aiConfigured,
   sections,
   lines: initialLines,
@@ -91,7 +88,6 @@ export function EstimateEditor({
 }: {
   estimateId: string;
   editable: boolean;
-  mode: EstimateMode;
   aiConfigured: boolean;
   sections: Section[];
   lines: EditorLine[];
@@ -102,14 +98,12 @@ export function EstimateEditor({
   const [pending, startTransition] = useTransition();
 
   const [lines, setLines] = useState(initialLines);
-  const [mode, setMode] = useState(initialMode);
   const [vatRate, setVatRate] = useState(initialVatRate);
   const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const separat = mode === "SEPARAT";
   const totals = useMemo(
     () => computeEstimateTotals(lines, vatRate),
     [lines, vatRate],
@@ -149,6 +143,8 @@ export function EstimateEditor({
           quantity: l.quantity,
           materialUnitPrice: l.materialUnitPrice,
           laborUnitPrice: l.laborUnitPrice,
+          equipmentUnitPrice: l.equipmentUnitPrice,
+          transportUnitPrice: l.transportUnitPrice,
         })),
       });
 
@@ -185,31 +181,8 @@ export function EstimateEditor({
     });
   }
 
-  function handleMode(next: EstimateMode) {
-    if (next === mode) return;
-    setError(null);
-    setMode(next);
-
-    // Aceeasi regula ca pe server: la revenirea pe un singur pret, manopera se
-    // aduna peste material ca totalul sa nu se schimbe.
-    if (next === "COMBINAT") {
-      setLines((prev) =>
-        prev.map((l) => ({
-          ...l,
-          materialUnitPrice: l.materialUnitPrice + l.laborUnitPrice,
-          laborUnitPrice: 0,
-        })),
-      );
-    }
-
-    startTransition(async () => {
-      const result = await updateEstimateMode({ estimateId, mode: next });
-      if (!result.ok) setError(result.error ?? "Modul nu a putut fi schimbat");
-      else router.refresh();
-    });
-  }
-
-  const columnCount = (separat ? 7 : 6) + (editable ? 1 : 0);
+  // Lucrare, Cantitate, U.M., patru preturi, Valoare — plus coloana de stergere.
+  const columnCount = 8 + (editable ? 1 : 0);
 
   return (
     <div className="space-y-5">
@@ -243,8 +216,6 @@ export function EstimateEditor({
         </div>
       )}
 
-      <ModeSwitch mode={mode} editable={editable} onChange={handleMode} />
-
       {lines.length === 0 ? (
         <div className="card p-8 text-center sm:p-12">
           <p className="text-sm text-ink-500">
@@ -270,17 +241,15 @@ export function EstimateEditor({
                 </span>
               </header>
 
-              {/* Pe telefon linia devine card. Tabelul are sapte coloane in
-                  modul separat; la 375px asta inseamna sa derulezi lateral
-                  peste fiecare linie ca sa ajungi la pretul pe care il
-                  corectezi — adica exact lucrul pentru care ai deschis
-                  editorul. */}
+              {/* Pe telefon linia devine card. Tabelul are noua coloane; la
+                  375px asta inseamna sa derulezi lateral peste fiecare linie ca
+                  sa ajungi la pretul pe care il corectezi — adica exact lucrul
+                  pentru care ai deschis editorul. */}
               <ul className="divide-y divide-[var(--border)] md:hidden">
                 {sectionLines.map((line) => (
                   <li key={line.id}>
                     <LineCard
                       line={line}
-                      separat={separat}
                       editable={editable}
                       pending={pending}
                       open={expanded === line.id}
@@ -295,20 +264,16 @@ export function EstimateEditor({
               </ul>
 
               <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[880px]">
+                <table className="w-full min-w-[1080px]">
                   <thead>
                     <tr className="border-b border-[var(--border)]">
                       <th className="th w-full">Lucrare</th>
                       <th className="th w-24 text-right">Cantitate</th>
                       <th className="th w-20">U.M.</th>
-                      {separat ? (
-                        <>
-                          <th className="th w-28 text-right">Material</th>
-                          <th className="th w-28 text-right">Manopera</th>
-                        </>
-                      ) : (
-                        <th className="th w-32 text-right">Pret unitar</th>
-                      )}
+                      <th className="th w-24 text-right">Material</th>
+                      <th className="th w-24 text-right">Manopera</th>
+                      <th className="th w-24 text-right">Utilaj</th>
+                      <th className="th w-24 text-right">Transport</th>
                       <th className="th w-32 text-right">Valoare</th>
                       {editable && <th className="th w-10" />}
                     </tr>
@@ -360,16 +325,30 @@ export function EstimateEditor({
                                 patchLine(line.id, { materialUnitPrice })
                               }
                             />
-                            {separat && (
-                              <NumberCell
-                                value={line.laborUnitPrice}
-                                decimals={2}
-                                editable={editable}
-                                onChange={(laborUnitPrice) =>
-                                  patchLine(line.id, { laborUnitPrice })
-                                }
-                              />
-                            )}
+                            <NumberCell
+                              value={line.laborUnitPrice}
+                              decimals={2}
+                              editable={editable}
+                              onChange={(laborUnitPrice) =>
+                                patchLine(line.id, { laborUnitPrice })
+                              }
+                            />
+                            <NumberCell
+                              value={line.equipmentUnitPrice}
+                              decimals={2}
+                              editable={editable}
+                              onChange={(equipmentUnitPrice) =>
+                                patchLine(line.id, { equipmentUnitPrice })
+                              }
+                            />
+                            <NumberCell
+                              value={line.transportUnitPrice}
+                              decimals={2}
+                              editable={editable}
+                              onChange={(transportUnitPrice) =>
+                                patchLine(line.id, { transportUnitPrice })
+                              }
+                            />
 
                             <td className="td tabular text-right font-medium">
                               {formatLei(lineTotals.total)}
@@ -433,7 +412,6 @@ export function EstimateEditor({
           />
           <AddLineForm
             estimateId={estimateId}
-            separat={separat}
             sections={sections}
             onAdded={() => {
               setMessage("Linia a fost adaugata.");
@@ -445,7 +423,6 @@ export function EstimateEditor({
 
       <Recapitulation
         totals={totals}
-        separat={separat}
         vatRate={vatRate}
         editable={editable}
         onVatRateChange={handleVatRate}
@@ -534,7 +511,6 @@ function LineDetails({
  */
 function LineCard({
   line,
-  separat,
   editable,
   pending,
   open,
@@ -543,7 +519,6 @@ function LineCard({
   onDelete,
 }: {
   line: EditorLine;
-  separat: boolean;
   editable: boolean;
   pending: boolean;
   open: boolean;
@@ -587,7 +562,7 @@ function LineCard({
           />
         </CardField>
 
-        <CardField label={separat ? "Material" : "Pret unitar"}>
+        <CardField label="Material">
           <NumberInput
             value={line.materialUnitPrice}
             decimals={2}
@@ -597,17 +572,35 @@ function LineCard({
           />
         </CardField>
 
-        {separat && (
-          <CardField label="Manopera">
-            <NumberInput
-              value={line.laborUnitPrice}
-              decimals={2}
-              editable={editable}
-              className="w-full text-right"
-              onChange={(laborUnitPrice) => onPatch({ laborUnitPrice })}
-            />
-          </CardField>
-        )}
+        <CardField label="Manopera">
+          <NumberInput
+            value={line.laborUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(laborUnitPrice) => onPatch({ laborUnitPrice })}
+          />
+        </CardField>
+
+        <CardField label="Utilaj">
+          <NumberInput
+            value={line.equipmentUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(equipmentUnitPrice) => onPatch({ equipmentUnitPrice })}
+          />
+        </CardField>
+
+        <CardField label="Transport">
+          <NumberInput
+            value={line.transportUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(transportUnitPrice) => onPatch({ transportUnitPrice })}
+          />
+        </CardField>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-3 border-t border-[var(--border)] pt-2.5">
@@ -655,61 +648,6 @@ function CardField({
   );
 }
 
-function ModeSwitch({
-  mode,
-  editable,
-  onChange,
-}: {
-  mode: EstimateMode;
-  editable: boolean;
-  onChange: (mode: EstimateMode) => void;
-}) {
-  const options: { value: EstimateMode; label: string; hint: string }[] = [
-    {
-      value: "COMBINAT",
-      label: "Un singur pret",
-      hint: "material si manopera la un loc, un PDF, o factura",
-    },
-    {
-      value: "SEPARAT",
-      label: "Materiale si manopera separat",
-      hint: "doua PDF-uri si, daca vrei, doua facturi",
-    },
-  ];
-
-  return (
-    <div className="card flex flex-wrap items-center justify-between gap-3 px-5 py-3.5">
-      <div>
-        <p className="text-sm font-medium text-ink-900">Cum se scriu preturile</p>
-        <p className="mt-0.5 text-xs text-ink-500">
-          {mode === "SEPARAT"
-            ? "Devizul se tipareste ca doua documente si poate fi facturat separat."
-            : "Pretul de pe linie e pretul final catre beneficiar."}
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {options.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            disabled={!editable}
-            onClick={() => onChange(option.value)}
-            title={option.hint}
-            className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
-              mode === option.value
-                ? "border-brand-500 bg-brand-50 font-medium text-brand-800"
-                : "border-[var(--border)] text-ink-700 hover:bg-ink-50 disabled:hover:bg-transparent"
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 const EMPTY_LINE = {
   code: null as string | null,
   name: "",
@@ -717,6 +655,8 @@ const EMPTY_LINE = {
   quantity: "",
   materialUnitPrice: "",
   laborUnitPrice: "",
+  equipmentUnitPrice: "",
+  transportUnitPrice: "",
 };
 
 /**
@@ -1162,12 +1102,10 @@ function NormSearch({
 
 function AddLineForm({
   estimateId,
-  separat,
   sections,
   onAdded,
 }: {
   estimateId: string;
-  separat: boolean;
   sections: Section[];
   onAdded: () => void;
 }) {
@@ -1187,7 +1125,9 @@ function AddLineForm({
         unit: draft.unit.trim(),
         quantity: parseDecimal(draft.quantity),
         materialUnitPrice: parseDecimal(draft.materialUnitPrice),
-        laborUnitPrice: separat ? parseDecimal(draft.laborUnitPrice) : 0,
+        laborUnitPrice: parseDecimal(draft.laborUnitPrice),
+        equipmentUnitPrice: parseDecimal(draft.equipmentUnitPrice),
+        transportUnitPrice: parseDecimal(draft.transportUnitPrice),
       });
 
       if (!result.ok) {
@@ -1265,7 +1205,7 @@ function AddLineForm({
         </div>
         <div>
           <label className="label" htmlFor="add-material">
-            {separat ? "Material" : "Pret unitar"}
+            Material
           </label>
           <input
             id="add-material"
@@ -1277,24 +1217,48 @@ function AddLineForm({
             }
           />
         </div>
-        {separat && (
-          <div>
-            <label className="label" htmlFor="add-labor">
-              Manopera
-            </label>
-            <input
-              id="add-labor"
-              className="input tabular text-right"
-              inputMode="decimal"
-              value={draft.laborUnitPrice}
-              onChange={(e) =>
-                setDraft({ ...draft, laborUnitPrice: e.target.value })
-              }
-            />
-          </div>
-        )}
+        <div>
+          <label className="label" htmlFor="add-labor">
+            Manopera
+          </label>
+          <input
+            id="add-labor"
+            className="input tabular text-right"
+            inputMode="decimal"
+            value={draft.laborUnitPrice}
+            onChange={(e) => setDraft({ ...draft, laborUnitPrice: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="label" htmlFor="add-equipment">
+            Utilaj
+          </label>
+          <input
+            id="add-equipment"
+            className="input tabular text-right"
+            inputMode="decimal"
+            value={draft.equipmentUnitPrice}
+            onChange={(e) =>
+              setDraft({ ...draft, equipmentUnitPrice: e.target.value })
+            }
+          />
+        </div>
+        <div>
+          <label className="label" htmlFor="add-transport">
+            Transport
+          </label>
+          <input
+            id="add-transport"
+            className="input tabular text-right"
+            inputMode="decimal"
+            value={draft.transportUnitPrice}
+            onChange={(e) =>
+              setDraft({ ...draft, transportUnitPrice: e.target.value })
+            }
+          />
+        </div>
         {sections.length > 0 && (
-          <div className={separat ? "col-span-2" : ""}>
+          <div className="col-span-2">
             <label className="label" htmlFor="add-section">
               Sectiune
             </label>
@@ -1526,15 +1490,20 @@ function parseDecimal(raw: string): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Recapitulatia devizului.
+ *
+ * Totalizeaza cele patru componente si atat: nu se adauga nimic peste ele, nici
+ * cheltuieli indirecte, nici profit. Suma celor patru rinduri e chiar "Total
+ * fara TVA" — daca nu se inchide, e o eroare de rotunjire, nu o formula lipsa.
+ */
 function Recapitulation({
   totals,
-  separat,
   vatRate,
   editable,
   onVatRateChange,
 }: {
   totals: ReturnType<typeof computeEstimateTotals>;
-  separat: boolean;
   vatRate: number;
   editable: boolean;
   onVatRateChange: (rate: number) => void;
@@ -1544,14 +1513,12 @@ function Recapitulation({
       <h2 className="text-sm font-semibold text-ink-900">Recapitulatie</h2>
 
       <dl className="mt-4 space-y-2 text-sm">
-        {separat && (
-          <>
-            <Row label="Materiale" value={totals.totalMaterial} />
-            <Row label="Manopera" value={totals.totalLabor} />
-          </>
-        )}
+        <Row label="Materiale" value={totals.totalMaterial} />
+        <Row label="Manopera" value={totals.totalLabor} />
+        <Row label="Utilaj" value={totals.totalEquipment} />
+        <Row label="Transport" value={totals.totalTransport} />
 
-        <div className={separat ? "border-t border-[var(--border)] pt-2" : ""}>
+        <div className="border-t border-[var(--border)] pt-2">
           <Row label="Total fara TVA" value={totals.netTotal} strong />
         </div>
 

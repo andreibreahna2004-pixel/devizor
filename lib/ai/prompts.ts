@@ -1,6 +1,5 @@
 import "server-only";
 import type Anthropic from "@anthropic-ai/sdk";
-import type { EstimateMode } from "./tools";
 import { grupeCuNumar } from "@/lib/norme";
 
 /**
@@ -66,6 +65,13 @@ Cand descrierea nu spune o dimensiune, foloseste o ipoteza de proiectare rezonab
 Marcheaza cinstit increderea. \`mare\` doar cand cantitatea rezulta direct din datele primite. \`mica\` inseamna "verifica obligatoriu" si e o informatie utila, nu o rusine — o cantitate marcata gresit ca sigura e mai daunatoare decat una marcata nesigura.
 
 # Preturile
+
+Fiecare linie are patru preturi unitare, ca articolul dintr-un deviz romanesc: **material**, **manopera**, **utilaj** si **transport**. Se aduna in valoarea liniei, iar devizul le totalizeaza pe fiecare in recapitulatie — deci impartirea conteaza, nu doar suma.
+
+- \`pret_material\` — ce se pune in opera: blocurile si adezivul la o zidarie, placile la o pardoseala. 0 la demolari, sapaturi manuale si montaje din materialul clientului.
+- \`pret_manopera\` — ora omului de meserie. 0 la liniile care sint doar furnizare de material.
+- \`pret_utilaj\` — chiria si ora de functionare a utilajului imputate unei unitati: excavator, macara, mai compactor, betoniera, schela inchiriata. Pe majoritatea liniilor e 0, si il lasi gol.
+- \`pret_transport\` — aducerea materialului si evacuarea molozului, cind se factureaza separat. Cind transportul e deja in pretul materialului, nu-l scrie si aici — ar fi platit de doua ori. Pe majoritatea liniilor e 0.
 
 Preturile pe care le dai sunt orientative, la nivelul pietei din judetul lucrarii. Firma nu are catalog: omul le corecteaza pe fiecare in editor inainte de a trimite oferta, deci treaba ta e sa dai un punct de plecare rezonabil, nu o oferta ferma.
 
@@ -159,25 +165,13 @@ Grupezi liniile pe stadiul fizic din care fac parte ("Infrastructura", "Finisaje
 
 Una-doua propozitii: ce ai adaugat si ce a ramas de completat de mana. Fara recapitulari — omul vede liniile in tabel.`;
 
-const COMBINED_MODE = `# Cum se scriu preturile in acest deviz
-
-Un singur pret pe linie, cu materialul si manopera la un loc. Asa il vede beneficiarul: cantitate x pret unitar = valoare.`;
-
-const SPLIT_MODE = `# Cum se scriu preturile in acest deviz
-
-Doua preturi pe fiecare linie: materialul separat de manopera. Devizul se tipareste ca doua documente — unul de materiale, unul de manopera — si poate fi facturat separat pe fiecare.
-
-Asta inseamna ca impartirea conteaza, nu doar suma. La o zidarie, blocurile si adezivul intra in \`pret_material\`, iar ora de zidar in \`pret_manopera\`. La o demolare sau o sapatura manuala, materialul e 0. La o linie care e doar furnizare de material, manopera e 0.`;
-
 /**
  * Blocurile de system, cu breakpoint de cache pe ultimul.
  *
  * Ordinea de randare a API-ului e `tools` -> `system` -> `messages`, iar
- * uneltele sunt fixe pentru un mod dat, deci breakpoint-ul de aici acopera si
- * uneltele.
+ * uneltele sunt constante, deci breakpoint-ul de aici acopera si uneltele.
  */
 export function buildSystemBlocks(
-  mode: EstimateMode,
   orgName: string,
   incremental = false,
 ): Anthropic.TextBlockParam[] {
@@ -195,10 +189,8 @@ Codurile incep cu doua litere care spun din ce grupa e norma. Iti folosesc ca sa
 
 ${grupe}
 
-${mode === "SEPARAT" ? SPLIT_MODE : COMBINED_MODE}
-
 Devizul se intocmeste pentru firma ${orgName}.`,
-      // Singurul breakpoint: instructiunile + modul + uneltele se cacheaza
+      // Singurul breakpoint: instructiunile + grupele + uneltele se cacheaza
       // impreuna. Descrierea lucrarii vine dupa, in messages, deci nu invalideaza.
       cache_control: { type: "ephemeral" },
     },

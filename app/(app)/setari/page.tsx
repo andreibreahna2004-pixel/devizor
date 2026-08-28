@@ -59,7 +59,6 @@ export default async function SettingsPage() {
           iban: org.iban,
           bank: org.bank,
           defaultVatRate: toNumber(org.defaultVatRate),
-          defaultMode: org.defaultMode,
         }}
       />
 
