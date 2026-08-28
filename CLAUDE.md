@@ -89,6 +89,16 @@ modifica, nici macar o eticheta pe el. Tot ce se emite de acum poarta `TOT`.
 `ProgressLine` pastreaza aceleasi patru componente, ca recapitulatia unei situatii
 de lucrari sa se citeasca la fel cu cea a devizului din care vine.
 
+**`Estimate.mode` si `Organization.defaultMode` mai exista in baza, dar nu in
+schema si nu in cod.** Migrarea care a scos modul e doar de expandare: sterge
+coloanele intr-o migrare ulterioara, dupa ce codul nou e live peste tot. Altfel ar
+disparea sub codul vechi, care inca le citeste in fereastra dintre migrare si
+promovarea noii versiuni. Amindoua au `NOT NULL DEFAULT 'COMBINAT'`, deci
+inserarile de azi, care nu le pomenesc, merg neschimbate.
+
+Consecinta: `prisma migrate dev` raporteaza drift si vrea sa genereze exact
+migrarea aceea de contractie. Nu e o eroare — e pasul care a fost aminat.
+
 ### Reguli de calcul
 
 - Banii se tin in `Decimal`, niciodata in float. Preturi unitare cu 4 zecimale,
@@ -244,6 +254,12 @@ npm run build
 
 Nu raporta ceva ca terminat fara ca astea trei sa treaca.
 
+`build` ruleaza `prisma generate && prisma migrate deploy && next build`. Migrarea
+sta acolo pentru ca deploy-ul de pe Vercel nu are alt pas care s-o aplice: fara ea,
+codul nou ar ajunge live peste o schema veche. Doua urmari: **build-ul cere baza
+pornita**, si un esec de migrare opreste deploy-ul in loc sa scoata in productie un
+cod care n-are unde sa scrie.
+
 Pentru date de umblat prin aplicatie, dupa `npm run db:seed`:
 
 ```bash
@@ -264,6 +280,9 @@ aceleasi grafice si o captura de ecran se poate compara cu alta.
 - **`prisma generate` esueaza daca dev serverul ruleaza** — tine deschis
   `query_engine-windows.dll.node`. Opreste-l intii. `npm run build` il cheama,
   deci si build-ul cere serverul oprit.
+- **`npm run build` cere si containerul de PostgreSQL pornit**, fiindca ruleaza
+  `prisma migrate deploy`. Cu Docker oprit, build-ul pica la migrare, nu la
+  compilare — mesajul vorbeste despre conexiune, nu despre cod.
 - **PostgreSQL sta intr-un container, nu ca serviciu.** Masina n-are Postgres
   local si n-are `psql` in PATH. Baza din `DATABASE_URL` e servita de:
 
