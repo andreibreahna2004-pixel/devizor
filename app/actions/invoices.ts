@@ -19,14 +19,13 @@ export interface InvoiceActionResult {
 
 const fromEstimateSchema = z.object({
   estimateId: z.string().min(1),
-  scope: z.enum(["TOT", "MATERIALE", "MANOPERA"]).default("TOT"),
 });
 
 /**
  * Emite o factura pentru un deviz.
  *
- * Pentru devizele cu materialele si manopera separate, `scope` alege ce se
- * factureaza — se pot emite doua facturi, fiecare cu numarul ei.
+ * Dintr-un deviz iese o singura factura, pe toata valoarea lui: cele patru
+ * componente ale liniei se aduna intr-un pret unitar.
  */
 export async function createInvoiceFromEstimate(
   payload: unknown,
@@ -35,7 +34,6 @@ export async function createInvoiceFromEstimate(
   if (!parsed.success) return { ok: false, error: "Date invalide" };
 
   const user = await requireUser();
-  const scope = parsed.data.scope;
 
   const estimate = await prisma.estimate.findFirst({
     where: { id: parsed.data.estimateId, orgId: user.orgId },
@@ -52,40 +50,21 @@ export async function createInvoiceFromEstimate(
   if (estimate.lines.length === 0) {
     return { ok: false, error: "Devizul nu are linii" };
   }
-  if (scope !== "TOT" && estimate.mode !== "SEPARAT") {
-    return {
-      ok: false,
-      error:
-        "Devizul are un singur pret pe linie. Treci-l pe materiale si manopera separat ca sa poti factura separat.",
-    };
-  }
-
   const lines = estimateLinesToInvoiceLines(
     estimate.lines,
-    scope,
     toNumber(estimate.vatRate),
   );
 
   if (lines.length === 0) {
-    return {
-      ok: false,
-      error:
-        scope === "MATERIALE"
-          ? "Nicio linie din deviz nu are cost de material."
-          : "Nicio linie din deviz nu are cost de manopera.",
-    };
+    return { ok: false, error: "Nicio linie din deviz nu are pret." };
   }
-
-  const scopeNote =
-    scope === "TOT" ? "" : ` — ${scope === "MATERIALE" ? "materiale" : "manopera"}`;
 
   try {
     const invoice = await createInvoice(user.orgId, {
       clientId: estimate.clientId,
       projectId: estimate.projectId,
       estimateId: estimate.id,
-      scope,
-      notes: `Conform devizului ${estimate.fullNumber} — ${estimate.title}${scopeNote}`,
+      notes: `Conform devizului ${estimate.fullNumber} — ${estimate.title}`,
       lines,
     });
 

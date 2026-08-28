@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Deviz nou" };
 export default async function NewEstimatePage() {
   const user = await requireUser();
 
-  const [clients, projects, org] = await Promise.all([
+  const [clients, projects] = await Promise.all([
     prisma.client.findMany({
       where: { orgId: user.orgId },
       orderBy: { name: "asc" },
@@ -20,10 +20,6 @@ export default async function NewEstimatePage() {
       where: { orgId: user.orgId },
       orderBy: { name: "asc" },
       select: { id: true, name: true, clientId: true },
-    }),
-    prisma.organization.findUniqueOrThrow({
-      where: { id: user.orgId },
-      select: { defaultMode: true },
     }),
   ]);
 
@@ -45,7 +41,6 @@ export default async function NewEstimatePage() {
         clients={clients}
         projects={projects}
         aiConfigured={isAiConfigured()}
-        defaultMode={org.defaultMode}
       />
     </div>
   );

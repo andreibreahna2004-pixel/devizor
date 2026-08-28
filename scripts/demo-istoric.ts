@@ -46,15 +46,16 @@ const LUCRARI = [
   "Terasa si trotuar perimetral Corbeanca",
 ];
 
-const LINII: [string, string, number, number, number][] = [
-  ["Sapatura mecanizata in teren mijlociu", "mc", 38, 0, 27],
-  ["Beton armat in fundatii continue", "mc", 16, 455, 175],
-  ["Armatura din otel beton, fasonata si montata", "kg", 1250, 4.9, 1.8],
-  ["Zidarie din blocuri BCA 30", "mc", 29, 460, 162],
-  ["Termosistem 10 cm pe fatada", "mp", 168, 57, 41],
-  ["Tencuiala mecanizata la interior", "mp", 380, 14.4, 15.2],
-  ["Zugraveli lavabile in doua straturi", "mp", 380, 4.1, 8.3],
-  ["Tamplarie PVC cu geam tripan", "mp", 24, 615, 84],
+/** Denumire, U.M., cantitate, apoi material, manopera, utilaj si transport. */
+const LINII: [string, string, number, number, number, number, number][] = [
+  ["Sapatura mecanizata in teren mijlociu", "mc", 38, 0, 8, 21, 10],
+  ["Beton armat in fundatii continue", "mc", 16, 455, 175, 23, 14],
+  ["Armatura din otel beton, fasonata si montata", "kg", 1250, 4.9, 1.8, 0, 0],
+  ["Zidarie din blocuri BCA 30", "mc", 29, 460, 162, 0, 9],
+  ["Termosistem 10 cm pe fatada", "mp", 168, 57, 41, 7, 0],
+  ["Tencuiala mecanizata la interior", "mp", 380, 14.4, 15.2, 0, 0],
+  ["Zugraveli lavabile in doua straturi", "mp", 380, 4.1, 8.3, 0, 0],
+  ["Tamplarie PVC cu geam tripan", "mp", 24, 615, 84, 0, 0],
 ];
 
 /**
@@ -138,12 +139,14 @@ async function main() {
       const factor = 0.55 + aleator() * 1.5;
       const alese = LINII.filter(() => aleator() > 0.25);
       const linii = (alese.length > 0 ? alese : LINII.slice(0, 4)).map(
-        ([name, unit, qty, mat, man]) => ({
+        ([name, unit, qty, mat, man, uti, tra]) => ({
           name,
           unit,
           quantity: Math.round(qty * factor * 100) / 100,
           materialUnitPrice: mat,
           laborUnitPrice: man,
+          equipmentUnitPrice: uti,
+          transportUnitPrice: tra,
         }),
       );
 
@@ -158,7 +161,6 @@ async function main() {
             number: nr.number,
             fullNumber: nr.fullNumber,
             title: LUCRARI[(inapoi * 3 + i) % LUCRARI.length],
-            mode: "SEPARAT",
             clientId: client.id,
             projectId: project?.id ?? null,
             vatRate: org.defaultVatRate,
@@ -168,6 +170,8 @@ async function main() {
             updatedAt: data,
             totalMaterial: totals.totalMaterial,
             totalLabor: totals.totalLabor,
+            totalEquipment: totals.totalEquipment,
+            totalTransport: totals.totalTransport,
             netTotal: totals.netTotal,
             vatAmount: totals.vatAmount,
             grandTotal: totals.grandTotal,
@@ -180,6 +184,8 @@ async function main() {
                   quantity: l.quantity,
                   materialUnitPrice: l.materialUnitPrice,
                   laborUnitPrice: l.laborUnitPrice,
+                  equipmentUnitPrice: l.equipmentUnitPrice,
+                  transportUnitPrice: l.transportUnitPrice,
                   unitPrice: t.unitPrice,
                   total: t.total,
                   sortOrder: idx,
@@ -201,7 +207,14 @@ async function main() {
 
         const liniiFactura = linii.map((l) => ({
           quantity: l.quantity,
-          unitPrice: Math.round((l.materialUnitPrice + l.laborUnitPrice) * 100) / 100,
+          unitPrice:
+            Math.round(
+              (l.materialUnitPrice +
+                l.laborUnitPrice +
+                l.equipmentUnitPrice +
+                l.transportUnitPrice) *
+                100,
+            ) / 100,
           vatRate,
         }));
         const ft = computeInvoiceTotals(liniiFactura);

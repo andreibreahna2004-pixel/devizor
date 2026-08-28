@@ -205,77 +205,54 @@ function Footer({ label }: { label: string }) {
 // Deviz
 // ---------------------------------------------------------------------------
 
+const ESTIMATE_TITLE = "DEVIZ OFERTA";
+
 /**
- * Ce parte a devizului se tipareste.
+ * Devizul se tipareste in landscape, factura ramane portret.
  *
- * Un deviz cu materialele si manopera separate se tipareste ca doua documente,
- * fiecare cu coloana lui de pret si cu totalul lui — asa se preda pe santier,
- * si asa se poate si factura.
+ * Linia are patru coloane de pret plus valoarea. Pe A4 portret raman sub 90pt
+ * pentru denumire, iar "Tencuiala interioara driscuita la pereti si tavane" se
+ * rupe pe patru rinduri. In landscape denumirea are peste 380pt si tabelul se
+ * citeste — asa se tiparesc si formularele de deviz analitic.
  */
-export type EstimatePdfScope = "TOT" | "MATERIALE" | "MANOPERA";
-
-const SCOPE_TITLE: Record<EstimatePdfScope, string> = {
-  TOT: "DEVIZ OFERTA",
-  MATERIALE: "DEVIZ MATERIALE",
-  MANOPERA: "DEVIZ MANOPERA",
-};
-
-function EstimateDocument({
-  estimate,
-  scope,
-}: {
-  estimate: EstimateForView;
-  scope: EstimatePdfScope;
-}) {
+function EstimateDocument({ estimate }: { estimate: EstimateForView }) {
   const vatRate = toNumber(estimate.vatRate);
-  const separat = estimate.mode === "SEPARAT" && scope === "TOT";
 
-  const priced = estimate.lines.map((line) => {
-    const material = toNumber(line.materialUnitPrice);
-    const labor = toNumber(line.laborUnitPrice);
+  const priced = estimate.lines.map((line) => ({
+    id: line.id,
+    sectionId: line.sectionId,
+    code: line.code,
+    name: line.name,
+    unit: line.unit,
+    quantity: toNumber(line.quantity),
+    materialUnitPrice: toNumber(line.materialUnitPrice),
+    laborUnitPrice: toNumber(line.laborUnitPrice),
+    equipmentUnitPrice: toNumber(line.equipmentUnitPrice),
+    transportUnitPrice: toNumber(line.transportUnitPrice),
+  }));
 
-    // Pe un document de materiale, manopera nu exista: linia se tipareste doar
-    // cu partea care se deconteaza acolo.
-    return {
-      id: line.id,
-      sectionId: line.sectionId,
-      code: line.code,
-      name: line.name,
-      unit: line.unit,
-      quantity: toNumber(line.quantity),
-      materialUnitPrice: scope === "MANOPERA" ? 0 : material,
-      laborUnitPrice: scope === "MATERIALE" ? 0 : labor,
-    };
-  });
-
-  // Pe documentele partiale, liniile fara valoare pe partea tiparita ies afara.
-  const visible =
-    scope === "TOT"
-      ? priced
-      : priced.filter((l) => l.materialUnitPrice + l.laborUnitPrice > 0);
-
-  const totals = computeEstimateTotals(visible, vatRate);
+  const totals = computeEstimateTotals(priced, vatRate);
 
   // Liniile fara sectiune se aduna intr-un grup la final.
   const groups = [
     ...estimate.sections.map((section) => ({
       name: section.name,
-      lines: visible.filter((l) => l.sectionId === section.id),
+      lines: priced.filter((l) => l.sectionId === section.id),
     })),
-    { name: "Alte lucrari", lines: visible.filter((l) => !l.sectionId) },
+    { name: "Alte lucrari", lines: priced.filter((l) => !l.sectionId) },
   ].filter((g) => g.lines.length > 0);
 
   let index = 0;
 
   return (
     <Document
-      title={`${SCOPE_TITLE[scope]} ${estimate.fullNumber}`}
+      title={`${ESTIMATE_TITLE} ${estimate.fullNumber}`}
       author={estimate.org.name}
       language="ro"
     >
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" orientation="landscape" style={styles.page}>
         <Text style={styles.title}>
-          {SCOPE_TITLE[scope]} {estimate.fullNumber}
+          {ESTIMATE_TITLE} {estimate.fullNumber}
         </Text>
         <Text style={styles.subtitle}>
           {estimate.title} · Data: {DATE.format(estimate.issueDate)}
@@ -335,14 +312,10 @@ function EstimateDocument({
               <Text style={[styles.th, styles.colName]}>Denumire lucrare</Text>
               <Text style={[styles.th, styles.colUnit]}>U.M.</Text>
               <Text style={[styles.th, styles.colQty]}>Cantitate</Text>
-              {separat ? (
-                <>
-                  <Text style={[styles.th, styles.colPrice]}>Material</Text>
-                  <Text style={[styles.th, styles.colPrice]}>Manopera</Text>
-                </>
-              ) : (
-                <Text style={[styles.th, styles.colPrice]}>Pret unitar</Text>
-              )}
+              <Text style={[styles.th, styles.colPrice]}>Material</Text>
+              <Text style={[styles.th, styles.colPrice]}>Manopera</Text>
+              <Text style={[styles.th, styles.colPrice]}>Utilaj</Text>
+              <Text style={[styles.th, styles.colPrice]}>Transport</Text>
               <Text style={[styles.th, styles.colTotal]}>Valoare</Text>
             </View>
 
@@ -359,20 +332,18 @@ function EstimateDocument({
                   <Text style={[styles.td, styles.colQty]}>
                     {formatQty(line.quantity)}
                   </Text>
-                  {separat ? (
-                    <>
-                      <Text style={[styles.td, styles.colPrice]}>
-                        {formatLei(line.materialUnitPrice)}
-                      </Text>
-                      <Text style={[styles.td, styles.colPrice]}>
-                        {formatLei(line.laborUnitPrice)}
-                      </Text>
-                    </>
-                  ) : (
-                    <Text style={[styles.td, styles.colPrice]}>
-                      {formatLei(lineTotals.unitPrice)}
-                    </Text>
-                  )}
+                  <Text style={[styles.td, styles.colPrice]}>
+                    {formatLei(line.materialUnitPrice)}
+                  </Text>
+                  <Text style={[styles.td, styles.colPrice]}>
+                    {formatLei(line.laborUnitPrice)}
+                  </Text>
+                  <Text style={[styles.td, styles.colPrice]}>
+                    {formatLei(line.equipmentUnitPrice)}
+                  </Text>
+                  <Text style={[styles.td, styles.colPrice]}>
+                    {formatLei(line.transportUnitPrice)}
+                  </Text>
                   <Text style={[styles.td, styles.colTotal]}>
                     {formatLei(lineTotals.total)}
                   </Text>
@@ -385,14 +356,12 @@ function EstimateDocument({
         <View style={styles.recap} wrap={false}>
           <Text style={[styles.th, { marginBottom: 3 }]}>RECAPITULATIE</Text>
 
-          {separat && (
-            <>
-              <RecapRow label="Materiale" value={totals.totalMaterial} />
-              <RecapRow label="Manopera" value={totals.totalLabor} />
-            </>
-          )}
+          <RecapRow label="Materiale" value={totals.totalMaterial} />
+          <RecapRow label="Manopera" value={totals.totalLabor} />
+          <RecapRow label="Utilaj" value={totals.totalEquipment} />
+          <RecapRow label="Transport" value={totals.totalTransport} />
 
-          <View style={separat ? styles.recapDivider : {}}>
+          <View style={styles.recapDivider}>
             <RecapRow label="Total fara TVA" value={totals.netTotal} bold />
           </View>
 
@@ -416,7 +385,7 @@ function EstimateDocument({
         </View>
 
         <Footer
-          label={`${estimate.org.name} · ${SCOPE_TITLE[scope].toLowerCase()} ${estimate.fullNumber}`}
+          label={`${estimate.org.name} · ${ESTIMATE_TITLE.toLowerCase()} ${estimate.fullNumber}`}
         />
       </Page>
     </Document>
@@ -444,10 +413,9 @@ function RecapRow({
 
 export async function renderEstimatePdf(
   estimate: EstimateForView,
-  scope: EstimatePdfScope = "TOT",
 ): Promise<Buffer> {
   registerPdfFonts();
-  return renderToBuffer(<EstimateDocument estimate={estimate} scope={scope} />);
+  return renderToBuffer(<EstimateDocument estimate={estimate} />);
 }
 
 // ---------------------------------------------------------------------------

@@ -20,7 +20,6 @@ interface OrgSettings {
   iban: string | null;
   bank: string | null;
   defaultVatRate: number;
-  defaultMode: "COMBINAT" | "SEPARAT";
 }
 
 export function OrgSettingsForm({
@@ -137,13 +136,6 @@ export function OrgSettingsForm({
             <div>
               <label className="label" htmlFor="defaultVatRate">TVA %</label>
               <input id="defaultVatRate" name="defaultVatRate" inputMode="decimal" className="input tabular" defaultValue={org.defaultVatRate} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="label" htmlFor="defaultMode">Cum se scriu preturile</label>
-              <select id="defaultMode" name="defaultMode" className="input" defaultValue={org.defaultMode}>
-                <option value="COMBINAT">Un singur pret pe linie</option>
-                <option value="SEPARAT">Materiale si manopera separat</option>
-              </select>
             </div>
           </div>
         </div>

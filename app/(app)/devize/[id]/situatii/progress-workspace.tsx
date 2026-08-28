@@ -24,12 +24,14 @@ interface LineState {
   previouslyDone: number;
   currentQuantity: number;
   /**
-   * Componentele se tin separat, nu doar suma lor: valoarea liniei e suma
-   * materialului si a manoperei rotunjite fiecare in parte, nu produsul
-   * cantitatii cu pretul intreg. Vezi `valoareLinie`.
+   * Componentele se tin separat, nu doar suma lor: valoarea liniei e suma celor
+   * patru rotunjite fiecare in parte, nu produsul cantitatii cu pretul intreg.
+   * Vezi `valoareLinie`.
    */
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
   unitPrice: number;
 }
 
@@ -37,7 +39,7 @@ interface LineState {
  * Valoarea unei linii de situatie, prin acelasi motor ca serverul.
  *
  * `cantitate × unitPrice` pare acelasi lucru si nu este: motorul rotunjeste
- * material si manopera separat, apoi le aduna, iar pretul intreg e deja rotunjit
+ * fiecare componenta separat, apoi le aduna, iar pretul intreg e deja rotunjit
  * la patru zecimale. Pe preturi cu zecimale (12,345 + 7,895 la trei bucati) cele
  * doua formule dau 60,73 fata de 60,72 — un ban pe linie, care se aduna peste
  * toate liniile. Omul ar vedea in ecran un total, iar in situatia salvata altul.
@@ -47,6 +49,8 @@ function valoareLinie(line: LineState, cantitate: number): number {
     quantity: cantitate,
     materialUnitPrice: line.materialUnitPrice,
     laborUnitPrice: line.laborUnitPrice,
+    equipmentUnitPrice: line.equipmentUnitPrice,
+    transportUnitPrice: line.transportUnitPrice,
   }).total;
 }
 
@@ -68,13 +72,11 @@ function monthStart(): string {
 export function ProgressWorkspace({
   estimateId,
   hasClient,
-  separat,
   lines,
   pendingReport,
 }: {
   estimateId: string;
   hasClient: boolean;
-  separat: boolean;
   lines: LineState[];
   pendingReport: PendingReport | null;
 }) {
@@ -86,7 +88,6 @@ export function ProgressWorkspace({
   const [periodStart, setPeriodStart] = useState(monthStart());
   const [periodEnd, setPeriodEnd] = useState(today());
   const [notes, setNotes] = useState("");
-  const [scope, setScope] = useState<"TOT" | "MATERIALE" | "MANOPERA">("TOT");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -153,7 +154,6 @@ export function ProgressWorkspace({
 
       const invoiced = await invoiceProgressReport({
         reportId: result.reportId,
-        scope,
       });
       if (!invoiced.ok || !invoiced.invoiceId) {
         setError(
@@ -406,25 +406,6 @@ export function ProgressWorkspace({
         </div>
 
         <div className="flex flex-col gap-2 lg:flex-row lg:items-end">
-          {separat && (
-            <div>
-              <label className="label" htmlFor="invoiceScope">
-                Factura pentru
-              </label>
-              <select
-                id="invoiceScope"
-                className="input"
-                value={scope}
-                onChange={(e) =>
-                  setScope(e.target.value as "TOT" | "MATERIALE" | "MANOPERA")
-                }
-              >
-                <option value="TOT">tot</option>
-                <option value="MATERIALE">materiale</option>
-                <option value="MANOPERA">manopera</option>
-              </select>
-            </div>
-          )}
           <button
             type="button"
             className="btn-secondary"

@@ -188,7 +188,6 @@ const orgSchema = z.object({
   iban: z.string().nullable(),
   bank: z.string().nullable(),
   defaultVatRate: z.number().min(0).max(100),
-  defaultMode: z.enum(["COMBINAT", "SEPARAT"]),
 });
 
 const num = (value: FormDataEntryValue | null, fallback: number): number => {
@@ -216,7 +215,6 @@ export async function saveOrganization(formData: FormData): Promise<RecordResult
     iban: optional(formData.get("iban")),
     bank: optional(formData.get("bank")),
     defaultVatRate: num(formData.get("defaultVatRate"), 21),
-    defaultMode: String(formData.get("defaultMode") ?? "COMBINAT"),
   });
 
   if (!parsed.success) return { ok: false, fieldErrors: fieldErrorsOf(parsed.error) };

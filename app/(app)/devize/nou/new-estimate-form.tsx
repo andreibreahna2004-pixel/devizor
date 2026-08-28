@@ -21,8 +21,6 @@ interface Option {
   name: string;
 }
 
-type EstimateMode = "COMBINAT" | "SEPARAT";
-
 interface StreamedLine {
   id?: string;
   section: string;
@@ -31,6 +29,8 @@ interface StreamedLine {
   quantity: number;
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
   unitPrice: number;
   total: number;
   justification: string;
@@ -67,12 +67,10 @@ export function NewEstimateForm({
   clients,
   projects,
   aiConfigured,
-  defaultMode,
 }: {
   clients: Option[];
   projects: (Option & { clientId: string | null })[];
   aiConfigured: boolean;
-  defaultMode: EstimateMode;
 }) {
   const router = useRouter();
   const abortRef = useRef<AbortController | null>(null);
@@ -86,7 +84,6 @@ export function NewEstimateForm({
   const [estimateId, setEstimateId] = useState<string | null>(null);
   const [fullNumber, setFullNumber] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
-  const [priceMode, setPriceMode] = useState<EstimateMode>(defaultMode);
 
   const runningTotal = lines.reduce((sum, line) => sum + line.total, 0);
   const lowConfidence = lines.filter((l) => l.confidence === "MICA").length;
@@ -107,10 +104,7 @@ export function NewEstimateForm({
       finishLevel: emptyToNull(form.get("finishLevel")),
       county: emptyToNull(form.get("county")),
       retrospective: form.get("kind") === "executat",
-      mode: String(form.get("priceMode") ?? defaultMode) as EstimateMode,
     };
-
-    setPriceMode(body.mode);
 
     setRunning(true);
     setFinished(false);
@@ -228,42 +222,6 @@ export function NewEstimateForm({
                 <span>
                   <span className="font-medium">Deja construit</span>
                   <span className="mt-0.5 block text-xs text-ink-500">pentru facturare</span>
-                </span>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset disabled={running}>
-            <legend className="label">Cum se scriu preturile</legend>
-            <div className="grid grid-cols-2 gap-2">
-              <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-[var(--border)] p-3 text-sm has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50">
-                <input
-                  type="radio"
-                  name="priceMode"
-                  value="COMBINAT"
-                  defaultChecked={defaultMode === "COMBINAT"}
-                  className="mt-0.5"
-                />
-                <span>
-                  <span className="font-medium">Un singur pret</span>
-                  <span className="mt-0.5 block text-xs text-ink-500">
-                    material si manopera la un loc
-                  </span>
-                </span>
-              </label>
-              <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-[var(--border)] p-3 text-sm has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50">
-                <input
-                  type="radio"
-                  name="priceMode"
-                  value="SEPARAT"
-                  defaultChecked={defaultMode === "SEPARAT"}
-                  className="mt-0.5"
-                />
-                <span>
-                  <span className="font-medium">Separat</span>
-                  <span className="mt-0.5 block text-xs text-ink-500">
-                    doua devize: materiale si manopera
-                  </span>
                 </span>
               </label>
             </div>
@@ -469,7 +427,7 @@ export function NewEstimateForm({
           </div>
         )}
 
-        {lines.length > 0 && <LinesPreview lines={lines} separat={priceMode === "SEPARAT"} />}
+        {lines.length > 0 && <LinesPreview lines={lines} />}
 
         {summary && (
           <div className="card p-5">
@@ -506,13 +464,20 @@ export function NewEstimateForm({
   );
 }
 
-function LinesPreview({
-  lines,
-  separat,
-}: {
-  lines: StreamedLine[];
-  separat: boolean;
-}) {
+/**
+ * Defalcarea pretului unitar, cu componentele nule sarite: pe majoritatea
+ * liniilor utilajul si transportul sint 0 si n-au ce cauta in previzualizare.
+ */
+function componentBreakdown(line: StreamedLine): string {
+  const parts: string[] = [];
+  if (line.materialUnitPrice > 0) parts.push(`material ${formatLei(line.materialUnitPrice)}`);
+  if (line.laborUnitPrice > 0) parts.push(`manopera ${formatLei(line.laborUnitPrice)}`);
+  if (line.equipmentUnitPrice > 0) parts.push(`utilaj ${formatLei(line.equipmentUnitPrice)}`);
+  if (line.transportUnitPrice > 0) parts.push(`transport ${formatLei(line.transportUnitPrice)}`);
+  return parts.join(" + ");
+}
+
+function LinesPreview({ lines }: { lines: StreamedLine[] }) {
   const sections = groupBySection(lines);
 
   return (
@@ -535,8 +500,7 @@ function LinesPreview({
                     <p className="tabular mt-0.5 text-xs text-ink-500">
                       {formatQty(line.quantity)} {line.unit} ×{" "}
                       {formatLei(line.unitPrice)} lei
-                      {separat &&
-                        ` (material ${formatLei(line.materialUnitPrice)} + manopera ${formatLei(line.laborUnitPrice)})`}
+                      {` (${componentBreakdown(line)})`}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

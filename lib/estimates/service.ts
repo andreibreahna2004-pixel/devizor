@@ -1,5 +1,5 @@
 import "server-only";
-import type { EstimateMode, Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { toNumber } from "@/lib/money";
 import { toDecimal } from "@/lib/money-db";
@@ -18,7 +18,6 @@ import {
 
 export interface CreateEstimateInput {
   title: string;
-  mode?: EstimateMode;
   clientId?: string | null;
   projectId?: string | null;
   validUntil?: Date | null;
@@ -32,7 +31,7 @@ export async function createDraftEstimate(
 ) {
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
-    select: { defaultVatRate: true, defaultMode: true },
+    select: { defaultVatRate: true },
   });
 
   return prisma.$transaction(async (tx) => {
@@ -45,7 +44,6 @@ export async function createDraftEstimate(
         number: allocated.number,
         fullNumber: allocated.fullNumber,
         title: input.title,
-        mode: input.mode ?? org.defaultMode,
         clientId: input.clientId ?? null,
         projectId: input.projectId ?? null,
         validUntil: input.validUntil ?? null,
@@ -86,6 +84,8 @@ export interface AddLineInput {
   quantity: number;
   materialUnitPrice: number;
   laborUnitPrice: number;
+  equipmentUnitPrice: number;
+  transportUnitPrice: number;
   sortOrder: number;
   aiGenerated?: boolean;
   aiJustification?: string | null;
@@ -106,6 +106,8 @@ export async function addEstimateLine(estimateId: string, input: AddLineInput) {
       quantity: toDecimal(input.quantity, 4),
       materialUnitPrice: toDecimal(input.materialUnitPrice, 4),
       laborUnitPrice: toDecimal(input.laborUnitPrice, 4),
+      equipmentUnitPrice: toDecimal(input.equipmentUnitPrice, 4),
+      transportUnitPrice: toDecimal(input.transportUnitPrice, 4),
       unitPrice: toDecimal(totals.unitPrice, 4),
       total: toDecimal(totals.total, 2),
       sortOrder: input.sortOrder,
@@ -131,6 +133,8 @@ export async function recalculateEstimate(estimateId: string) {
           quantity: true,
           materialUnitPrice: true,
           laborUnitPrice: true,
+          equipmentUnitPrice: true,
+          transportUnitPrice: true,
         },
       },
     },
@@ -140,6 +144,8 @@ export async function recalculateEstimate(estimateId: string) {
     quantity: toNumber(line.quantity),
     materialUnitPrice: toNumber(line.materialUnitPrice),
     laborUnitPrice: toNumber(line.laborUnitPrice),
+    equipmentUnitPrice: toNumber(line.equipmentUnitPrice),
+    transportUnitPrice: toNumber(line.transportUnitPrice),
   }));
 
   const totals = computeEstimateTotals(lines, toNumber(estimate.vatRate));
@@ -149,6 +155,8 @@ export async function recalculateEstimate(estimateId: string) {
     data: {
       totalMaterial: toDecimal(totals.totalMaterial),
       totalLabor: toDecimal(totals.totalLabor),
+      totalEquipment: toDecimal(totals.totalEquipment),
+      totalTransport: toDecimal(totals.totalTransport),
       netTotal: toDecimal(totals.netTotal),
       vatAmount: toDecimal(totals.vatAmount),
       grandTotal: toDecimal(totals.grandTotal),

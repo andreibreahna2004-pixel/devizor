@@ -10,10 +10,9 @@ import {
   unknownNormCodes,
 } from "./map-tool-output";
 import {
-  type EstimateMode,
   TOOL_NAMES,
-  addLinesSchemaFor,
-  estimateToolsFor,
+  addLinesSchema,
+  estimateTools,
   proposeStepsSchema,
   searchInputSchema,
 } from "./tools";
@@ -64,15 +63,14 @@ interface PendingToolCall {
 }
 
 export async function* generateEstimate(
-  mode: EstimateMode,
   orgName: string,
   brief: EstimateBrief,
 ): AsyncGenerator<GenerationEvent> {
   const startedAt = Date.now();
   const client = getAiClient();
 
-  const tools = estimateToolsFor(mode);
-  const systemBlocks = buildSystemBlocks(mode, orgName, brief.incremental);
+  const tools = estimateTools;
+  const systemBlocks = buildSystemBlocks(orgName, brief.incremental);
 
   const messages: Anthropic.MessageParam[] = [
     { role: "user", content: buildBriefMessage(brief) },
@@ -152,7 +150,7 @@ export async function* generateEstimate(
       pending.push({ id: meta.id, name: meta.name, input });
 
       // Emitem catre interfata acum, inainte sa se incheie tura.
-      for (const uiEvent of mapToolCall(meta.name, input, mode)) {
+      for (const uiEvent of mapToolCall(meta.name, input)) {
         if (uiEvent.type === "line") usage.linesProposed += 1;
         if (uiEvent.type === "question") stopEarly = "question";
         yield uiEvent;
@@ -218,7 +216,7 @@ export async function* generateEstimate(
       results.push({
         type: "tool_result",
         tool_use_id: call.id,
-        content: runTool(call, mode),
+        content: runTool(call),
       });
     }
 
@@ -245,7 +243,7 @@ export async function* generateEstimate(
 }
 
 /** Textul pe care il vede modelul ca rezultat al apelului. */
-function runTool(call: PendingToolCall, mode: EstimateMode): string {
+function runTool(call: PendingToolCall): string {
   if (call.name === TOOL_NAMES.searchNorm) {
     const parsed = searchInputSchema.safeParse(call.input);
     if (!parsed.success) return "Interogare invalida. Trimite cel putin doua caractere.";
@@ -267,7 +265,7 @@ function runTool(call: PendingToolCall, mode: EstimateMode): string {
   }
 
   if (call.name === TOOL_NAMES.addLines) {
-    const parsed = addLinesSchemaFor(mode).safeParse(call.input);
+    const parsed = addLinesSchema.safeParse(call.input);
     if (!parsed.success) {
       return `Argumente invalide, niciuna dintre linii nu a intrat: ${parsed.error.issues
         .map((i) => `${i.path.join(".")} ${i.message}`)
@@ -278,7 +276,7 @@ function runTool(call: PendingToolCall, mode: EstimateMode): string {
       `${parsed.data.linii.length} linii adaugate in sectiunea "${parsed.data.sectiune}".`,
     ];
 
-    const unknown = unknownNormCodes(parsed.data, mode);
+    const unknown = unknownNormCodes(parsed.data);
     if (unknown.length > 0) {
       notes.push(
         `Codurile ${unknown.join(", ")} nu exista in indicator, iar liniile lor au ` +
@@ -286,7 +284,7 @@ function runTool(call: PendingToolCall, mode: EstimateMode): string {
       );
     }
 
-    const priceless = pricelessLines(parsed.data, mode);
+    const priceless = pricelessLines(parsed.data);
     if (priceless.length > 0) {
       notes.push(
         `Au intrat fara pret: ${priceless.join(", ")}. Daca ai un reper rezonabil ` +

@@ -61,7 +61,6 @@ export async function POST(
     select: {
       id: true,
       status: true,
-      mode: true,
       _count: { select: { invoices: true, progressReports: true } },
     },
   });
@@ -103,7 +102,7 @@ export async function POST(
       let failure: string | null = null;
 
       try {
-        const events = generateEstimate(estimate.mode, user.orgName, {
+        const events = generateEstimate(user.orgName, {
           text: parsed.data.text,
           incremental: true,
         });
@@ -128,6 +127,8 @@ export async function POST(
               quantity: line.quantity,
               materialUnitPrice: line.materialUnitPrice,
               laborUnitPrice: line.laborUnitPrice,
+              equipmentUnitPrice: line.equipmentUnitPrice,
+              transportUnitPrice: line.transportUnitPrice,
               sortOrder: sortOrder++,
               aiGenerated: true,
               aiJustification: line.justification,

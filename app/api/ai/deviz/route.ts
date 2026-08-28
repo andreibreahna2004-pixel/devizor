@@ -33,7 +33,6 @@ const requestSchema = z.object({
   finishLevel: z.string().nullable().optional(),
   county: z.string().nullable().optional(),
   retrospective: z.boolean().optional(),
-  mode: z.enum(["COMBINAT", "SEPARAT"]).optional(),
 });
 
 export async function POST(request: Request) {
@@ -78,7 +77,6 @@ export async function POST(request: Request) {
 
   const estimate = await createDraftEstimate(user.orgId, {
     title: input.title,
-    mode: input.mode,
     clientId: input.clientId ?? null,
     projectId: input.projectId ?? null,
     aiBrief: input.brief,
@@ -105,7 +103,7 @@ export async function POST(request: Request) {
       let failure: string | null = null;
 
       try {
-        const events = generateEstimate(estimate.mode, user.orgName, {
+        const events = generateEstimate(user.orgName, {
           text: input.brief,
           workType: input.workType,
           builtArea: input.builtArea,
@@ -137,6 +135,8 @@ export async function POST(request: Request) {
               quantity: line.quantity,
               materialUnitPrice: line.materialUnitPrice,
               laborUnitPrice: line.laborUnitPrice,
+              equipmentUnitPrice: line.equipmentUnitPrice,
+              transportUnitPrice: line.transportUnitPrice,
               sortOrder: sortOrder++,
               aiGenerated: true,
               aiJustification: line.justification,

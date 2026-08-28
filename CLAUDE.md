@@ -13,10 +13,11 @@ care il semneaza cineva. Regulile de mai jos exista ca sa nu se intimple asta.
 ## Cele patru reguli care nu se incalca
 
 **1. Pretul il scrie omul, pe linia de deviz.** Nu exista catalog de articole, de
-materiale sau de tarife. Nu exista coeficienti care se adauga peste pret in
-recapitulatie. Nimic nu recalculeaza in spate o valoare pe care a scris-o omul.
-Daca apare cerinta unei a doua surse de adevar pentru bani, e semnalul ca ceva e
-gresit in cerinta, nu in cod.
+materiale sau de tarife. Recapitulatia totalizeaza si atit: nu exista cheltuieli
+indirecte, nu exista procent de profit, nu exista niciun coeficient care se adauga
+peste pret. Nimic nu recalculeaza in spate o valoare pe care a scris-o omul. Daca
+apare cerinta unei a doua surse de adevar pentru bani, e semnalul ca ceva e gresit
+in cerinta, nu in cod.
 
 **2. Un singur motor de calcul.** `lib/pricing/calculator.ts` e folosit de
 interfata, PDF, XML, situatii de lucrari si generatorul AI. Orice adunare de
@@ -41,7 +42,7 @@ app/
   api/
     ai/deviz               generare deviz nou, flux SSE
     devize/[id]/linii      adaugare din vorbire in deviz existent, SSE
-    devize/[id]/pdf        ?parte=materiale|manopera
+    devize/[id]/pdf        un singur PDF, landscape
     facturi/[id]/{pdf,xml}
 components/
   charts/          sparkline (server) + graficul de evolutie (client)
@@ -55,9 +56,9 @@ lib/
   pricing/         motorul de calcul — sursa unica de adevar pentru cifre
   estimates/       operatiile pe deviz
   progress/        situatii de lucrari, cantitati executate cumulat
-  invoices/        emitere pe materiale/manopera/tot, storno, snapshot-uri
+  invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
   efactura/        generator UBL 2.1 + validator CIUS-RO
-  pdf/             documente react-pdf
+  pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
   auth.ts          sesiune JWT in cookie
   tenant.ts        requireUser, canManage — poarta spre orice date
@@ -71,24 +72,36 @@ prisma/            schema, migrari, seed
 
 ## Modelul de date
 
-Devizul are un **mod**: `COMBINAT` (un pret pe linie) sau `SEPARAT` (material si
-manopera pe coloane separate). Modul decide cite coloane are editorul, cite
-PDF-uri ies si ce facturi se pot emite.
+Devizul e unul singur — nu exista moduri. `EstimateLine` tine **patru preturi
+unitare**: `materialUnitPrice`, `laborUnitPrice`, `equipmentUnitPrice`,
+`transportUnitPrice`. Asa e scris articolul intr-un deviz romanesc, si asa se
+citeste recapitulatia.
 
-`EstimateLine` tine `materialUnitPrice` si `laborUnitPrice`. In modul COMBINAT
-pretul intreg sta pe `materialUnitPrice`, iar manopera ramine 0 — asa trecerea
-intre moduri nu pierde bani.
+Utilajul si transportul sint 0 pe majoritatea liniilor. Nu e o scapare: o
+tencuiala manuala n-are utilaj imputat, iar transportul e de cele mai multe ori
+deja in pretul materialului. Cine il scrie si acolo il face platit de doua ori.
 
-Factura are `scope`: `TOT`, `MATERIALE` sau `MANOPERA`. Dintr-un deviz separat se
-pot emite doua facturi, fiecare cu numarul si XML-ul ei.
+Dintr-un deviz iese **o singura factura**, pe toata valoarea lui. `Invoice.scope`
+si enum-ul `InvoiceScope` raman in schema doar pentru facturile emise inainte,
+cind devizul se putea imparte pe materiale si manopera — un document emis nu se
+modifica, nici macar o eticheta pe el. Tot ce se emite de acum poarta `TOT`.
+
+`ProgressLine` pastreaza aceleasi patru componente, ca recapitulatia unei situatii
+de lucrari sa se citeasca la fel cu cea a devizului din care vine.
 
 ### Reguli de calcul
 
 - Banii se tin in `Decimal`, niciodata in float. Preturi unitare cu 4 zecimale,
   totaluri cu 2.
 - Valoarea unei linii e **suma componentelor rotunjite separat**, nu
-  `cantitate × pret_total`. Asa cele doua facturi separate aduna exact cit
-  devizul.
+  `cantitate × pret_total`. Asa se inchide recapitulatia: cele patru coloane
+  totalizate dau exact totalul devizului.
+- **Factura poate diferi de deviz cu citiva bani.** Devizul aduna componente
+  rotunjite fiecare in parte; factura inmulteste cantitatea cu un pret unitar deja
+  rotunjit la doi bani, pentru ca `cantitate × pret` trebuie sa dea exact valoarea
+  liniei si in PDF si in XML. Diferenta e cunoscuta, testata in
+  `lib/invoices/lines.test.ts`, si se accepta: actul trebuie sa se verifice cu el
+  insusi la validatorul ANAF.
 - TVA-ul pe factura se calculeaza **pe grupa de cota, din baza insumata** — nu
   prin adunarea TVA-ului de pe linii. E regula EN 16931 (BR-CO-17); insumarea
   liniilor deviaza cu un ban si factura e respinsa de validatorul ANAF.
@@ -224,7 +237,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 162 de teste
+npm test          # 188 de teste
 npm run typecheck
 npm run build
 ```
@@ -234,9 +247,9 @@ Nu raporta ceva ca terminat fara ca astea trei sa treaca.
 Pentru date de umblat prin aplicatie, dupa `npm run db:seed`:
 
 ```bash
-npm run demo:deviz                  # deviz de 21 de linii, in modul separat
-npm run demo:istoric                # un an de documente, ca sa aiba graficele ce arata
-npm run demo:factura -- materiale   # factura de materiale
+npm run demo:deviz     # deviz de 21 de linii, cu utilaj si transport pe citeva
+npm run demo:istoric   # un an de documente, ca sa aiba graficele ce arata
+npm run demo:factura   # factura pe tot devizul
 ```
 
 `demo:istoric` genereaza determinist (simbure fixat), deci doua rulari dau
