@@ -254,11 +254,26 @@ npm run build
 
 Nu raporta ceva ca terminat fara ca astea trei sa treaca.
 
-`build` ruleaza `prisma generate && prisma migrate deploy && next build`. Migrarea
-sta acolo pentru ca deploy-ul de pe Vercel nu are alt pas care s-o aplice: fara ea,
-codul nou ar ajunge live peste o schema veche. Doua urmari: **build-ul cere baza
-pornita**, si un esec de migrare opreste deploy-ul in loc sa scoata in productie un
-cod care n-are unde sa scrie.
+### Migrarile NU se aplica la deploy
+
+`build` e `prisma generate && next build`. Nu ruleaza `prisma migrate deploy`, si
+asta cere atentie: **o schimbare de schema trebuie aplicata pe baza de productie
+manual, inainte de a duce codul acolo.**
+
+S-a incercat si varianta cu migrarea in build. Pe Vercel a picat, si a picat prost:
+build-ul esuat a blocat toate deploy-urile, nu doar pe cel cu schema noua. Pina se
+citeste log-ul de build si se afla de ce (candidatii: `DATABASE_URL` neexpus la
+build, sau o conexiune pooled pe care `migrate deploy` o refuza, caz in care
+`datasource` are nevoie de `directUrl`), migrarile se aplica de mina:
+
+```bash
+DATABASE_URL="<url-ul de productie>" npx prisma migrate deploy
+```
+
+Ordinea conteaza. O migrare care doar adauga coloane se aplica inainte de deploy si
+nu deranjeaza codul vechi. Una care sterge ceva se aplica dupa ce noul cod e live,
+altfel cade codul care inca citeste coloana. De aceea migrarile de aici se scriu in
+doi pasi: intii expandarea, apoi contractia.
 
 Pentru date de umblat prin aplicatie, dupa `npm run db:seed`:
 
@@ -280,9 +295,6 @@ aceleasi grafice si o captura de ecran se poate compara cu alta.
 - **`prisma generate` esueaza daca dev serverul ruleaza** — tine deschis
   `query_engine-windows.dll.node`. Opreste-l intii. `npm run build` il cheama,
   deci si build-ul cere serverul oprit.
-- **`npm run build` cere si containerul de PostgreSQL pornit**, fiindca ruleaza
-  `prisma migrate deploy`. Cu Docker oprit, build-ul pica la migrare, nu la
-  compilare — mesajul vorbeste despre conexiune, nu despre cod.
 - **PostgreSQL sta intr-un container, nu ca serviciu.** Masina n-are Postgres
   local si n-are `psql` in PATH. Baza din `DATABASE_URL` e servita de:
 
