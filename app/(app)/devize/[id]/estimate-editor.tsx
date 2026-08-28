@@ -181,8 +181,8 @@ export function EstimateEditor({
     });
   }
 
-  // Lucrare, Cantitate, U.M., patru preturi, Valoare — plus coloana de stergere.
-  const columnCount = 8 + (editable ? 1 : 0);
+  // Lucrare, Cantitate, U.M., Pret unitar, Valoare — plus coloana de stergere.
+  const columnCount = 5 + (editable ? 1 : 0);
 
   return (
     <div className="space-y-5">
@@ -270,10 +270,7 @@ export function EstimateEditor({
                       <th className="th w-full">Lucrare</th>
                       <th className="th w-24 text-right">Cantitate</th>
                       <th className="th w-20">U.M.</th>
-                      <th className="th w-24 text-right">Material</th>
-                      <th className="th w-24 text-right">Manopera</th>
-                      <th className="th w-24 text-right">Utilaj</th>
-                      <th className="th w-24 text-right">Transport</th>
+                      <th className="th w-28 text-right">Pret unitar</th>
                       <th className="th w-32 text-right">Valoare</th>
                       {editable && <th className="th w-10" />}
                     </tr>
@@ -317,38 +314,11 @@ export function EstimateEditor({
                               />
                             </td>
 
-                            <NumberCell
-                              value={line.materialUnitPrice}
-                              decimals={2}
-                              editable={editable}
-                              onChange={(materialUnitPrice) =>
-                                patchLine(line.id, { materialUnitPrice })
-                              }
-                            />
-                            <NumberCell
-                              value={line.laborUnitPrice}
-                              decimals={2}
-                              editable={editable}
-                              onChange={(laborUnitPrice) =>
-                                patchLine(line.id, { laborUnitPrice })
-                              }
-                            />
-                            <NumberCell
-                              value={line.equipmentUnitPrice}
-                              decimals={2}
-                              editable={editable}
-                              onChange={(equipmentUnitPrice) =>
-                                patchLine(line.id, { equipmentUnitPrice })
-                              }
-                            />
-                            <NumberCell
-                              value={line.transportUnitPrice}
-                              decimals={2}
-                              editable={editable}
-                              onChange={(transportUnitPrice) =>
-                                patchLine(line.id, { transportUnitPrice })
-                              }
-                            />
+                            {/* Suma celor patru, read-only: defalcarea se editeaza
+                                in randul care se deschide sub linie. */}
+                            <td className="td tabular text-right text-ink-600">
+                              {formatLei(lineTotals.unitPrice)}
+                            </td>
 
                             <td className="td tabular text-right font-medium">
                               {formatLei(lineTotals.total)}
@@ -368,9 +338,7 @@ export function EstimateEditor({
                             )}
                           </tr>
 
-                          {isOpen &&
-                            (line.aiJustification ||
-                              line.alternatives.length > 0) && (
+                          {isOpen && (
                               <tr className="bg-ink-50">
                                 <td className="td" colSpan={columnCount}>
                                   <LineDetails
@@ -441,24 +409,17 @@ function LineMeta({
   open: boolean;
   onToggle: () => void;
 }) {
-  const hasDetails = Boolean(line.aiJustification) || line.alternatives.length > 0;
-  if (!line.code && !hasDetails && (line.reviewed || !line.aiGenerated)) return null;
-
+  // Butonul e pe fiecare linie, nu doar pe cele venite de la AI: sub el stau
+  // acum cele patru preturi, iar o linie scrisa de mina ar ramine needitabila.
   return (
     <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-ink-500">
       {line.code && <span className="tabular">{line.code}</span>}
       {line.aiGenerated && !line.reviewed && (
         <ConfidenceBadge confidence={line.aiConfidence} />
       )}
-      {hasDetails && (
-        <button type="button" onClick={onToggle} className="link">
-          {open
-            ? "ascunde"
-            : line.alternatives.length > 0
-              ? "vezi calculul si variantele"
-              : "vezi calculul"}
-        </button>
-      )}
+      <button type="button" onClick={onToggle} className="link">
+        {open ? "ascunde" : "preturi si detalii"}
+      </button>
     </div>
   );
 }
@@ -473,8 +434,51 @@ function LineDetails({
   editable: boolean;
   onPatch: (patch: Partial<EditorLine>) => void;
 }) {
+  const hasNotes = Boolean(line.aiJustification) || line.alternatives.length > 0;
+
   return (
     <>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 sm:grid-cols-4">
+        <CardField label="Material">
+          <NumberInput
+            value={line.materialUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(materialUnitPrice) => onPatch({ materialUnitPrice })}
+          />
+        </CardField>
+        <CardField label="Manopera">
+          <NumberInput
+            value={line.laborUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(laborUnitPrice) => onPatch({ laborUnitPrice })}
+          />
+        </CardField>
+        <CardField label="Utilaj">
+          <NumberInput
+            value={line.equipmentUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(equipmentUnitPrice) => onPatch({ equipmentUnitPrice })}
+          />
+        </CardField>
+        <CardField label="Transport">
+          <NumberInput
+            value={line.transportUnitPrice}
+            decimals={2}
+            editable={editable}
+            className="w-full text-right"
+            onChange={(transportUnitPrice) => onPatch({ transportUnitPrice })}
+          />
+        </CardField>
+      </div>
+
+      {hasNotes && <div className="mt-3 border-t border-[var(--border)] pt-3" />}
+
       {line.aiJustification && (
         <p className="text-xs leading-relaxed text-ink-600">
           <span className="font-medium text-ink-700">Cum a rezultat cantitatea:</span>{" "}
@@ -561,50 +565,14 @@ function LineCard({
             onChange={(unit) => onPatch({ unit })}
           />
         </CardField>
-
-        <CardField label="Material">
-          <NumberInput
-            value={line.materialUnitPrice}
-            decimals={2}
-            editable={editable}
-            className="w-full text-right"
-            onChange={(materialUnitPrice) => onPatch({ materialUnitPrice })}
-          />
-        </CardField>
-
-        <CardField label="Manopera">
-          <NumberInput
-            value={line.laborUnitPrice}
-            decimals={2}
-            editable={editable}
-            className="w-full text-right"
-            onChange={(laborUnitPrice) => onPatch({ laborUnitPrice })}
-          />
-        </CardField>
-
-        <CardField label="Utilaj">
-          <NumberInput
-            value={line.equipmentUnitPrice}
-            decimals={2}
-            editable={editable}
-            className="w-full text-right"
-            onChange={(equipmentUnitPrice) => onPatch({ equipmentUnitPrice })}
-          />
-        </CardField>
-
-        <CardField label="Transport">
-          <NumberInput
-            value={line.transportUnitPrice}
-            decimals={2}
-            editable={editable}
-            className="w-full text-right"
-            onChange={(transportUnitPrice) => onPatch({ transportUnitPrice })}
-          />
-        </CardField>
       </div>
 
+      {/* Cu preturile mutate in expansiune, linia inchisa ar ramine fara nicio
+          cifra de pret. Citirea clasica a unui rind de deviz o repune la loc. */}
       <div className="mt-3 flex items-center justify-between gap-3 border-t border-[var(--border)] pt-2.5">
-        <span className="text-xs text-ink-500">Valoare</span>
+        <span className="tabular text-xs text-ink-500">
+          {formatQty(line.quantity)} {line.unit} × {formatLei(totals.unitPrice)}
+        </span>
         <div className="flex items-center gap-1">
           <span className="tabular text-sm font-semibold text-ink-900">
             {formatLei(totals.total)} lei
@@ -623,7 +591,7 @@ function LineCard({
         </div>
       </div>
 
-      {open && (Boolean(line.aiJustification) || line.alternatives.length > 0) && (
+      {open && (
         <div className="mt-3 rounded-lg bg-ink-50 p-3">
           <LineDetails line={line} editable={editable} onPatch={onPatch} />
         </div>
