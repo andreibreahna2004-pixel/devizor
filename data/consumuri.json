@@ -2,6 +2,12 @@
  {
   "id": "beton-c8-10",
   "denumire": "Beton preparat pe santier C8/10",
+  "sinonime": [
+   "beton slab",
+   "beton de egalizare",
+   "b100",
+   "beton simplu"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -52,6 +58,10 @@
  {
   "id": "beton-c12-15",
   "denumire": "Beton preparat pe santier C12/15",
+  "sinonime": [
+   "b150",
+   "beton pentru trotuare"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -102,6 +112,11 @@
  {
   "id": "beton-c16-20",
   "denumire": "Beton preparat pe santier C16/20 (B250)",
+  "sinonime": [
+   "b250",
+   "beton de fundatie",
+   "beton la betoniera"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -152,6 +167,11 @@
  {
   "id": "beton-c20-25",
   "denumire": "Beton preparat pe santier C20/25 (B300)",
+  "sinonime": [
+   "b300",
+   "beton pentru placa",
+   "beton armat"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -202,6 +222,10 @@
  {
   "id": "beton-c25-30",
   "denumire": "Beton preparat pe santier C25/30 (B350)",
+  "sinonime": [
+   "b350",
+   "beton de rezistenta"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -252,6 +276,12 @@
  {
   "id": "beton-turnat-gata",
   "denumire": "Beton turnat din statie",
+  "sinonime": [
+   "beton de statie",
+   "beton la pompa",
+   "betoniera auto",
+   "autobetoniera"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -280,6 +310,14 @@
  {
   "id": "armatura-beton",
   "denumire": "Armatura pentru elemente de beton armat",
+  "sinonime": [
+   "fier beton",
+   "otel beton",
+   "armare",
+   "fasonat fier",
+   "pc52",
+   "ob37"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc beton",
   "parametru": {
@@ -340,6 +378,11 @@
  {
   "id": "cofraj-fundatii",
   "denumire": "Cofraj din lemn la fundatii",
+  "sinonime": [
+   "cofrare fundatie",
+   "cofraj de lemn",
+   "cofrat"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mp",
   "materiale": [
@@ -390,6 +433,11 @@
  {
   "id": "cofraj-stalpi-grinzi",
   "denumire": "Cofraj la stalpi, grinzi si centuri",
+  "sinonime": [
+   "cofrare stalpi",
+   "cofrat grinzi",
+   "panouri de cofraj"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mp",
   "materiale": [
@@ -440,6 +488,11 @@
  {
   "id": "cofraj-plansee",
   "denumire": "Cofraj la plansee",
+  "sinonime": [
+   "cofrare planseu",
+   "popi de cofraj",
+   "cofrat placa"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mp",
   "materiale": [
@@ -489,6 +542,11 @@
  {
   "id": "umplutura-balast",
   "denumire": "Umplutura de balast compactat",
+  "sinonime": [
+   "balast compactat",
+   "umplutura",
+   "pat de balast"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -508,6 +566,11 @@
  {
   "id": "pietris-sub-placa",
   "denumire": "Strat de pietris sub placa",
+  "sinonime": [
+   "pietris sub placa",
+   "strat de pietris",
+   "criblura"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mc",
   "materiale": [
@@ -526,6 +589,11 @@
  {
   "id": "hidroizolatie-fundatie",
   "denumire": "Hidroizolatie la fundatii si soclu",
+  "sinonime": [
+   "bitum la fundatie",
+   "izolatie fundatie",
+   "membrana la soclu"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mp",
   "materiale": [
@@ -558,6 +626,11 @@
  {
   "id": "drenaj-perimetral",
   "denumire": "Drenaj perimetral la fundatie",
+  "sinonime": [
+   "drenaj",
+   "tub de drenaj",
+   "dren"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "ml",
   "materiale": [
@@ -594,6 +667,10 @@
  {
   "id": "egalizare-beton",
   "denumire": "Beton de egalizare sub fundatie",
+  "sinonime": [
+   "beton de egalizare",
+   "sapa de egalizare sub fundatie"
+  ],
   "categorie": "Infrastructura si beton",
   "um": "mp",
   "parametru": {
@@ -618,6 +695,11 @@
  {
   "id": "zidarie-bca-10",
   "denumire": "Zidarie BCA 10 cm",
+  "sinonime": [
+   "bca 10",
+   "perete despartitor bca",
+   "boltari 10"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -663,6 +745,10 @@
  {
   "id": "zidarie-bca-15",
   "denumire": "Zidarie BCA 15 cm",
+  "sinonime": [
+   "bca 15",
+   "boltari 15"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -708,6 +794,10 @@
  {
   "id": "zidarie-bca-20",
   "denumire": "Zidarie BCA 20 cm",
+  "sinonime": [
+   "bca 20",
+   "boltari 20"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -753,6 +843,11 @@
  {
   "id": "zidarie-bca-25",
   "denumire": "Zidarie BCA 25 cm",
+  "sinonime": [
+   "bca 25",
+   "boltari 25",
+   "zid de bca"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -798,6 +893,11 @@
  {
   "id": "zidarie-bca-30",
   "denumire": "Zidarie BCA 30 cm",
+  "sinonime": [
+   "bca 30",
+   "boltari 30",
+   "zid exterior bca"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -843,6 +943,12 @@
  {
   "id": "zidarie-porotherm-25",
   "denumire": "Zidarie caramida cu goluri 25 cm",
+  "sinonime": [
+   "porotherm 25",
+   "caramida 25",
+   "caramida cu goluri",
+   "brikston"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -874,6 +980,11 @@
  {
   "id": "zidarie-porotherm-30",
   "denumire": "Zidarie caramida cu goluri 30 cm",
+  "sinonime": [
+   "porotherm 30",
+   "caramida 30",
+   "caramida termoizolanta"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -905,6 +1016,11 @@
  {
   "id": "zidarie-caramida-plina",
   "denumire": "Zidarie din caramida plina",
+  "sinonime": [
+   "caramida plina",
+   "caramida rosie",
+   "zidarie clasica"
+  ],
   "categorie": "Zidarii",
   "um": "mp",
   "materiale": [
@@ -937,6 +1053,11 @@
  {
   "id": "zidarie-mortar-santier",
   "denumire": "Mortar de zidarie preparat pe santier",
+  "sinonime": [
+   "mortar de var",
+   "mortar preparat",
+   "mortar de zidit"
+  ],
   "categorie": "Zidarii",
   "um": "mc",
   "materiale": [
@@ -978,6 +1099,10 @@
  {
   "id": "zidarie-piatra",
   "denumire": "Zidarie din piatra bruta",
+  "sinonime": [
+   "zid de piatra",
+   "piatra bruta"
+  ],
   "categorie": "Zidarii",
   "um": "mc",
   "materiale": [
@@ -1005,6 +1130,11 @@
  {
   "id": "stalpisori-beton",
   "denumire": "Stalpisori de beton armat",
+  "sinonime": [
+   "stalpi de beton",
+   "samburi",
+   "stalpisor"
+  ],
   "categorie": "Zidarii",
   "um": "ml",
   "materiale": [
@@ -1042,6 +1172,11 @@
  {
   "id": "centura-beton",
   "denumire": "Centura de beton armat",
+  "sinonime": [
+   "centura",
+   "grinda de centura",
+   "centura seismica"
+  ],
   "categorie": "Zidarii",
   "um": "ml",
   "materiale": [
@@ -1078,6 +1213,11 @@
  {
   "id": "buiandrug",
   "denumire": "Buiandrug peste gol de usa sau fereastra",
+  "sinonime": [
+   "buiandrugi",
+   "grinda peste usa",
+   "prag de fereastra"
+  ],
   "categorie": "Zidarii",
   "um": "ml",
   "materiale": [
@@ -1110,6 +1250,11 @@
  {
   "id": "planseu-beton-armat",
   "denumire": "Planseu de beton armat monolit",
+  "sinonime": [
+   "placa de beton",
+   "turnare placa",
+   "planseu monolit"
+  ],
   "categorie": "Plansee si structura",
   "um": "mp",
   "parametru": {
@@ -1152,6 +1297,11 @@
  {
   "id": "planseu-predale",
   "denumire": "Planseu din predale si corpuri de umplutura",
+  "sinonime": [
+   "predale",
+   "planseu prefabricat",
+   "boltari de planseu"
+  ],
   "categorie": "Plansee si structura",
   "um": "mp",
   "materiale": [
@@ -1197,6 +1347,11 @@
  {
   "id": "planseu-lemn",
   "denumire": "Planseu din grinzi de lemn",
+  "sinonime": [
+   "planseu de lemn",
+   "grinzi de lemn",
+   "dusumea"
+  ],
   "categorie": "Plansee si structura",
   "um": "mp",
   "materiale": [
@@ -1233,6 +1388,11 @@
  {
   "id": "scara-beton",
   "denumire": "Scara de beton armat",
+  "sinonime": [
+   "scara de beton",
+   "trepte de beton",
+   "rampa de scara"
+  ],
   "categorie": "Plansee si structura",
   "um": "mc",
   "materiale": [
@@ -1269,6 +1429,11 @@
  {
   "id": "structura-metalica",
   "denumire": "Structura metalica usoara",
+  "sinonime": [
+   "hala metalica",
+   "confectii metalice",
+   "structura de otel"
+  ],
   "categorie": "Plansee si structura",
   "um": "to",
   "materiale": [
@@ -1322,6 +1487,11 @@
  {
   "id": "plasa-sudata",
   "denumire": "Plasa sudata in placi si sape",
+  "sinonime": [
+   "plasa sudata",
+   "plasa buzau",
+   "armare placa"
+  ],
   "categorie": "Plansee si structura",
   "um": "mp",
   "materiale": [
@@ -1350,6 +1520,12 @@
  {
   "id": "sarpanta-lemn",
   "denumire": "Sarpanta din lemn",
+  "sinonime": [
+   "sarpanta",
+   "capriori",
+   "structura acoperis",
+   "lemn de acoperis"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1391,6 +1567,11 @@
  {
   "id": "astereala-scandura",
   "denumire": "Astereala din scandura",
+  "sinonime": [
+   "astereala",
+   "scandura pe acoperis",
+   "batut astereala"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1418,6 +1599,11 @@
  {
   "id": "astereala-osb",
   "denumire": "Astereala din OSB",
+  "sinonime": [
+   "osb pe acoperis",
+   "placi osb",
+   "astereala osb"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1445,6 +1631,11 @@
  {
   "id": "folie-anticondens",
   "denumire": "Folie anticondens sub invelitoare",
+  "sinonime": [
+   "folie de acoperis",
+   "anticondens",
+   "membrana difuzie"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1477,6 +1668,12 @@
  {
   "id": "sipci-contrasipci",
   "denumire": "Sipci si contrasipci",
+  "sinonime": [
+   "sipci",
+   "sipcuit",
+   "contrasipci",
+   "batut sipci"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1514,6 +1711,12 @@
  {
   "id": "tigla-ceramica",
   "denumire": "Invelitoare din tigla ceramica",
+  "sinonime": [
+   "tigla",
+   "tigla de ceramica",
+   "acoperis de tigla",
+   "invelitoare ceramica"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1551,6 +1754,12 @@
  {
   "id": "tigla-metalica",
   "denumire": "Invelitoare din tigla metalica",
+  "sinonime": [
+   "lindab",
+   "tigla metalica",
+   "acoperis metalic",
+   "tabla tip tigla"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1588,6 +1797,12 @@
  {
   "id": "tabla-faltuita",
   "denumire": "Invelitoare din tabla faltuita",
+  "sinonime": [
+   "tabla faltuita",
+   "fals la tabla",
+   "acoperis de tabla",
+   "tabla zincata"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1616,6 +1831,11 @@
  {
   "id": "sindrila-bituminoasa",
   "denumire": "Invelitoare din sindrila bituminoasa",
+  "sinonime": [
+   "sindrila",
+   "tigla bituminoasa",
+   "shingle"
+  ],
   "categorie": "Acoperis",
   "um": "mp",
   "materiale": [
@@ -1661,6 +1881,12 @@
  {
   "id": "jgheaburi-burlane",
   "denumire": "Jgheaburi si burlane",
+  "sinonime": [
+   "jgheab",
+   "burlan",
+   "sistem pluvial",
+   "scurgeri"
+  ],
   "categorie": "Acoperis",
   "um": "ml",
   "materiale": [
@@ -1706,6 +1932,12 @@
  {
   "id": "accesorii-acoperis",
   "denumire": "Pazii, sorturi si accesorii de acoperis",
+  "sinonime": [
+   "pazie",
+   "sort de streasina",
+   "streasina",
+   "accesorii acoperis"
+  ],
   "categorie": "Acoperis",
   "um": "ml",
   "materiale": [
@@ -1740,8 +1972,58 @@
   "rezervaImplicita": 5
  },
  {
+  "id": "carton-bituminos",
+  "denumire": "Invelitoare din carton bituminos",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "sinonime": [
+   "carton asfaltat",
+   "carton bituminos",
+   "acoperis de carton"
+  ],
+  "materiale": [
+   {
+    "denumire": "Carton bituminos",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.25
+    ],
+    "sursa": "practica curenta",
+    "nota": "Petrecerile de 10-15 cm intre fasii."
+   },
+   {
+    "denumire": "Cuie cu cap lat",
+    "um": "buc",
+    "consum": [
+     14,
+     20
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mastic bituminos",
+    "um": "kg",
+    "consum": [
+     0.2,
+     0.35
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
   "id": "termosistem-eps-5",
   "denumire": "Termosistem cu polistiren EPS 5 cm",
+  "sinonime": [
+   "termosistem 5",
+   "polistiren 5",
+   "anveloparea casei",
+   "termo 5 cm",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -1835,6 +2117,15 @@
  {
   "id": "termosistem-eps-10",
   "denumire": "Termosistem cu polistiren EPS 10 cm",
+  "sinonime": [
+   "termosistem 10",
+   "polistiren 10",
+   "termo",
+   "anvelopare",
+   "izolatie fatada",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -1928,6 +2219,13 @@
  {
   "id": "termosistem-eps-15",
   "denumire": "Termosistem cu polistiren EPS 15 cm",
+  "sinonime": [
+   "termosistem 15",
+   "polistiren 15",
+   "termo gros",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -2021,6 +2319,13 @@
  {
   "id": "termosistem-vata",
   "denumire": "Termosistem cu vata bazaltica",
+  "sinonime": [
+   "vata bazaltica",
+   "termosistem cu vata",
+   "vata de fatada",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -2090,6 +2395,13 @@
  {
   "id": "tencuiala-decorativa",
   "denumire": "Tencuiala decorativa structurata",
+  "sinonime": [
+   "decorativa",
+   "structurata",
+   "baumit",
+   "tencuiala de fatada",
+   "praf de piatra"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -2150,6 +2462,11 @@
  {
   "id": "izolatie-pod",
   "denumire": "Izolatie termica in pod",
+  "sinonime": [
+   "izolatie pod",
+   "vata in pod",
+   "saltele de vata"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "materiale": [
@@ -2186,6 +2503,11 @@
  {
   "id": "izolatie-planseu-subsol",
   "denumire": "Izolatie la planseul peste subsol",
+  "sinonime": [
+   "izolatie tavan subsol",
+   "polistiren pe tavan",
+   "izolatie pivnita"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "materiale": [
@@ -2226,6 +2548,13 @@
  {
   "id": "izolatie-soclu",
   "denumire": "Izolatie la soclu cu XPS",
+  "sinonime": [
+   "xps",
+   "polistiren extrudat",
+   "izolatie soclu",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "parametru": {
@@ -2285,6 +2614,11 @@
  {
   "id": "izolatie-terasa",
   "denumire": "Termoizolatie la terasa necirculabila",
+  "sinonime": [
+   "izolatie terasa",
+   "polistiren pe terasa",
+   "termoizolatie acoperis plat"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "materiale": [
@@ -2321,6 +2655,11 @@
  {
   "id": "izolatie-fonica-perete",
   "denumire": "Izolatie fonica in pereti usori",
+  "sinonime": [
+   "fonoizolatie",
+   "izolatie fonica",
+   "vata in perete"
+  ],
   "categorie": "Termoizolatii",
   "um": "mp",
   "materiale": [
@@ -2346,8 +2685,120 @@
   "rezervaImplicita": 5
  },
  {
+  "id": "tencuiala-mozaicata",
+  "denumire": "Tencuiala mozaicata la soclu",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "sinonime": [
+   "mozaic la soclu",
+   "tencuiala mozaicata",
+   "soclu mozaicat",
+   "marmorit"
+  ],
+  "materiale": [
+   {
+    "denumire": "Tencuiala mozaicata",
+    "um": "kg",
+    "consum": [
+     4.0,
+     5.5
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa pigmentata",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "profile-decorative",
+  "denumire": "Montaj profile decorative din polistiren",
+  "categorie": "Termoizolatii",
+  "um": "ml",
+  "sinonime": [
+   "profile decorative",
+   "ancadramente",
+   "brau decorativ",
+   "scafe de polistiren",
+   "mana de spaclu",
+   "masa de spaclu"
+  ],
+  "materiale": [
+   {
+    "denumire": "Profil decorativ",
+    "um": "ml",
+    "consum": [
+     1.02,
+     1.08
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru profile",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "consum": [
+     0.4,
+     0.7
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
   "id": "membrana-terasa",
   "denumire": "Hidroizolatie cu membrana bituminoasa",
+  "sinonime": [
+   "membrana",
+   "carton asfaltat lipit",
+   "hidroizolatie terasa",
+   "bituminoasa"
+  ],
   "categorie": "Hidroizolatii",
   "um": "mp",
   "materiale": [
@@ -2398,6 +2849,12 @@
  {
   "id": "hidroizolatie-baie",
   "denumire": "Hidroizolatie lichida in baie",
+  "sinonime": [
+   "kit de baie",
+   "hidroizolatie baie",
+   "izolatie dus",
+   "hidroizolant lichid"
+  ],
   "categorie": "Hidroizolatii",
   "um": "mp",
   "materiale": [
@@ -2452,6 +2909,11 @@
  {
   "id": "hidroizolatie-cuva",
   "denumire": "Hidroizolatie rigida la cuve si bazine",
+  "sinonime": [
+   "hidroizolatie bazin",
+   "cuva de beton",
+   "mortar de etansare"
+  ],
   "categorie": "Hidroizolatii",
   "um": "mp",
   "materiale": [
@@ -2483,6 +2945,10 @@
  {
   "id": "bariera-vapori",
   "denumire": "Bariera de vapori",
+  "sinonime": [
+   "folie de vapori",
+   "bariera vapori"
+  ],
   "categorie": "Hidroizolatii",
   "um": "mp",
   "materiale": [
@@ -2514,6 +2980,10 @@
  {
   "id": "hidroizolatie-sub-sapa",
   "denumire": "Hidroizolatie sub sapa",
+  "sinonime": [
+   "folie sub sapa",
+   "polietilena sub sapa"
+  ],
   "categorie": "Hidroizolatii",
   "um": "mp",
   "materiale": [
@@ -2541,6 +3011,12 @@
  {
   "id": "etansare-rosturi",
   "denumire": "Etansare rosturi cu silicon sau poliuretan",
+  "sinonime": [
+   "silicon",
+   "rosturi",
+   "chituit rosturi",
+   "poliuretanic"
+  ],
   "categorie": "Hidroizolatii",
   "um": "ml",
   "materiale": [
@@ -2569,6 +3045,13 @@
  {
   "id": "tencuiala-interior",
   "denumire": "Tencuiala interioara manuala",
+  "sinonime": [
+   "tencuiala",
+   "tencuit",
+   "mortar de tencuit",
+   "driscuit",
+   "tinci"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2620,6 +3103,12 @@
  {
   "id": "tencuiala-mecanizata",
   "denumire": "Tencuiala mecanizata cu ipsos",
+  "sinonime": [
+   "tencuiala de ipsos",
+   "masina de tencuit",
+   "tencuiala mecanizata",
+   "ipsos proiectat"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2670,6 +3159,10 @@
  {
   "id": "tencuiala-exterior",
   "denumire": "Tencuiala exterioara",
+  "sinonime": [
+   "tencuiala de exterior",
+   "tencuit fatada"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2720,6 +3213,11 @@
  {
   "id": "sprit-tencuiala",
   "denumire": "Sprit de aderenta sub tencuiala",
+  "sinonime": [
+   "sprit",
+   "amorsa de aderenta",
+   "spritz"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "materiale": [
@@ -2742,6 +3240,12 @@
  {
   "id": "glet-ipsos",
   "denumire": "Glet de ipsos",
+  "sinonime": [
+   "glet",
+   "gletuit",
+   "mana de glet",
+   "finisat perete"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2793,6 +3297,10 @@
  {
   "id": "glet-vinilic",
   "denumire": "Glet vinilic",
+  "sinonime": [
+   "glet gata preparat",
+   "gletuit final"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2834,6 +3342,12 @@
  {
   "id": "amorsa-perete",
   "denumire": "Amorsare pereti",
+  "sinonime": [
+   "amorsa",
+   "amorsat",
+   "grunduit perete",
+   "primer"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "materiale": [
@@ -2857,6 +3371,11 @@
  {
   "id": "reparatii-tencuiala",
   "denumire": "Reparatii locale de tencuiala",
+  "sinonime": [
+   "reparatii perete",
+   "carpit tencuiala",
+   "plombe"
+  ],
   "categorie": "Tencuieli si gleturi",
   "um": "mp",
   "parametru": {
@@ -2905,8 +3424,75 @@
   "rezervaImplicita": 10
  },
  {
+  "id": "tencuiala-rabit",
+  "denumire": "Tencuiala pe plasa de rabit",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "sinonime": [
+   "rabit",
+   "plasa de rabit",
+   "tencuiala pe rabit",
+   "tavan de rabit"
+  ],
+  "materiale": [
+   {
+    "denumire": "Plasa de rabit",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sarma de legat",
+    "um": "kg",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar de tencuit",
+    "um": "kg",
+    "peMm": [
+     1.5,
+     1.8
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profile de sustinere",
+    "um": "ml",
+    "consum": [
+     1.5,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8,
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea tencuielii",
+   "implicit": 20,
+   "sufix": "mm"
+  }
+ },
+ {
   "id": "sapa-ciment",
   "denumire": "Sapa clasica de ciment",
+  "sinonime": [
+   "sapa",
+   "sapa de ciment",
+   "turnat sapa",
+   "sapa clasica"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "parametru": {
@@ -2944,6 +3530,11 @@
  {
   "id": "sapa-santier",
   "denumire": "Sapa preparata pe santier",
+  "sinonime": [
+   "sapa preparata",
+   "mortar de sapa",
+   "sapa cu nisip"
+  ],
   "categorie": "Pardoseli",
   "um": "mc",
   "materiale": [
@@ -2984,6 +3575,11 @@
  {
   "id": "sapa-autonivelanta",
   "denumire": "Sapa autonivelanta",
+  "sinonime": [
+   "autonivelanta",
+   "nivelanta",
+   "nivelare pardoseala"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "parametru": {
@@ -3025,6 +3621,11 @@
  {
   "id": "sapa-fibre",
   "denumire": "Sapa cu fibre de polipropilena",
+  "sinonime": [
+   "sapa cu fibre",
+   "fibre in sapa",
+   "sapa armata"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "parametru": {
@@ -3072,6 +3673,13 @@
  {
   "id": "gresie-pardoseala",
   "denumire": "Montaj gresie pe pardoseala",
+  "sinonime": [
+   "gresie",
+   "montaj gresie",
+   "placi pe jos",
+   "gresie portelanata",
+   "lipit gresie"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "parametru": {
@@ -3164,6 +3772,12 @@
  {
   "id": "parchet-laminat",
   "denumire": "Montaj parchet laminat",
+  "sinonime": [
+   "parchet flotant",
+   "laminat",
+   "parchet",
+   "montaj parchet"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "materiale": [
@@ -3210,6 +3824,12 @@
  {
   "id": "parchet-masiv",
   "denumire": "Montaj parchet din lemn masiv",
+  "sinonime": [
+   "parchet lemn",
+   "parchet masiv",
+   "dusumea de parchet",
+   "lacuit parchet"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "materiale": [
@@ -3264,6 +3884,12 @@
  {
   "id": "covor-pvc",
   "denumire": "Montaj covor PVC",
+  "sinonime": [
+   "linoleum",
+   "pvc pe jos",
+   "covor pvc",
+   "tarkett"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "materiale": [
@@ -3304,6 +3930,10 @@
  {
   "id": "mocheta",
   "denumire": "Montaj mocheta",
+  "sinonime": [
+   "mocheta",
+   "covor lipit"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "materiale": [
@@ -3335,6 +3965,10 @@
  {
   "id": "plinte",
   "denumire": "Montaj plinte",
+  "sinonime": [
+   "plinta",
+   "bordura de parchet"
+  ],
   "categorie": "Pardoseli",
   "um": "ml",
   "materiale": [
@@ -3371,6 +4005,11 @@
  {
   "id": "pardoseala-epoxidica",
   "denumire": "Pardoseala epoxidica",
+  "sinonime": [
+   "epoxidica",
+   "rasina pe jos",
+   "pardoseala industriala"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "parametru": {
@@ -3413,6 +4052,12 @@
  {
   "id": "piatra-naturala-pardoseala",
   "denumire": "Pardoseala din piatra naturala",
+  "sinonime": [
+   "marmura",
+   "travertin",
+   "piatra pe jos",
+   "granit"
+  ],
   "categorie": "Pardoseli",
   "um": "mp",
   "materiale": [
@@ -3466,6 +4111,11 @@
  {
   "id": "trepte-gresie",
   "denumire": "Placare trepte cu gresie",
+  "sinonime": [
+   "trepte cu gresie",
+   "placare scara",
+   "gresie pe scara"
+  ],
   "categorie": "Pardoseli",
   "um": "ml",
   "materiale": [
@@ -3514,8 +4164,81 @@
   "rezervaImplicita": 12
  },
  {
+  "id": "sapa-uscata",
+  "denumire": "Sapa uscata din placi fibrogips",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "sinonime": [
+   "sapa uscata",
+   "placi fibrogips",
+   "pardoseala uscata",
+   "fermacell"
+  ],
+  "materiale": [
+   {
+    "denumire": "Placi de fibrogips",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Granule de nivelare",
+    "um": "l",
+    "peMm": [
+     1.0,
+     1.1
+    ],
+    "sursa": "practica curenta",
+    "nota": "Stratul de granule are de obicei 20-60 mm."
+   },
+   {
+    "denumire": "Adeziv pentru imbinari",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi",
+    "um": "buc",
+    "consum": [
+     10,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda perimetrala",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8,
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de granule",
+   "implicit": 40,
+   "sufix": "mm"
+  }
+ },
+ {
   "id": "faianta-perete",
   "denumire": "Montaj faianta pe perete",
+  "sinonime": [
+   "faianta",
+   "montaj faianta",
+   "placi pe perete",
+   "lipit faianta"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3582,6 +4305,11 @@
  {
   "id": "placaj-piatra-perete",
   "denumire": "Placaj de piatra pe perete",
+  "sinonime": [
+   "piatra decorativa",
+   "placaj de piatra",
+   "piatra pe perete"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3635,6 +4363,13 @@
  {
   "id": "rigips-perete-simplu",
   "denumire": "Perete de gips-carton, placat simplu",
+  "sinonime": [
+   "rigips",
+   "perete de rigips",
+   "perete usor",
+   "gips carton",
+   "placare simpla"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3721,6 +4456,12 @@
  {
   "id": "rigips-perete-dublu",
   "denumire": "Perete de gips-carton, placat dublu",
+  "sinonime": [
+   "rigips dublu",
+   "perete dublu de rigips",
+   "placare dubla",
+   "perete fonic"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3798,6 +4539,12 @@
  {
   "id": "rigips-tavan",
   "denumire": "Tavan de gips-carton pe structura metalica",
+  "sinonime": [
+   "tavan de rigips",
+   "tavan fals",
+   "rigips pe tavan",
+   "tavan suspendat"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3883,6 +4630,11 @@
  {
   "id": "rigips-placare-zidarie",
   "denumire": "Placare zidarie cu gips-carton",
+  "sinonime": [
+   "placare cu rigips",
+   "rigips lipit",
+   "placare perete"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3936,6 +4688,11 @@
  {
   "id": "tavan-casetat",
   "denumire": "Tavan casetat modular",
+  "sinonime": [
+   "tavan casetat",
+   "casete de tavan",
+   "armstrong"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -3990,6 +4747,11 @@
  {
   "id": "lambriu",
   "denumire": "Montaj lambriu de lemn",
+  "sinonime": [
+   "lambriu",
+   "lambriuri de lemn",
+   "placare cu lemn"
+  ],
   "categorie": "Placaje si gips-carton",
   "um": "mp",
   "materiale": [
@@ -4039,6 +4801,13 @@
  {
   "id": "lavabil-interior",
   "denumire": "Zugraveli lavabile la interior",
+  "sinonime": [
+   "lavabil",
+   "vopsit perete",
+   "zugravit",
+   "mana de vopsea",
+   "vopsea de interior"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4084,6 +4853,11 @@
  {
   "id": "lavabil-exterior",
   "denumire": "Zugraveli lavabile la exterior",
+  "sinonime": [
+   "lavabil exterior",
+   "vopsit fatada",
+   "zugravit exterior"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4120,6 +4894,11 @@
  {
   "id": "var-lavabil-tavan",
   "denumire": "Zugraveli la tavan",
+  "sinonime": [
+   "vopsit tavan",
+   "zugravit tavan",
+   "var pe tavan"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4155,6 +4934,12 @@
  {
   "id": "vopsea-lemn",
   "denumire": "Vopsitorii pe lemn",
+  "sinonime": [
+   "vopsit lemn",
+   "lac de lemn",
+   "baituit",
+   "lazura"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4200,6 +4985,12 @@
  {
   "id": "vopsea-metal",
   "denumire": "Vopsitorii pe metal",
+  "sinonime": [
+   "vopsit metal",
+   "grund pe fier",
+   "vopsea de fier",
+   "miniu"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4244,6 +5035,10 @@
  {
   "id": "vopsea-epoxidica-perete",
   "denumire": "Vopsitorie epoxidica pe perete",
+  "sinonime": [
+   "vopsea epoxidica",
+   "vopsea lavabila speciala"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4271,6 +5066,10 @@
  {
   "id": "amorsa-exterior",
   "denumire": "Amorsare suprafete exterioare",
+  "sinonime": [
+   "amorsa de exterior",
+   "grunduit fatada"
+  ],
   "categorie": "Zugraveli si vopsitorii",
   "um": "mp",
   "materiale": [
@@ -4291,8 +5090,65 @@
   "rezervaImplicita": 5
  },
  {
+  "id": "tapet",
+  "denumire": "Montaj tapet",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "sinonime": [
+   "tapet",
+   "tapetat",
+   "lipit tapet",
+   "fototapet"
+  ],
+  "materiale": [
+   {
+    "denumire": "Tapet",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.3
+    ],
+    "sursa": "practica curenta",
+    "nota": "Potrivirea modelului mananca 15-30% peste suprafata."
+   },
+   {
+    "denumire": "Adeziv de tapet",
+    "um": "kg",
+    "consum": [
+     0.05,
+     0.09
+    ],
+    "ambalaj": {
+     "um": "pachet 200 g",
+     "continut": 0.2
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
   "id": "montaj-tamplarie-pvc",
   "denumire": "Montaj tamplarie PVC",
+  "sinonime": [
+   "termopan",
+   "geam termopan",
+   "ferestre pvc",
+   "montaj termopane"
+  ],
   "categorie": "Tamplarie si inchideri",
   "um": "mp",
   "materiale": [
@@ -4348,6 +5204,11 @@
  {
   "id": "montaj-tamplarie-alu",
   "denumire": "Montaj tamplarie de aluminiu",
+  "sinonime": [
+   "tamplarie aluminiu",
+   "ferestre de aluminiu",
+   "vitrina"
+  ],
   "categorie": "Tamplarie si inchideri",
   "um": "mp",
   "materiale": [
@@ -4393,6 +5254,12 @@
  {
   "id": "montaj-usi-interior",
   "denumire": "Montaj usi de interior",
+  "sinonime": [
+   "usi",
+   "montaj usa",
+   "usa de interior",
+   "toc de usa"
+  ],
   "categorie": "Tamplarie si inchideri",
   "um": "buc",
   "materiale": [
@@ -4438,6 +5305,12 @@
  {
   "id": "glafuri",
   "denumire": "Montaj glafuri interioare si exterioare",
+  "sinonime": [
+   "glaf",
+   "solbanc",
+   "pervaz",
+   "glafuri de fereastra"
+  ],
   "categorie": "Tamplarie si inchideri",
   "um": "ml",
   "materiale": [
@@ -4474,6 +5347,12 @@
  {
   "id": "rulouri-exterioare",
   "denumire": "Montaj rulouri exterioare",
+  "sinonime": [
+   "rulouri",
+   "obloane",
+   "roleta exterioara",
+   "jaluzele exterioare"
+  ],
   "categorie": "Tamplarie si inchideri",
   "um": "mp",
   "materiale": [
@@ -4510,6 +5389,12 @@
  {
   "id": "instalatie-apa-ppr",
   "denumire": "Distributie apa rece si calda din PPR",
+  "sinonime": [
+   "instalatie sanitara",
+   "tevi ppr",
+   "apa calda si rece",
+   "distributie apa"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "punct",
   "materiale": [
@@ -4565,6 +5450,12 @@
  {
   "id": "canalizare-interioara",
   "denumire": "Canalizare interioara din PVC",
+  "sinonime": [
+   "canalizare",
+   "scurgere",
+   "tevi de canalizare",
+   "pvc canalizare"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "punct",
   "materiale": [
@@ -4619,6 +5510,10 @@
  {
   "id": "canalizare-exterioara",
   "denumire": "Canalizare exterioara",
+  "sinonime": [
+   "racord canalizare",
+   "camin de canalizare"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "ml",
   "materiale": [
@@ -4655,6 +5550,12 @@
  {
   "id": "montaj-obiecte-sanitare",
   "denumire": "Montaj obiecte sanitare",
+  "sinonime": [
+   "obiecte sanitare",
+   "montaj wc",
+   "montaj chiuveta",
+   "baterii sanitare"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "buc",
   "materiale": [
@@ -4709,6 +5610,11 @@
  {
   "id": "incalzire-pardoseala",
   "denumire": "Incalzire in pardoseala",
+  "sinonime": [
+   "pardoseala calda",
+   "serpentine",
+   "incalzire radianta"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "mp",
   "materiale": [
@@ -4755,6 +5661,12 @@
  {
   "id": "radiatoare",
   "denumire": "Montaj radiatoare si distributie",
+  "sinonime": [
+   "calorifere",
+   "montaj calorifer",
+   "radiator",
+   "instalatie de incalzire"
+  ],
   "categorie": "Instalatii sanitare",
   "um": "buc",
   "materiale": [
@@ -4798,8 +5710,125 @@
   "rezervaImplicita": 5
  },
  {
+  "id": "montaj-centrala-termica",
+  "denumire": "Montaj centrala termica",
+  "categorie": "Instalatii sanitare",
+  "um": "buc",
+  "sinonime": [
+   "centrala termica",
+   "montaj centrala",
+   "centrala pe gaz",
+   "cazan"
+  ],
+  "materiale": [
+   {
+    "denumire": "Centrala termica",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Kit de evacuare gaze arse",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Robineti si racorduri",
+    "um": "buc",
+    "consum": [
+     4,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Teava de legatura",
+    "um": "ml",
+    "consum": [
+     3,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Filtru si vas de expansiune",
+    "um": "buc",
+    "consum": [
+     1,
+     2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0,
+  "nota": "Punerea in functiune se face numai de un instalator autorizat ANRE."
+ },
+ {
+  "id": "cos-fum-inox",
+  "denumire": "Cos de fum din inox",
+  "categorie": "Instalatii sanitare",
+  "um": "ml",
+  "sinonime": [
+   "cos de fum",
+   "burlan de inox",
+   "horn",
+   "cos inox"
+  ],
+  "materiale": [
+   {
+    "denumire": "Tub de inox izolat",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coliere de prindere",
+    "um": "buc",
+    "consum": [
+     0.5,
+     0.8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Piesa de racord si rozeta",
+    "um": "buc",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Palarie si terminal",
+    "um": "buc",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
   "id": "circuit-prize",
   "denumire": "Circuit de prize",
+  "sinonime": [
+   "prize",
+   "instalatie electrica prize",
+   "trasee electrice"
+  ],
   "categorie": "Instalatii electrice",
   "um": "punct",
   "materiale": [
@@ -4845,6 +5874,12 @@
  {
   "id": "circuit-iluminat",
   "denumire": "Circuit de iluminat",
+  "sinonime": [
+   "iluminat",
+   "becuri",
+   "intrerupatoare",
+   "circuit de lumina"
+  ],
   "categorie": "Instalatii electrice",
   "um": "punct",
   "materiale": [
@@ -4890,6 +5925,12 @@
  {
   "id": "tablou-electric",
   "denumire": "Tablou electric",
+  "sinonime": [
+   "tablou",
+   "sigurante",
+   "panou electric",
+   "tablou de sigurante"
+  ],
   "categorie": "Instalatii electrice",
   "um": "buc",
   "materiale": [
@@ -4935,6 +5976,12 @@
  {
   "id": "tuburi-doze-ingropate",
   "denumire": "Tuburi si doze ingropate in zidarie",
+  "sinonime": [
+   "santuri electrice",
+   "tuburi ingropate",
+   "doze",
+   "spart pentru instalatie"
+  ],
   "categorie": "Instalatii electrice",
   "um": "ml",
   "materiale": [
@@ -4975,6 +6022,10 @@
  {
   "id": "priza-de-pamant",
   "denumire": "Priza de pamant",
+  "sinonime": [
+   "impamantare",
+   "electrozi"
+  ],
   "categorie": "Instalatii electrice",
   "um": "buc",
   "materiale": [
@@ -5011,6 +6062,10 @@
  {
   "id": "trotuar-beton",
   "denumire": "Trotuar de beton",
+  "sinonime": [
+   "trotuar",
+   "alee betonata"
+  ],
   "categorie": "Exterioare",
   "um": "mp",
   "parametru": {
@@ -5062,6 +6117,12 @@
  {
   "id": "pavaj-autoblocant",
   "denumire": "Pavaj din placi autoblocante",
+  "sinonime": [
+   "pavele",
+   "autoblocante",
+   "pavaj",
+   "dale de beton"
+  ],
   "categorie": "Exterioare",
   "um": "mp",
   "materiale": [
@@ -5107,6 +6168,10 @@
  {
   "id": "borduri",
   "denumire": "Montaj borduri",
+  "sinonime": [
+   "bordura",
+   "borduri de beton"
+  ],
   "categorie": "Exterioare",
   "um": "ml",
   "materiale": [
@@ -5135,6 +6200,11 @@
  {
   "id": "alee-piatra",
   "denumire": "Alee din balast si piatra sparta",
+  "sinonime": [
+   "alee",
+   "alee de piatra",
+   "drum de acces"
+  ],
   "categorie": "Exterioare",
   "um": "mp",
   "materiale": [
@@ -5171,6 +6241,11 @@
  {
   "id": "gard-plasa",
   "denumire": "Gard din plasa bordurata",
+  "sinonime": [
+   "gard de plasa",
+   "plasa bordurata",
+   "gard metalic"
+  ],
   "categorie": "Exterioare",
   "um": "ml",
   "materiale": [
@@ -5217,6 +6292,11 @@
  {
   "id": "gard-beton",
   "denumire": "Gard din panouri de beton",
+  "sinonime": [
+   "gard de beton",
+   "panouri de gard",
+   "gard prefabricat"
+  ],
   "categorie": "Exterioare",
   "um": "ml",
   "materiale": [
@@ -5253,6 +6333,12 @@
  {
   "id": "gazon",
   "denumire": "Amenajare gazon",
+  "sinonime": [
+   "gazon",
+   "iarba",
+   "semanat gazon",
+   "peluza"
+  ],
   "categorie": "Exterioare",
   "um": "mp",
   "materiale": [
@@ -5289,6 +6375,12 @@
  {
   "id": "asfalt-platforma",
   "denumire": "Imbracaminte asfaltica pe platforma",
+  "sinonime": [
+   "asfalt",
+   "asfaltare",
+   "mixtura asfaltica",
+   "platforma asfaltata"
+  ],
   "categorie": "Exterioare",
   "um": "mp",
   "parametru": {
@@ -5328,5 +6420,151 @@
    }
   ],
   "rezervaImplicita": 5
+ },
+ {
+  "id": "beton-amprentat",
+  "denumire": "Beton amprentat",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "sinonime": [
+   "beton decorativ",
+   "amprentare beton",
+   "stampat"
+  ],
+  "materiale": [
+   {
+    "denumire": "Beton C20/25",
+    "um": "mc",
+    "peMm": [
+     0.00102,
+     0.00105
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plasa sudata",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Intaritor de suprafata colorat",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Agent de decofrare colorat",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Rasina de protectie",
+    "um": "l",
+    "consum": [
+     0.2,
+     0.3
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta",
+    "nota": "Doua straturi, refacute la 2-3 ani."
+   }
+  ],
+  "rezervaImplicita": 5,
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea placii",
+   "implicit": 100,
+   "sufix": "mm"
+  }
+ },
+ {
+  "id": "gard-lemn",
+  "denumire": "Gard din lemn",
+  "categorie": "Exterioare",
+  "um": "ml",
+  "sinonime": [
+   "gard de lemn",
+   "gard din scandura",
+   "imprejmuire de lemn"
+  ],
+  "materiale": [
+   {
+    "denumire": "Stalpi de lemn",
+    "um": "buc",
+    "consum": [
+     0.4,
+     0.55
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Scandura de gard",
+    "um": "mp",
+    "consum": [
+     1.5,
+     1.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Rigle orizontale",
+    "um": "ml",
+    "consum": [
+     2.0,
+     2.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Beton pentru fundatia stalpului",
+    "um": "mc",
+    "consum": [
+     0.02,
+     0.04
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Lazura sau lac de exterior",
+    "um": "l",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi si cuie",
+    "um": "kg",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
  }
 ]

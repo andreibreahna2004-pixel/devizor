@@ -257,8 +257,8 @@ extrage nimic corect. Pina atunci, sursele reale sint API-ul si listele de pretu
 ## Consumurile specifice
 
 `lib/consum/` raspunde la alta intrebare decit devizul: nu cit costa lucrarea, ci
-**cit material cumperi ca s-o faci**. 121 de lucrari, aproape 400 de rinduri de
-material, in `data/consumuri.json`.
+**cit material cumperi ca s-o faci**. 131 de lucrari, 440 de rinduri de material,
+in `data/consumuri.json`.
 
 Pare ca ar incalca hotarirea de a nu tine consumuri (vezi indicatoarele mai sus),
 si nu o incalca, din doua motive care trebuie tinute amindoua:
@@ -289,6 +289,19 @@ o minciuna mica si greu de prins. Testul de integritate din
 **Ambalajele se rotunjesc in sus.** Nimeni nu cumpara 137 kg de adeziv; cumpara
 6 saci de 25. Rotunjirea la cel mai apropiat ar trimite omul pe santier cu un sac
 lipsa.
+
+**Fiecare reteta poarta si vocabularul de santier**, in `sinonime`: "rigips"
+pentru gips-carton, "termopan" pentru timplarie PVC, "mana de spaclu" pentru masa
+de spaclu. E aceeasi punte pe care `searchNorme` o face peste ortografia de
+dinainte de 1993, doar ca aici e de vocabular. Termenii intra in cautare si se
+scriu pe card, sub titlu.
+
+Cautarea **ordoneaza** rezultatele dupa unde s-a potrivit cuvintul — denumire 50,
+sinonim 40, material 20, categorie 5, plus 100 cind denumirea incepe cu toata
+interogarea. Fara ordonare, "gips carton" scotea intii faianta, care doar imparte
+capitolul cu peretii de rigips. Cuvintele de legatura se arunca inainte de
+potrivire: "de" se regaseste in "decorative" si strica ordinea la "mana de
+spaclu".
 
 ## AI
 
@@ -391,7 +404,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 287 de teste
+npm test          # 305 de teste
 npm run typecheck
 npm run build
 ```

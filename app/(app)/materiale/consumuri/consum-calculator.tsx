@@ -74,6 +74,12 @@ export function ConsumCalculator({
                   <span className="block text-xs text-ink-500">
                     {reteta.categorie} · {reteta.materiale.length} materiale
                   </span>
+                  {/* Termenii de santier, scrisi la vedere: asa se recunoaste
+                      lucrarea dintr-o privire, fara sa descifrezi titlul oficial.
+                      Treapta 500, nu 400: e text care se citeste. */}
+                  <span className="mt-0.5 block truncate text-xs text-ink-500">
+                    {reteta.sinonime.slice(0, 4).join(", ")}
+                  </span>
                 </span>
                 <span className="shrink-0 text-xs text-ink-500">per {reteta.um}</span>
               </button>
@@ -93,7 +99,9 @@ export function ConsumCalculator({
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h2 className="font-semibold text-ink-900">{ales.denumire}</h2>
-                <p className="mt-0.5 text-xs text-ink-500">{ales.categorie}</p>
+                <p className="mt-0.5 text-xs text-ink-500">
+                  {ales.categorie} · {ales.sinonime.join(", ")}
+                </p>
               </div>
               <button type="button" className="link text-sm" onClick={() => setAlesId(null)}>
                 alege alta lucrare

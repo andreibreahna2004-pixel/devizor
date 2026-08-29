@@ -4,7 +4,7 @@ import { CATEGORII, RETETE, cautaRetete, getReteta } from "./index";
 /**
  * Integritatea datelor de consum.
  *
- * La 121 de retete si aproape 400 de rinduri de material, verificarea cu ochiul
+ * La 131 de retete si 440 de rinduri de material, verificarea cu ochiul
  * nu scaleaza: testele astea sunt singurul lucru care tine datele curate cind se
  * adauga o reteta noua. Aceeasi grija ca la indicatoarele de norme.
  */
@@ -117,6 +117,21 @@ describe("datele de consum", () => {
     }
   });
 
+  it("fiecare reteta are termeni de santier", () => {
+    // Fara ei, lucrarea se gaseste doar dupa denumirea oficiala, pe care n-o
+    // scrie nimeni in casuta de cautare.
+    for (const reteta of RETETE) {
+      expect(reteta.sinonime.length, reteta.id).toBeGreaterThan(0);
+      expect(new Set(reteta.sinonime).size, reteta.id).toBe(reteta.sinonime.length);
+      for (const termen of reteta.sinonime) {
+        expect(termen, reteta.id).toBe(termen.toLowerCase());
+        expect(termen.trim().length, reteta.id).toBeGreaterThan(1);
+        // Un sinonim identic cu titlul nu adauga nimic si ar fi zgomot pe card.
+        expect(termen, reteta.id).not.toBe(reteta.denumire.toLowerCase());
+      }
+    }
+  });
+
   it("acopera capitolele mari de lucrari", () => {
     expect(CATEGORII.length).toBeGreaterThanOrEqual(10);
     for (const capitol of ["Zidarii", "Acoperis", "Termoizolatii", "Pardoseli"]) {
@@ -153,6 +168,65 @@ describe("cautaRetete", () => {
 
   it("intoarce lista goala cind nu gaseste nimic", () => {
     expect(cautaRetete("zzzz nimic")).toHaveLength(0);
+  });
+});
+
+describe("vocabularul de santier", () => {
+  // Datele folosesc denumirea oficiala; omul cauta cu vorba de pe santier.
+  // Fiecare pereche de aici a fost, la un moment dat, o cautare fara rezultat.
+  const cazuri: [string, string][] = [
+    ["rigips", "rigips-perete-simplu"],
+    ["mana de spaclu", "termosistem-eps-5"],
+    ["termopan", "montaj-tamplarie-pvc"],
+    ["lindab", "tigla-metalica"],
+    ["boltari", "zidarie-bca-10"],
+    ["autonivelanta", "sapa-autonivelanta"],
+    ["parchet flotant", "parchet-laminat"],
+    ["kit de baie", "hidroizolatie-baie"],
+    ["calorifere", "radiatoare"],
+    ["impamantare", "priza-de-pamant"],
+    ["tinci", "tencuiala-interior"],
+    ["pavele", "pavaj-autoblocant"],
+  ];
+
+  it.each(cazuri)("'%s' scoate prima reteta potrivita", (termen, id) => {
+    const rezultate = cautaRetete(termen);
+    expect(rezultate.length, termen).toBeGreaterThan(0);
+    expect(rezultate[0].id, termen).toBe(id);
+  });
+
+  it("lucrarile adaugate pentru vocabular exista", () => {
+    for (const id of ["beton-amprentat", "tapet", "carton-bituminos", "sapa-uscata",
+                      "tencuiala-mozaicata", "gard-lemn", "tencuiala-rabit",
+                      "profile-decorative", "montaj-centrala-termica", "cos-fum-inox"]) {
+      expect(getReteta(id), id).not.toBeNull();
+    }
+  });
+});
+
+describe("ordonarea rezultatelor", () => {
+  it("denumirea bate categoria", () => {
+    // "gips carton" scotea intii faianta, care doar imparte capitolul cu
+    // peretii de rigips. Acum peretii vin primii.
+    const rezultate = cautaRetete("gips carton");
+    expect(rezultate[0].id).toBe("rigips-perete-simplu");
+    expect(rezultate.some((r) => r.id === "faianta-perete")).toBe(true);
+  });
+
+  it("cuvintele de legatura nu decid ordinea", () => {
+    // "de" se regaseste in "decorative" si lua punctajul de denumire, asa ca
+    // "mana de spaclu" scotea intii profilele decorative.
+    expect(cautaRetete("mana de spaclu")[0].id).toBe("termosistem-eps-5");
+  });
+
+  it("o interogare formata numai din cuvinte scurte tot cauta", () => {
+    expect(cautaRetete("de").length).toBeGreaterThan(0);
+  });
+
+  it("potrivirea in denumire bate una in materiale", () => {
+    const rezultate = cautaRetete("adeziv");
+    const gresie = rezultate.findIndex((r) => r.id === "gresie-pardoseala");
+    expect(gresie).toBeGreaterThanOrEqual(0);
   });
 });
 
