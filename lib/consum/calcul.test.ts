@@ -6,6 +6,7 @@ import { getReteta } from "./index";
 const fix: Reteta = {
   id: "test-fix",
   denumire: "Lucrare de proba",
+  sinonime: ["proba fixa"],
   categorie: "Proba",
   um: "mp",
   materiale: [
@@ -24,6 +25,7 @@ const fix: Reteta = {
 const peMm: Reteta = {
   id: "test-mm",
   denumire: "Lucrare pe grosime",
+  sinonime: ["proba pe milimetru"],
   categorie: "Proba",
   um: "mp",
   parametru: { cheie: "grosime", eticheta: "Grosimea", implicit: 10, sufix: "mm" },
@@ -34,6 +36,7 @@ const peMm: Reteta = {
 const peVarianta: Reteta = {
   id: "test-varianta",
   denumire: "Lucrare pe variante",
+  sinonime: ["proba pe varianta"],
   categorie: "Proba",
   um: "mp",
   parametru: { cheie: "varianta", eticheta: "Placa", optiuni: ["mica", "mare"] },

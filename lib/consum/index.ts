@@ -66,6 +66,14 @@ export interface Parametru {
 export interface Reteta {
   id: string;
   denumire: string;
+  /**
+   * Cum ii spune omul pe santier, nu cum se cheama in catalog: "rigips" pentru
+   * gips-carton, "termopan" pentru timplarie PVC, "mana de spaclu" pentru masa
+   * de spaclu. Fara ele, cautarea cere denumirea oficiala, pe care n-o foloseste
+   * nimeni. E aceeasi punte pe care `searchNorme` o face peste ortografia de
+   * dinainte de 1993, doar ca aici e de vocabular.
+   */
+  sinonime: string[];
   categorie: string;
   /** Unitatea lucrarii: mp, mc, ml, buc, punct. */
   um: string;
@@ -92,24 +100,85 @@ export function getReteta(id: string): Reteta | null {
 
 const SEARCH_INDEX = RETETE.map((r) => ({
   reteta: r,
-  haystack: normalizeForSearch(
-    `${r.denumire} ${r.categorie} ${r.materiale.map((m) => m.denumire).join(" ")}`,
-  ),
+  denumire: normalizeForSearch(r.denumire),
+  sinonime: normalizeForSearch(r.sinonime.join(" ")),
+  materiale: normalizeForSearch(r.materiale.map((m) => m.denumire).join(" ")),
+  categorie: normalizeForSearch(r.categorie),
 }));
+
+/**
+ * Cit de tare conteaza locul in care s-a potrivit un cuvint.
+ *
+ * Categoria ramane in index — ajuta la rasfoit, "acoperis" scoate tot capitolul
+ * — dar cu scor mic: fara asta, o cautare de "gips carton" scotea intii faianta,
+ * fiindca imparte capitolul cu peretii de rigips.
+ */
+const SCOR = { denumire: 50, sinonim: 40, material: 20, categorie: 5 } as const;
+
+/**
+ * Cuvintele de legatura nu spun nimic despre lucrare, dar strica ordonarea.
+ *
+ * "mana de spaclu" scotea intii profilele decorative, fiindca "de" se regaseste
+ * in "decorative" si lua punctajul de denumire, in timp ce la termosistem cadea
+ * pe sinonim. Se arunca inainte de potrivire; daca interogarea e numai din
+ * asemenea cuvinte, se pastreaza asa cum a scris-o omul.
+ */
+const LEGATURA = new Set(["din", "sau", "pentru", "ale", "lui", "cel", "cea"]);
+
+function cuvinteUtile(toate: string[]): string[] {
+  const utile = toate.filter((c) => c.length > 2 && !LEGATURA.has(c));
+  return utile.length > 0 ? utile : toate;
+}
 
 /**
  * Cautarea in retete.
  *
  * Trece prin `normalizeForSearch`, acelasi ca la norme, deci diacriticele nu
- * conteaza si "timplarie" gaseste "tamplarie". Se cauta si in denumirile
- * materialelor: cine scrie "adeziv" vrea sa vada unde intra adeziv, nu doar
- * lucrarile care au cuvintul in titlu.
+ * conteaza. Se cauta in patru locuri: denumirea, sinonimele de santier,
+ * denumirile materialelor si categoria.
+ *
+ * Filtrul cere **toate** cuvintele — cine scrie doua cuvinte vrea ceva mai
+ * ingust. Ordonarea vine din unde s-au potrivit: o lucrare care poarta cuvintul
+ * in titlu bate una care doar il are printre materiale.
  */
 export function cautaRetete(interogare: string, limita = 50): Reteta[] {
-  const cuvinte = normalizeForSearch(interogare).split(/\s+/).filter(Boolean);
-  if (cuvinte.length === 0) return RETETE.slice(0, limita);
+  const intreaga = normalizeForSearch(interogare);
+  const toate = intreaga.split(/\s+/).filter(Boolean);
+  if (toate.length === 0) return RETETE.slice(0, limita);
 
-  return SEARCH_INDEX.filter((r) => cuvinte.every((c) => r.haystack.includes(c)))
+  const cuvinte = cuvinteUtile(toate);
+
+  const potriviri: { reteta: Reteta; scor: number }[] = [];
+
+  for (const r of SEARCH_INDEX) {
+    let scor = 0;
+    let toate = true;
+
+    for (const cuvant of cuvinte) {
+      if (r.denumire.includes(cuvant)) scor += SCOR.denumire;
+      else if (r.sinonime.includes(cuvant)) scor += SCOR.sinonim;
+      else if (r.materiale.includes(cuvant)) scor += SCOR.material;
+      else if (r.categorie.includes(cuvant)) scor += SCOR.categorie;
+      else {
+        toate = false;
+        break;
+      }
+    }
+
+    if (!toate) continue;
+
+    // Interogarea intreaga, regasita ca atare, e semnalul cel mai puternic:
+    // cine scrie "rigips" vrea peretele de rigips, nu tot ce-l pomeneste.
+    if (r.denumire.startsWith(intreaga)) scor += 100;
+    else if (r.sinonime.includes(intreaga)) scor += 60;
+
+    potriviri.push({ reteta: r.reteta, scor });
+  }
+
+  // Sortarea din JS e stabila, deci la scor egal ramine ordinea din fisier —
+  // adica ordinea in care se executa lucrarile pe santier.
+  return potriviri
+    .sort((a, b) => b.scor - a.scor)
     .slice(0, limita)
-    .map((r) => r.reteta);
+    .map((p) => p.reteta);
 }
