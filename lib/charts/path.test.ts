@@ -173,3 +173,27 @@ describe("scaleaza", () => {
     expect(mica[1].y).toBeGreaterThan(mare[1].y);
   });
 });
+
+describe("scaleaza cu minim impus", () => {
+  it("implicit pastreaza baza la zero, ca pe panou", () => {
+    const p = scaleaza([100, 102], 100, 50);
+    // Variatie de 2% peste o baza de zero: punctele raman aproape lipite sus.
+    expect(Math.abs(p[0].y - p[1].y)).toBeLessThan(2);
+  });
+
+  it("cu minim impus, o variatie mica devine vizibila", () => {
+    // Pretul unui material: 320 -> 340 e 6%, si trebuie sa se vada.
+    const p = scaleaza([320, 340], 100, 50, 0, 340, 310);
+    expect(Math.abs(p[0].y - p[1].y)).toBeGreaterThan(20);
+  });
+
+  it("minimul impus aseaza valoarea egala cu el pe podea", () => {
+    const p = scaleaza([310, 340], 100, 50, 0, 340, 310);
+    expect(p[0].y).toBe(50);
+    expect(p[1].y).toBe(0);
+  });
+
+  it("nu schimba nimic pentru apelurile existente", () => {
+    expect(scaleaza([0, 10, 5], 100, 40, 0)).toEqual(scaleaza([0, 10, 5], 100, 40, 0, undefined, undefined));
+  });
+});

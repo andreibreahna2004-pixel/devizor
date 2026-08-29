@@ -1,4 +1,5 @@
 import "server-only";
+import { type Doc, type RangeKey, aduna, bucketsFor, delta } from "@/lib/charts/buckets";
 import { prisma } from "@/lib/db";
 import { round2, toNumber } from "@/lib/money";
 
@@ -14,7 +15,7 @@ import { round2, toNumber } from "@/lib/money";
  * sub o milisecunda, iar bucketarea ramine testabila fara baza de date.
  */
 
-export type RangeKey = "1L" | "3L" | "6L" | "1A";
+export type { RangeKey };
 
 export const RANGES: { key: RangeKey; eticheta: string; zile: number }[] = [
   { key: "1L", eticheta: "1L", zile: 30 },
@@ -60,80 +61,6 @@ export interface DashboardData {
   mini: MiniMetric[];
   serii: Record<RangeKey, SeriesPoint[]>;
   activitate: ActivityItem[];
-}
-
-const LUNI = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"];
-
-/** Inceputul zilei, in ora locala a serverului. */
-function ziua(d: Date): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-
-interface Bucket {
-  start: Date;
-  eticheta: string;
-}
-
-/**
- * Intervalele in care se aduna documentele.
- *
- * Granularitatea urmeaza lungimea perioadei: pe o luna se vad zilele, pe un an
- * lunile. Altfel un an ar avea 365 de puncte inghesuite in cinci sute de pixeli
- * si linia ar deveni zgomot.
- */
-function bucketsFor(range: RangeKey, acum: Date): Bucket[] {
-  const azi = ziua(acum);
-
-  if (range === "1L") {
-    return Array.from({ length: 30 }, (_, i) => {
-      const start = new Date(azi);
-      start.setDate(start.getDate() - (29 - i));
-      return { start, eticheta: `${start.getDate()} ${LUNI[start.getMonth()]}` };
-    });
-  }
-
-  if (range === "3L") {
-    // Saptamini, ca sa iasa 13 puncte in loc de 91.
-    return Array.from({ length: 13 }, (_, i) => {
-      const start = new Date(azi);
-      start.setDate(start.getDate() - (12 - i) * 7);
-      return { start, eticheta: `${start.getDate()} ${LUNI[start.getMonth()]}` };
-    });
-  }
-
-  const luni = range === "6L" ? 6 : 12;
-  return Array.from({ length: luni }, (_, i) => {
-    const start = new Date(azi.getFullYear(), azi.getMonth() - (luni - 1 - i), 1);
-    return { start, eticheta: LUNI[start.getMonth()] };
-  });
-}
-
-interface Doc {
-  data: Date;
-  valoare: number;
-}
-
-/** Aduna documentele in intervale. Ce cade inaintea primului interval se ignora. */
-function aduna(docs: Doc[], buckets: Bucket[]): number[] {
-  const sume = new Array(buckets.length).fill(0);
-
-  for (const doc of docs) {
-    // Cautare de la coada: ultimul interval care incepe inaintea documentului.
-    for (let i = buckets.length - 1; i >= 0; i--) {
-      if (doc.data >= buckets[i].start) {
-        sume[i] += doc.valoare;
-        break;
-      }
-    }
-  }
-
-  return sume.map(round2);
-}
-
-/** Crestere procentuala fata de perioada anterioara. */
-function delta(acum: number, inainte: number): number | null {
-  if (inainte === 0) return acum === 0 ? 0 : null;
-  return round2(((acum - inainte) / inainte) * 100);
 }
 
 export async function getDashboardData(orgId: string): Promise<DashboardData> {

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { AI_MODEL, isAiConfigured } from "@/lib/ai/client";
 import { type GenerationEvent, generateEstimate } from "@/lib/ai/generate-estimate";
+import { countyName, isValidCountyCode } from "@/lib/counties";
 import { prisma } from "@/lib/db";
 import {
   addEstimateLine,
@@ -31,6 +32,7 @@ const requestSchema = z.object({
   builtArea: z.number().positive().nullable().optional(),
   floors: z.string().nullable().optional(),
   finishLevel: z.string().nullable().optional(),
+  /// Cod ISO 3166-2:RO. Se verifica la fel ca oriunde vine un judet din browser.
   county: z.string().nullable().optional(),
   retrospective: z.boolean().optional(),
 });
@@ -75,8 +77,14 @@ export async function POST(request: Request) {
     if (!owned) return badRequest("Proiectul selectat nu exista");
   }
 
+  // Judetul vine din browser: se pastreaza doar daca e un cod real, altfel
+  // devizul ar purta o zona inventata si reperele de pret s-ar lega de nimic.
+  const countyCode =
+    input.county && isValidCountyCode(input.county) ? input.county : null;
+
   const estimate = await createDraftEstimate(user.orgId, {
     title: input.title,
+    countyCode,
     clientId: input.clientId ?? null,
     projectId: input.projectId ?? null,
     aiBrief: input.brief,
@@ -109,7 +117,8 @@ export async function POST(request: Request) {
           builtArea: input.builtArea,
           floors: input.floors,
           finishLevel: input.finishLevel,
-          county: input.county,
+          // Numele, nu codul: modelul stie ce e "Cluj", nu ce e "RO-CJ".
+          county: countyCode ? countyName(countyCode) : null,
           retrospective: input.retrospective,
         });
 

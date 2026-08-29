@@ -18,6 +18,8 @@ import {
 
 export interface CreateEstimateInput {
   title: string;
+  /** Cod ISO 3166-2:RO, deja validat de apelant. */
+  countyCode?: string | null;
   clientId?: string | null;
   projectId?: string | null;
   validUntil?: Date | null;
@@ -44,6 +46,7 @@ export async function createDraftEstimate(
         number: allocated.number,
         fullNumber: allocated.fullNumber,
         title: input.title,
+        countyCode: input.countyCode ?? null,
         clientId: input.clientId ?? null,
         projectId: input.projectId ?? null,
         validUntil: input.validUntil ?? null,

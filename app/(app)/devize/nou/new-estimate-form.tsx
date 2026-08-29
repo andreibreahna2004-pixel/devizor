@@ -317,7 +317,10 @@ export function NewEstimateForm({
                   <select id="county" name="county" className="input" defaultValue="" disabled={running}>
                     <option value="">—</option>
                     {COUNTIES.map((c) => (
-                      <option key={c.code} value={c.name}>
+                      // Codul, nu numele: judetul se salveaza pe deviz si
+                      // decide reperele de pret, deci trebuie sa fie valoarea
+                      // canonica, nu un sir care se poate scrie in doua feluri.
+                      <option key={c.code} value={c.code}>
                         {c.name}
                       </option>
                     ))}

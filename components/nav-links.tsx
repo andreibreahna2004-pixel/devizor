@@ -6,6 +6,7 @@ import {
   IconClient,
   IconDeviz,
   IconFactura,
+  IconMaterial,
   IconPanou,
   IconProiect,
   IconSetari,
@@ -21,6 +22,7 @@ const LINKS: NavLink[] = [
   { href: "/dashboard", label: "Panou", Icon: IconPanou },
   { href: "/devize", label: "Devize", Icon: IconDeviz },
   { href: "/facturi", label: "Facturi", Icon: IconFactura },
+  { href: "/materiale", label: "Materiale", Icon: IconMaterial },
   { href: "/proiecte", label: "Proiecte", Icon: IconProiect },
   { href: "/clienti", label: "Clienti", Icon: IconClient },
   { href: "/setari", label: "Setari", Icon: IconSetari },
@@ -69,9 +71,10 @@ export function NavLinks() {
 /**
  * Bara de tab-uri de pe telefon.
  *
- * Cele sase sectiuni incap pe un rand chiar si pe un ecran de 360px, deci nu se
- * ascunde niciuna intr-un meniu "mai mult": pe santier se sare des intre deviz
- * si factura, iar o sectiune ascunsa inseamna doua atingeri in loc de una.
+ * Cele sapte sectiuni incap pe un rand chiar si pe un ecran de 360px — cate ~51px
+ * fiecare — deci nu se ascunde niciuna intr-un meniu "mai mult": pe santier se
+ * sare des intre deviz si factura, iar o sectiune ascunsa inseamna doua atingeri
+ * in loc de una. La a opta, tinta devine prea mica si trebuie regandit.
  */
 export function BottomNav() {
   const isActive = useIsActive();
@@ -81,7 +84,7 @@ export function BottomNav() {
       aria-label="Navigare principala"
       className="bara-jos fixed inset-x-0 bottom-0 z-30 border-t border-[var(--border)] bg-[var(--rail)] lg:hidden"
     >
-      <ul className="grid h-16 grid-cols-6">
+      <ul className="grid h-16 grid-cols-7">
         {LINKS.map(({ href, label, Icon }) => {
           const active = isActive(href);
           return (

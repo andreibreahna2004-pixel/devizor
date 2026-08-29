@@ -5,9 +5,9 @@
 //     nivel de query, prin helperele din lib/tenant.ts — nu se adauga ulterior.
 //  2. Banii se tin in Decimal, niciodata in float. Preturile unitare au 4
 //     zecimale (se inmultesc cu cantitati), totalurile au 2 (se raporteaza).
-//  3. Nu exista catalog de articole, materiale sau tarife. Fiecare linie de
-//     deviz isi poarta propriul pret, scris de om. Nu exista nicio a doua
-//     sursa de adevar din care sa se recalculeze ceva in spate.
+//  3. Fiecare linie de deviz isi poarta propriul pret, scris de om. Catalogul
+//     de preturi (Material, MaterialPrice, LaborIndex) e referinta: se afiseaza
+//     ca reper, nu scrie in linie si nu recalculeaza nimic in spate.
 
 generator client {
   provider = "prisma-client-js"
@@ -237,6 +237,11 @@ model Estimate {
 
   status EstimateStatus @default(CIORNA)
 
+  /// Judetul in care se executa lucrarea, cod ISO 3166-2:RO. Decide reperele de
+  /// pret: manopera si materialele difera mult intre Bucuresti si Botosani.
+  /// Se completeaza din formular; cand lipseste, se citeste din proiect.
+  countyCode String?
+
   issueDate  DateTime  @default(now())
   validUntil DateTime?
 
@@ -375,6 +380,94 @@ model EstimateLine {
 
   @@index([estimateId, sortOrder])
   @@index([sectionId])
+}
+
+// ---------------------------------------------------------------------------
+// Preturi de referinta
+//
+// Nomenclator national, ca `VatRate` si ca indicatoarele de norme: preturile
+// pietei sunt aceleasi pentru toate firmele, deci nu poarta `orgId`.
+//
+// Sunt REFERINTA, nu sursa. Nimic de aici nu scrie singur intr-o linie de deviz
+// si nimic nu recalculeaza un deviz existent cand pretul pietei se schimba —
+// vezi regula 1 din CLAUDE.md. Omul vede reperul, si decide el.
+// ---------------------------------------------------------------------------
+
+model Material {
+  id       String  @id @default(cuid())
+  name     String
+  unit     String
+  category String?
+
+  createdAt DateTime @default(now())
+
+  prices MaterialPrice[]
+
+  @@index([name])
+}
+
+/// De unde vine o observatie de pret.
+enum MaterialPriceSource {
+  /// Citita de pe site-ul unui furnizor.
+  FURNIZOR
+  /// Dintr-o lista de preturi primita de la furnizor (fisier).
+  LISTA
+  /// Scrisa de om.
+  MANUAL
+}
+
+/// O observatie de pret, la o data, intr-un loc.
+///
+/// Tabelul creste, nu se rescrie: un import nou insereaza rinduri, nu le
+/// suprascrie pe cele vechi. Fara asta n-ar exista evolutie in timp, iar un
+/// grafic desenat din presupuneri ar fi mai rau decat niciun grafic.
+model MaterialPrice {
+  id         String @id @default(cuid())
+  materialId String
+
+  /// Cod ISO 3166-2:RO. `null` = pret national, folosit cand judetul n-are
+  /// observatii proprii.
+  countyCode String?
+
+  price    Decimal @db.Decimal(12, 4)
+  currency String  @default("RON")
+
+  source    MaterialPriceSource
+  /// Numele furnizorului, cand se stie.
+  supplier  String?
+  /// Pagina de unde a fost citit pretul, ca sa poata fi verificat de om.
+  sourceUrl String?
+
+  /// Momentul la care pretul a fost observat, nu cel al importului.
+  observedAt DateTime
+
+  createdAt DateTime @default(now())
+
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@index([materialId, countyCode, observedAt])
+  @@index([observedAt])
+}
+
+/// Cat de scumpa e manopera intr-un judet fata de media nationala.
+///
+/// Furnizorii nu vand manopera, deci nu exista pret de raft de citit. Sursa e
+/// statistica oficiala (INS, castigul salarial in constructii pe judet), din
+/// care iese un raport fata de media pe tara: 1.0 = media, 1.18 = cu 18% peste.
+model LaborIndex {
+  id         String @id @default(cuid())
+  countyCode String
+
+  value Decimal @db.Decimal(6, 4)
+
+  /// Perioada la care se refera datele, nu momentul importului.
+  period    DateTime
+  sourceUrl String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([countyCode, period])
+  @@index([countyCode, period])
 }
 
 // ---------------------------------------------------------------------------
