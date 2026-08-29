@@ -80,7 +80,7 @@ lib/
   money.ts         rotunjiri half-up
   money-db.ts      conversii spre Decimal
 data/              norme-c.json, norme-rpc.json, norme-ts.json, consumuri.json
-scripts/           import indicatoare si preturi, seed demo, istoric demo, token
+scripts/           migrarea de la deploy, import indicatoare si preturi, seed demo
 prisma/            schema, migrari, seed
 ```
 
@@ -398,26 +398,40 @@ npm run build
 
 Nu raporta ceva ca terminat fara ca astea trei sa treaca.
 
-### Migrarile NU se aplica la deploy
+### Migrarile se aplica la deploy, prin `scripts/migrate-deploy.mjs`
 
-`build` e `prisma generate && next build`. Nu ruleaza `prisma migrate deploy`, si
-asta cere atentie: **o schimbare de schema trebuie aplicata pe baza de productie
-manual, inainte de a duce codul acolo.**
+`build` e `prisma generate && node scripts/migrate-deploy.mjs && next build`.
 
-S-a incercat si varianta cu migrarea in build. Pe Vercel a picat, si a picat prost:
-build-ul esuat a blocat toate deploy-urile, nu doar pe cel cu schema noua. Pina se
-citeste log-ul de build si se afla de ce (candidatii: `DATABASE_URL` neexpus la
-build, sau o conexiune pooled pe care `migrate deploy` o refuza, caz in care
-`datasource` are nevoie de `directUrl`), migrarile se aplica de mina:
+A fost o vreme cind nu era asa, si a costat. `prisma migrate deploy` pus direct in
+`build` a picat pe Vercel si a blocat **toate** deploy-urile, nu doar pe cel cu
+schema noua, iar din log nu se intelegea de ce. S-a scos, migrarile au ramas de
+aplicat de mina — si s-a uitat. Productia a stat cu cod nou peste schema veche:
+pagina de materiale si deschiderea oricarui deviz dadeau 500.
+
+Scriptul acopera amindoi candidatii caderii de atunci:
+
+- **fara `DATABASE_URL` sare peste**, cu o linie in log. Un build de preview sau o
+  rulare locala nu mai cade din cauza asta;
+- **cind exista `DIRECT_URL`, migrarea merge pe ea.** `migrate deploy` refuza o
+  conexiune pooled (pgbouncer). `schema.prisma` ramine neatins: un `directUrl`
+  acolo, cu variabila nesetata, ar strica si rularile locale. Cind `DATABASE_URL`
+  pare pooled si `DIRECT_URL` lipseste, scriptul avertizeaza inainte sa incerce.
+
+O migrare care chiar da eroare opreste build-ul, si asa trebuie: mai bine
+deploy-ul nu pleaca decit sa ajunga cod nou peste schema veche. Diferenta fata de
+prima incercare e ca acum motivul se citeste din log de la prima privire.
+
+Ordinea expandare/contractie ramine valabila si conteaza in continuare. O migrare
+care doar adauga coloane e inofensiva in ambele sensuri, deci o poate aplica
+build-ul inainte ca noul cod sa fie live. **Una care sterge ceva nu se pune in
+build**: se aplica de mina, dupa ce codul nou ruleaza peste tot. De aceea
+migrarile de aici se scriu in doi pasi.
+
+Migrarea de mina ramine disponibila, pentru cazurile alea si pentru urgente:
 
 ```bash
-DATABASE_URL="<url-ul de productie>" npx prisma migrate deploy
+DATABASE_URL="<url-ul de productie>" npm run db:deploy
 ```
-
-Ordinea conteaza. O migrare care doar adauga coloane se aplica inainte de deploy si
-nu deranjeaza codul vechi. Una care sterge ceva se aplica dupa ce noul cod e live,
-altfel cade codul care inca citeste coloana. De aceea migrarile de aici se scriu in
-doi pasi: intii expandarea, apoi contractia.
 
 Pentru date de umblat prin aplicatie, dupa `npm run db:seed`:
 
