@@ -20,6 +20,7 @@
     "demo:istoric": "tsx scripts/demo-istoric.ts",
     "demo:factura": "node --conditions=react-server --import tsx scripts/demo-factura.ts",
     "demo:materiale": "tsx scripts/seed-materiale.ts",
+    "import:preturi": "node --conditions=react-server --import tsx scripts/import-preturi.ts",
     "dev:token": "tsx scripts/dev-token.ts"
   },
   "prisma": {

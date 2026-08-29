@@ -69,7 +69,7 @@ lib/
   estimates/       operatiile pe deviz
   progress/        situatii de lucrari, cantitati executate cumulat
   invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
-  materials/       catalog de preturi de referinta: cautare, reper pe judet, import
+  materials/       catalog de preturi: cautare, reper pe judet, import din API si liste
   efactura/        generator UBL 2.1 + validator CIUS-RO
   pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
@@ -79,7 +79,7 @@ lib/
   money.ts         rotunjiri half-up
   money-db.ts      conversii spre Decimal
 data/              norme-c.json, norme-rpc.json, norme-ts.json
-scripts/           import indicatoare, seed demo, istoric demo, token de dezvoltare
+scripts/           import indicatoare si preturi, seed demo, istoric demo, token
 prisma/            schema, migrari, seed
 ```
 
@@ -191,6 +191,63 @@ Ce e greu de reconstituit si usor de stricat:
   imagini JPEG2000 pe care pdfjs nu le decodeaza in Node. Pina apare alt
   exemplar, hidroizolatiile se scriu ca linii libere.
 
+## Sursele de preturi
+
+Catalogul se umple din trei feluri de surse, toate in spatele aceleiasi interfete
+(`PriceSource` din `lib/materials/import.ts`): un API, o lista de preturi primita
+de la furnizor, sau o cifra scrisa de om. Adaugarea unei surse noi inseamna un
+adaptor care intoarce `PriceObservation[]` — restul lantului nu-i cunoaste forma.
+
+**Transportul se injecteaza.** `createApiPriceSource` primeste `fetchImpl`, cu
+`fetch`-ul global ca implicit. Fara asta, tot drumul — cerere, validare, mapare,
+scriere — n-ar putea fi verificat decit lovind un server real, si intr-o
+aplicatie unde cifra ajunge pe un act semnat asta inseamna neverificat. Testele
+din `api-source.test.ts` ruleaza un API prefacut; cel adevarat doar se
+substituie.
+
+**Raspunsul se valideaza cu zod, ca si iesirea modelului.** Un raspuns de forma
+gresita opreste importul cu `ApiSourceError`, nu il lasa sa scrie pe jumatate: un
+catalog umplut partial arata pe ecran exact ca unul complet.
+
+**Judetul necunoscut nu se pastreaza.** La materiale, observatia trece pe
+national; la manopera, indicele se arunca. Un pret legat de o zona inexistenta ar
+disparea din cautari, iar un indice pus pe alt cod ar ajusta preturi in dreptul
+altcuiva.
+
+Configurarea, in `.env` (formele exacte ale raspunsurilor sint in `.env.example`
+si in antetul celor doua module):
+
+```
+PRETURI_API_URL / PRETURI_API_KEY / PRETURI_API_NUME     # materiale
+MANOPERA_API_URL / MANOPERA_API_KEY / MANOPERA_API_NUME  # indicele de zona
+```
+
+Fara ele aplicatia merge intreaga, ca si fara `ANTHROPIC_API_KEY`: doar importul
+automat e indisponibil. `priceApiFromEnv()` intoarce `null`, si asta se trateaza,
+nu se arunca.
+
+Importul se ruleaza cu:
+
+```bash
+npm run import:preturi              # aduce si scrie
+npm run import:preturi -- --dry     # aduce si arata, fara sa scrie
+```
+
+Ruleaza cu `--conditions=react-server`, ca `demo:factura`, fiindca atinge module
+marcate `server-only`.
+
+**Materialele se adauga, indicii se inlocuiesc.** Un pret observat intr-o zi e un
+fapt al zilei aceleia si ramine acolo; observatia identica adusa a doua oara nu se
+mai scrie, ca un API care intoarce tot istoricul la fiecare rulare sa nu umple
+tabelul cu copii ale aceleiasi masuratori. Indicele de manopera al unei perioade e
+insa o statistica ce se revizuieste: perechea (judet, perioada) e unica in schema,
+si valoarea corectata o inlocuieste pe cea provizorie. Doua randuri pe acelasi
+trimestru ar fi doua adevaruri despre el.
+
+**Adaptoarele de site nu sint scrise.** Un extractor se face pe structura reala a
+paginii; scris fara sa vezi site-ul, iese cod care arata a functie livrata si nu
+extrage nimic corect. Pina atunci, sursele reale sint API-ul si listele de preturi.
+
 ## AI
 
 AI-ul propune, omul semneaza. Nimic generat nu se emite automat.
@@ -279,6 +336,11 @@ iesea pe `return null`. Cu preturile mutate sub linie, conditia aceea ar face
 liniile scrise de mina imposibil de editat — n-ai cum sa ajungi la cifre. La fel,
 randul de detalii se deschide neconditionat: preturi are orice linie.
 
+**`server-only` e aliasat in `vitest.config.ts`** catre fisierul gol pe care
+Next il rezolva pe conditia `react-server`. Fara alias, pachetul arunca la import
+si tot ce scrie in baza — emiterea, importul de preturi — ar ramine
+neverificabil. Testele care ating baza au nevoie de PostgreSQL pornit.
+
 **Testele** acopera ce se strica tacut: rotunjiri, numerotare sub concurenta,
 integritatea indicatoarelor, maparea apelurilor AI, generatorul e-Factura,
 geometria graficelor. Cind un test pica dupa o schimbare de date, intreaba-te
@@ -287,7 +349,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 234 de teste
+npm test          # 254 de teste
 npm run typecheck
 npm run build
 ```
