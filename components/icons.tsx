@@ -80,6 +80,16 @@ export function IconClient(props: IconProps) {
   );
 }
 
+export function IconMaterial(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M3.5 8.5h17v12h-17z" />
+      <path d="M8 8.5V5.5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" />
+      <path d="M9 14.5l2.5-2.5 2 2 2.5-2.5" />
+    </Svg>
+  );
+}
+
 export function IconSetari(props: IconProps) {
   return (
     <Svg {...props}>

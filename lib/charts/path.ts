@@ -104,6 +104,12 @@ export function areaPath(puncte: Punct[], baza: number): string {
  * Cind nu exista interval — toata seria e zero — linia se aseaza JOS, pe zero,
  * nu la mijlocul casetei: o linie prin mijloc pentru o luna fara documente
  * arata ca o valoare care nu exista.
+ *
+ * `minimImpus` rupe regula, si o rupe anume. Pe pretul unui material nu se
+ * deseneaza o marime, ci o miscare: intre 320 si 340 lei/mp sint 6%, iar cu baza
+ * la zero cele doua puncte ar fi lipite si graficul n-ar spune nimic. Cine il
+ * foloseste raspunde de axa: un grafic de pret trebuie sa-si arate limita de
+ * jos, altfel exagereaza variatia.
  */
 export function scaleaza(
   valori: number[],
@@ -111,11 +117,12 @@ export function scaleaza(
   inaltime: number,
   padding = 0,
   maximImpus?: number,
+  minimImpus?: number,
 ): Punct[] {
   if (valori.length === 0) return [];
 
   const max = maximImpus ?? Math.max(...valori);
-  const min = Math.min(0, ...valori);
+  const min = minimImpus ?? Math.min(0, ...valori);
   const interval = max - min;
 
   const utila = inaltime - padding * 2;

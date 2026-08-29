@@ -19,6 +19,7 @@
     "demo:deviz": "tsx scripts/demo-deviz.ts",
     "demo:istoric": "tsx scripts/demo-istoric.ts",
     "demo:factura": "node --conditions=react-server --import tsx scripts/demo-factura.ts",
+    "demo:materiale": "tsx scripts/seed-materiale.ts",
     "dev:token": "tsx scripts/dev-token.ts"
   },
   "prisma": {

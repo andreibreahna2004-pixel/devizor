@@ -12,12 +12,24 @@ care il semneaza cineva. Regulile de mai jos exista ca sa nu se intimple asta.
 
 ## Cele patru reguli care nu se incalca
 
-**1. Pretul il scrie omul, pe linia de deviz.** Nu exista catalog de articole, de
-materiale sau de tarife. Recapitulatia totalizeaza si atit: nu exista cheltuieli
-indirecte, nu exista procent de profit, nu exista niciun coeficient care se adauga
-peste pret. Nimic nu recalculeaza in spate o valoare pe care a scris-o omul. Daca
-apare cerinta unei a doua surse de adevar pentru bani, e semnalul ca ceva e gresit
-in cerinta, nu in cod.
+**1. Pretul il scrie omul, pe linia de deviz.** Recapitulatia totalizeaza si atit:
+nu exista cheltuieli indirecte, nu exista procent de profit, nu exista niciun
+coeficient care se adauga peste pret. Nimic nu recalculeaza in spate o valoare pe
+care a scris-o omul.
+
+Exista un catalog de preturi de referinta (`lib/materials/`), si nu incalca regula
+asta, pentru ca **e referinta, nu sursa**. Distinctia se tine cu trei conditii, si
+toate trei trebuie sa ramina adevarate:
+
+- nimic din catalog nu scrie singur intr-o linie — omul vede reperul si il accepta
+  sau scrie altceva;
+- o schimbare de pret in catalog **nu** atinge niciun deviz existent, nici macar
+  unul in ciorna;
+- fiecare reper isi arata provenienta: data observatiei, sursa, si daca e pretul
+  judetului sau media pe tara.
+
+Daca vreuna cade, catalogul devine a doua sursa de adevar pentru bani, si atunci
+ceva e gresit in cerinta, nu in cod.
 
 **2. Un singur motor de calcul.** `lib/pricing/calculator.ts` e folosit de
 interfata, PDF, XML, situatii de lucrari si generatorul AI. Orice adunare de
@@ -50,13 +62,14 @@ components/
   theme-toggle.tsx comutatorul deschis / intunecat
 lib/
   ai/              prompt, unelte, bucla agentica, mapare apel -> linie
-  charts/          trasee SVG — modul pur, fara DOM, testat direct
+  charts/          trasee SVG si bucketare pe intervale — module pure, testate direct
   dashboard/       agregarile de pe panou: serii, sparkline, activitate
   norme/           indicatoarele de norme: cautare, coduri, grupe
   pricing/         motorul de calcul — sursa unica de adevar pentru cifre
   estimates/       operatiile pe deviz
   progress/        situatii de lucrari, cantitati executate cumulat
   invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
+  materials/       catalog de preturi de referinta: cautare, reper pe judet, import
   efactura/        generator UBL 2.1 + validator CIUS-RO
   pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
@@ -98,6 +111,21 @@ inserarile de azi, care nu le pomenesc, merg neschimbate.
 
 Consecinta: `prisma migrate dev` raporteaza drift si vrea sa genereze exact
 migrarea aceea de contractie. Nu e o eroare — e pasul care a fost aminat.
+
+`Estimate.countyCode` tine judetul lucrarii, cod ISO 3166-2:RO. De el atirna
+reperele de pret: manopera si materialele difera mult intre Bucuresti si Botosani.
+Pina la el, judetul ales in formular ajungea in promptul AI si se pierdea.
+
+`MaterialPrice` **creste, nu se rescrie.** Un import insereaza observatii noi, cu
+data lor; nu suprascrie ultimul pret. Fara asta n-ar exista evolutie in timp, iar
+un grafic desenat din presupuneri ar fi mai rau decit niciun grafic. Materialele
+si preturile sint nationale, fara `orgId`, ca normele si cotele de TVA: piata e
+aceeasi pentru toate firmele.
+
+`LaborIndex` tine cit de scumpa e manopera intr-un judet fata de media pe tara.
+Furnizorii nu vind manopera, deci nu exista pret de raft de citit; sursa e
+statistica oficiala, iar reperul iese din inmultirea unui pret national cu
+indicele judetului.
 
 ### Reguli de calcul
 
@@ -259,7 +287,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 188 de teste
+npm test          # 234 de teste
 npm run typecheck
 npm run build
 ```
@@ -293,6 +321,7 @@ Pentru date de umblat prin aplicatie, dupa `npm run db:seed`:
 npm run demo:deviz     # deviz de 21 de linii, cu utilaj si transport pe citeva
 npm run demo:istoric   # un an de documente, ca sa aiba graficele ce arata
 npm run demo:factura   # factura pe tot devizul
+npm run demo:materiale # sase materiale cu un an de preturi pe trei judete
 ```
 
 `demo:istoric` genereaza determinist (simbure fixat), deci doua rulari dau
