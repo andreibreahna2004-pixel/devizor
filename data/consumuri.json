@@ -1,0 +1,5332 @@
+[
+ {
+  "id": "beton-c8-10",
+  "denumire": "Beton preparat pe santier C8/10",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     210,
+     240
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     850,
+     950
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Pietris 4-16 mm",
+    "um": "kg",
+    "consum": [
+     950,
+     1050
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     165,
+     185
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Dozaj pentru preparare la betoniera. Betonul de statie vine cu reteta lui."
+ },
+ {
+  "id": "beton-c12-15",
+  "denumire": "Beton preparat pe santier C12/15",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     260,
+     290
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     880,
+     960
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Pietris 4-16 mm",
+    "um": "kg",
+    "consum": [
+     960,
+     1040
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     170,
+     190
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Dozaj pentru preparare la betoniera. Betonul de statie vine cu reteta lui."
+ },
+ {
+  "id": "beton-c16-20",
+  "denumire": "Beton preparat pe santier C16/20 (B250)",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     340,
+     360
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "https://www.turbopump.ro/reteta-beton-b250-c16-20-bd443"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     900,
+     980
+    ],
+    "sursa": "https://www.turbopump.ro/reteta-beton-b250-c16-20-bd443"
+   },
+   {
+    "denumire": "Pietris 4-16 mm",
+    "um": "kg",
+    "consum": [
+     950,
+     1020
+    ],
+    "sursa": "https://www.turbopump.ro/reteta-beton-b250-c16-20-bd443"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     180,
+     195
+    ],
+    "sursa": "https://www.turbopump.ro/reteta-beton-b250-c16-20-bd443"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Dozaj pentru preparare la betoniera. Betonul de statie vine cu reteta lui."
+ },
+ {
+  "id": "beton-c20-25",
+  "denumire": "Beton preparat pe santier C20/25 (B300)",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     360,
+     400
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     850,
+     950
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Pietris 4-16 mm",
+    "um": "kg",
+    "consum": [
+     950,
+     1050
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     175,
+     190
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Dozaj pentru preparare la betoniera. Betonul de statie vine cu reteta lui."
+ },
+ {
+  "id": "beton-c25-30",
+  "denumire": "Beton preparat pe santier C25/30 (B350)",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     400,
+     430
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     820,
+     920
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Pietris 4-16 mm",
+    "um": "kg",
+    "consum": [
+     950,
+     1050
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     175,
+     190
+    ],
+    "sursa": "https://www.betonexpert.ro/preparare-beton-la-betoniera/"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Dozaj pentru preparare la betoniera. Betonul de statie vine cu reteta lui."
+ },
+ {
+  "id": "beton-turnat-gata",
+  "denumire": "Beton turnat din statie",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Beton gata preparat",
+    "um": "mc",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta",
+    "nota": "Supraconsumul acopera pierderile la pompare si la cofraj."
+   },
+   {
+    "denumire": "Distantieri armatura",
+    "um": "buc",
+    "consum": [
+     4,
+     6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "armatura-beton",
+  "denumire": "Armatura pentru elemente de beton armat",
+  "categorie": "Infrastructura si beton",
+  "um": "mc beton",
+  "parametru": {
+   "cheie": "varianta",
+   "eticheta": "Elementul armat",
+   "optiuni": [
+    "fundatii si radiere",
+    "stalpi si grinzi",
+    "plansee",
+    "centuri si buiandrugi"
+   ]
+  },
+  "materiale": [
+   {
+    "denumire": "Otel beton",
+    "um": "kg",
+    "peVarianta": {
+     "fundatii si radiere": [
+      40,
+      70
+     ],
+     "stalpi si grinzi": [
+      100,
+      140
+     ],
+     "plansee": [
+      80,
+      110
+     ],
+     "centuri si buiandrugi": [
+      60,
+      90
+     ]
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sarma neagra pentru legat",
+    "um": "kg",
+    "consum": [
+     0.8,
+     1.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Distantieri",
+    "um": "buc",
+    "consum": [
+     8,
+     12
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "cofraj-fundatii",
+  "denumire": "Cofraj din lemn la fundatii",
+  "categorie": "Infrastructura si beton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Scandura de rasinoase 24 mm",
+    "um": "mc",
+    "consum": [
+     0.026,
+     0.034
+    ],
+    "sursa": "practica curenta",
+    "nota": "Se refoloseste de 4-6 ori; cifra e pentru o folosire."
+   },
+   {
+    "denumire": "Rigle lemn 48x48",
+    "um": "ml",
+    "consum": [
+     1.2,
+     1.8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cuie",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Decofrol",
+    "um": "l",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "cofraj-stalpi-grinzi",
+  "denumire": "Cofraj la stalpi, grinzi si centuri",
+  "categorie": "Infrastructura si beton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placaj de cofrare 18 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.15
+    ],
+    "sursa": "practica curenta",
+    "nota": "Se refoloseste de 8-15 ori."
+   },
+   {
+    "denumire": "Rigle lemn 48x98",
+    "um": "ml",
+    "consum": [
+     1.5,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Tije si fluturi",
+    "um": "buc",
+    "consum": [
+     1.5,
+     2.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Decofrol",
+    "um": "l",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "cofraj-plansee",
+  "denumire": "Cofraj la plansee",
+  "categorie": "Infrastructura si beton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placaj de cofrare 18 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Grinzi de cofrare H20",
+    "um": "ml",
+    "consum": [
+     2.5,
+     3.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Popi metalici",
+    "um": "buc",
+    "consum": [
+     0.8,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Decofrol",
+    "um": "l",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "umplutura-balast",
+  "denumire": "Umplutura de balast compactat",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Balast",
+    "um": "mc",
+    "consum": [
+     1.25,
+     1.35
+    ],
+    "sursa": "practica curenta",
+    "nota": "Supraconsumul e afanarea: 1 mc in lucrare cere ~1,3 mc adus."
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "pietris-sub-placa",
+  "denumire": "Strat de pietris sub placa",
+  "categorie": "Infrastructura si beton",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Pietris 16-31 mm",
+    "um": "mc",
+    "consum": [
+     1.2,
+     1.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "hidroizolatie-fundatie",
+  "denumire": "Hidroizolatie la fundatii si soclu",
+  "categorie": "Infrastructura si beton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa bituminoasa",
+    "um": "l",
+    "consum": [
+     0.3,
+     0.45
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Membrana bituminoasa",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta",
+    "nota": "Petrecerile la imbinari cer 15-20% peste suprafata desfasurata."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "drenaj-perimetral",
+  "denumire": "Drenaj perimetral la fundatie",
+  "categorie": "Infrastructura si beton",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Tub de drenaj riflat 110 mm",
+    "um": "ml",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Geotextil",
+    "um": "mp",
+    "consum": [
+     1.8,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Pietris de drenaj",
+    "um": "mc",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "egalizare-beton",
+  "denumire": "Beton de egalizare sub fundatie",
+  "categorie": "Infrastructura si beton",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului",
+   "implicit": 50,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Beton C8/10",
+    "um": "mc",
+    "peMm": [
+     0.001,
+     0.0011
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "zidarie-bca-10",
+  "denumire": "Zidarie BCA 10 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Blocuri BCA 10 cm",
+    "um": "buc",
+    "consum": [
+     6.6,
+     7.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar pentru zidarie BCA",
+    "um": "kg",
+    "consum": [
+     8,
+     12
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Adeziv pentru rosturi subtiri",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Alternativa la mortar, cand zidaria se face cu rost subtire de 2-3 mm."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-bca-15",
+  "denumire": "Zidarie BCA 15 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Blocuri BCA 15 cm",
+    "um": "buc",
+    "consum": [
+     6.6,
+     7.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar pentru zidarie BCA",
+    "um": "kg",
+    "consum": [
+     12,
+     17
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Adeziv pentru rosturi subtiri",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Alternativa la mortar, cand zidaria se face cu rost subtire de 2-3 mm."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-bca-20",
+  "denumire": "Zidarie BCA 20 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Blocuri BCA 20 cm",
+    "um": "buc",
+    "consum": [
+     6.6,
+     7.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar pentru zidarie BCA",
+    "um": "kg",
+    "consum": [
+     16,
+     22
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Adeziv pentru rosturi subtiri",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Alternativa la mortar, cand zidaria se face cu rost subtire de 2-3 mm."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-bca-25",
+  "denumire": "Zidarie BCA 25 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Blocuri BCA 25 cm",
+    "um": "buc",
+    "consum": [
+     6.6,
+     7.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar pentru zidarie BCA",
+    "um": "kg",
+    "consum": [
+     20,
+     27
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Adeziv pentru rosturi subtiri",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Alternativa la mortar, cand zidaria se face cu rost subtire de 2-3 mm."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-bca-30",
+  "denumire": "Zidarie BCA 30 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Blocuri BCA 30 cm",
+    "um": "buc",
+    "consum": [
+     6.6,
+     7.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar pentru zidarie BCA",
+    "um": "kg",
+    "consum": [
+     24,
+     32
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Adeziv pentru rosturi subtiri",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Alternativa la mortar, cand zidaria se face cu rost subtire de 2-3 mm."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-porotherm-25",
+  "denumire": "Zidarie caramida cu goluri 25 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Caramida cu goluri 25x25x23",
+    "um": "buc",
+    "consum": [
+     16,
+     17
+    ],
+    "sursa": "https://cemacon.ro/instrumente-calcul/calculator-necesar"
+   },
+   {
+    "denumire": "Mortar pentru zidarie",
+    "um": "kg",
+    "consum": [
+     22,
+     30
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-porotherm-30",
+  "denumire": "Zidarie caramida cu goluri 30 cm",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Caramida cu goluri 30x25x23",
+    "um": "buc",
+    "consum": [
+     16,
+     17
+    ],
+    "sursa": "https://cemacon.ro/instrumente-calcul/calculator-necesar"
+   },
+   {
+    "denumire": "Mortar pentru zidarie",
+    "um": "kg",
+    "consum": [
+     26,
+     36
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-caramida-plina",
+  "denumire": "Zidarie din caramida plina",
+  "categorie": "Zidarii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Caramida plina 240x115x63",
+    "um": "buc",
+    "consum": [
+     52,
+     56
+    ],
+    "sursa": "practica curenta",
+    "nota": "Pentru zid de o caramida (25 cm)."
+   },
+   {
+    "denumire": "Mortar pentru zidarie",
+    "um": "kg",
+    "consum": [
+     45,
+     60
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "zidarie-mortar-santier",
+  "denumire": "Mortar de zidarie preparat pe santier",
+  "categorie": "Zidarii",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     280,
+     320
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Var pasta",
+    "um": "kg",
+    "consum": [
+     120,
+     180
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip",
+    "um": "mc",
+    "consum": [
+     1.05,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3,
+  "nota": "Reteta clasica 1:1:6. Mortarul gata preparat scuteste dozarea pe santier."
+ },
+ {
+  "id": "zidarie-piatra",
+  "denumire": "Zidarie din piatra bruta",
+  "categorie": "Zidarii",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Piatra bruta",
+    "um": "to",
+    "consum": [
+     1.6,
+     1.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar de zidarie",
+    "um": "mc",
+    "consum": [
+     0.28,
+     0.38
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "stalpisori-beton",
+  "denumire": "Stalpisori de beton armat",
+  "categorie": "Zidarii",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Beton C16/20",
+    "um": "mc",
+    "consum": [
+     0.0625,
+     0.09
+    ],
+    "sursa": "practica curenta",
+    "nota": "Sectiune uzuala 25x25 pina la 30x30 cm."
+   },
+   {
+    "denumire": "Otel beton",
+    "um": "kg",
+    "consum": [
+     8,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cofraj lemn",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "centura-beton",
+  "denumire": "Centura de beton armat",
+  "categorie": "Zidarii",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Beton C16/20",
+    "um": "mc",
+    "consum": [
+     0.0625,
+     0.075
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Otel beton",
+    "um": "kg",
+    "consum": [
+     7,
+     12
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cofraj lemn",
+    "um": "mp",
+    "consum": [
+     0.9,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "buiandrug",
+  "denumire": "Buiandrug peste gol de usa sau fereastra",
+  "categorie": "Zidarii",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Buiandrug prefabricat",
+    "um": "buc",
+    "consum": [
+     0.5,
+     0.6
+    ],
+    "sursa": "practica curenta",
+    "nota": "Un buiandrug acopera golul plus 25 cm rezemare de fiecare parte."
+   },
+   {
+    "denumire": "Mortar de poza",
+    "um": "kg",
+    "consum": [
+     4,
+     7
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "planseu-beton-armat",
+  "denumire": "Planseu de beton armat monolit",
+  "categorie": "Plansee si structura",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea plansee",
+   "implicit": 150,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Beton C20/25",
+    "um": "mc",
+    "peMm": [
+     0.00102,
+     0.00105
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Otel beton",
+    "um": "kg",
+    "consum": [
+     9,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cofraj",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "planseu-predale",
+  "denumire": "Planseu din predale si corpuri de umplutura",
+  "categorie": "Plansee si structura",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Predale prefabricate",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.02
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Corpuri de umplutura",
+    "um": "buc",
+    "consum": [
+     6,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Beton de suprabetonare C20/25",
+    "um": "mc",
+    "consum": [
+     0.05,
+     0.07
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plasa sudata",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "planseu-lemn",
+  "denumire": "Planseu din grinzi de lemn",
+  "categorie": "Plansee si structura",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Grinzi lemn 10x20",
+    "um": "ml",
+    "consum": [
+     1.4,
+     1.7
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Dusumea sau OSB 22 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cuie si conectori",
+    "um": "kg",
+    "consum": [
+     0.2,
+     0.35
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "scara-beton",
+  "denumire": "Scara de beton armat",
+  "categorie": "Plansee si structura",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Beton C20/25",
+    "um": "mc",
+    "consum": [
+     1.0,
+     1.03
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Otel beton",
+    "um": "kg",
+    "consum": [
+     110,
+     150
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cofraj",
+    "um": "mp",
+    "consum": [
+     8,
+     11
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "structura-metalica",
+  "denumire": "Structura metalica usoara",
+  "categorie": "Plansee si structura",
+  "um": "to",
+  "materiale": [
+   {
+    "denumire": "Profile metalice",
+    "um": "kg",
+    "consum": [
+     1000,
+     1000
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi si conectori",
+    "um": "kg",
+    "consum": [
+     15,
+     30
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Grund anticoroziv",
+    "um": "l",
+    "consum": [
+     8,
+     14
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Vopsea de finisaj",
+    "um": "l",
+    "consum": [
+     7,
+     12
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "plasa-sudata",
+  "denumire": "Plasa sudata in placi si sape",
+  "categorie": "Plansee si structura",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Plasa sudata",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta",
+    "nota": "Petrecerea de 1-2 ochiuri la imbinari."
+   },
+   {
+    "denumire": "Distantieri",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "sarpanta-lemn",
+  "denumire": "Sarpanta din lemn",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Lemn de rasinoase ecarisat",
+    "um": "mc",
+    "consum": [
+     0.045,
+     0.065
+    ],
+    "sursa": "practica curenta",
+    "nota": "Capriori, pane, popi si talpi, la sarpanta obisnuita de casa."
+   },
+   {
+    "denumire": "Cuie si conectori",
+    "um": "kg",
+    "consum": [
+     0.4,
+     0.8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Solutie ignifuga si antifungica",
+    "um": "l",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "astereala-scandura",
+  "denumire": "Astereala din scandura",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Scandura rasinoase 24 mm",
+    "um": "mc",
+    "consum": [
+     0.026,
+     0.03
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cuie",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "astereala-osb",
+  "denumire": "Astereala din OSB",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placa OSB 18 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.12
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi",
+    "um": "buc",
+    "consum": [
+     12,
+     18
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "folie-anticondens",
+  "denumire": "Folie anticondens sub invelitoare",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Folie anticondens",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.25
+    ],
+    "ambalaj": {
+     "um": "rola 75 mp",
+     "continut": 75
+    },
+    "sursa": "practica curenta",
+    "nota": "Petrecerea de 10-15 cm intre fisii, plus rezerva la strapungeri."
+   },
+   {
+    "denumire": "Banda de etansare",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.7
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "sipci-contrasipci",
+  "denumire": "Sipci si contrasipci",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Contrasipca 30x50",
+    "um": "ml",
+    "consum": [
+     1.1,
+     1.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sipca 30x50",
+    "um": "ml",
+    "consum": [
+     3.0,
+     4.0
+    ],
+    "sursa": "practica curenta",
+    "nota": "Depinde de pasul tiglei: 3 ml/mp la pas de 33 cm, 4 ml la pas de 25 cm."
+   },
+   {
+    "denumire": "Cuie",
+    "um": "kg",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "tigla-ceramica",
+  "denumire": "Invelitoare din tigla ceramica",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Tigla ceramica",
+    "um": "buc",
+    "consum": [
+     9,
+     15
+    ],
+    "sursa": "https://www.tehnoconstruct.ro/blog/acoperis/intrebari-frecvente-tigla-ceramica",
+    "nota": "Numarul exact e in fisa produsului: depinde de model, panta si petrecere."
+   },
+   {
+    "denumire": "Tigla de coama",
+    "um": "buc",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "sursa": "https://www.tehnoconstruct.ro/blog/acoperis/intrebari-frecvente-tigla-ceramica"
+   },
+   {
+    "denumire": "Cleme de prindere",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "tigla-metalica",
+  "denumire": "Invelitoare din tigla metalica",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Tigla metalica",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta",
+    "nota": "Pierderile la taiere cresc mult pe acoperisuri cu multe ape."
+   },
+   {
+    "denumire": "Suruburi autoforante",
+    "um": "buc",
+    "consum": [
+     7,
+     9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coama",
+    "um": "ml",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
+  "id": "tabla-faltuita",
+  "denumire": "Invelitoare din tabla faltuita",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Tabla plana in rulou",
+    "um": "mp",
+    "consum": [
+     1.2,
+     1.35
+    ],
+    "sursa": "practica curenta",
+    "nota": "Faltul si indoirile consuma 20-35% peste suprafata acoperita."
+   },
+   {
+    "denumire": "Agrafe de prindere",
+    "um": "buc",
+    "consum": [
+     4,
+     6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "sindrila-bituminoasa",
+  "denumire": "Invelitoare din sindrila bituminoasa",
+  "categorie": "Acoperis",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Sindrila bituminoasa",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Membrana suport",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cuie cu cap lat",
+    "um": "buc",
+    "consum": [
+     16,
+     22
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv bituminos",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "jgheaburi-burlane",
+  "denumire": "Jgheaburi si burlane",
+  "categorie": "Acoperis",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Jgheab",
+    "um": "ml",
+    "consum": [
+     1.02,
+     1.08
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cirlige de jgheab",
+    "um": "buc",
+    "consum": [
+     1.6,
+     2.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Burlan",
+    "um": "ml",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Bratari de burlan",
+    "um": "buc",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "accesorii-acoperis",
+  "denumire": "Pazii, sorturi si accesorii de acoperis",
+  "categorie": "Acoperis",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Sort de streasina",
+    "um": "ml",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Pazie lemn",
+    "um": "ml",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi",
+    "um": "buc",
+    "consum": [
+     4,
+     6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "termosistem-eps-5",
+  "denumire": "Termosistem cu polistiren EPS 5 cm",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de armare",
+   "implicit": 4,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Polistiren expandat EPS 5 cm",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru lipire",
+    "um": "kg",
+    "consum": [
+     3.0,
+     4.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "3-4 kg/mp la lipire; pe suport denivelat urca."
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "Stratul de armare are de obicei 3-5 mm."
+   },
+   {
+    "denumire": "Plasa din fibra de sticla",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "ambalaj": {
+     "um": "rola 50 mp",
+     "continut": 50
+    },
+    "sursa": "https://www.unimat.ro/cumpara/plasa-din-fibra-de-sticla-145g-mp-pentru-termosistem-50mp-rola-4051",
+    "nota": "Petrecerea de minimum 10 cm la imbinari."
+   },
+   {
+    "denumire": "Dibluri cu cui",
+    "um": "buc",
+    "consum": [
+     6,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare cu plasa",
+    "um": "ml",
+    "consum": [
+     0.5,
+     0.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa de finisaj",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "https://com-consulting.ro/etapele-unui-termosistem-cu-polistiren-si-tencuiala-decorativa/"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "termosistem-eps-10",
+  "denumire": "Termosistem cu polistiren EPS 10 cm",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de armare",
+   "implicit": 4,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Polistiren expandat EPS 10 cm",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru lipire",
+    "um": "kg",
+    "consum": [
+     3.5,
+     4.5
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "3-4 kg/mp la lipire; pe suport denivelat urca."
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "Stratul de armare are de obicei 3-5 mm."
+   },
+   {
+    "denumire": "Plasa din fibra de sticla",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "ambalaj": {
+     "um": "rola 50 mp",
+     "continut": 50
+    },
+    "sursa": "https://www.unimat.ro/cumpara/plasa-din-fibra-de-sticla-145g-mp-pentru-termosistem-50mp-rola-4051",
+    "nota": "Petrecerea de minimum 10 cm la imbinari."
+   },
+   {
+    "denumire": "Dibluri cu cui",
+    "um": "buc",
+    "consum": [
+     6,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare cu plasa",
+    "um": "ml",
+    "consum": [
+     0.5,
+     0.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa de finisaj",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "https://com-consulting.ro/etapele-unui-termosistem-cu-polistiren-si-tencuiala-decorativa/"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "termosistem-eps-15",
+  "denumire": "Termosistem cu polistiren EPS 15 cm",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de armare",
+   "implicit": 4,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Polistiren expandat EPS 15 cm",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru lipire",
+    "um": "kg",
+    "consum": [
+     4.0,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "3-4 kg/mp la lipire; pe suport denivelat urca."
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232",
+    "nota": "Stratul de armare are de obicei 3-5 mm."
+   },
+   {
+    "denumire": "Plasa din fibra de sticla",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "ambalaj": {
+     "um": "rola 50 mp",
+     "continut": 50
+    },
+    "sursa": "https://www.unimat.ro/cumpara/plasa-din-fibra-de-sticla-145g-mp-pentru-termosistem-50mp-rola-4051",
+    "nota": "Petrecerea de minimum 10 cm la imbinari."
+   },
+   {
+    "denumire": "Dibluri cu cui",
+    "um": "buc",
+    "consum": [
+     6,
+     8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare cu plasa",
+    "um": "ml",
+    "consum": [
+     0.5,
+     0.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa de finisaj",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "https://com-consulting.ro/etapele-unui-termosistem-cu-polistiren-si-tencuiala-decorativa/"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "termosistem-vata",
+  "denumire": "Termosistem cu vata bazaltica",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de armare",
+   "implicit": 4,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Vata bazaltica de fatada",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru lipire",
+    "um": "kg",
+    "consum": [
+     4.5,
+     6.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Vata cere mai mult adeziv decit polistirenul."
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232"
+   },
+   {
+    "denumire": "Plasa din fibra de sticla",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "ambalaj": {
+     "um": "rola 50 mp",
+     "continut": 50
+    },
+    "sursa": "https://www.unimat.ro/cumpara/plasa-din-fibra-de-sticla-145g-mp-pentru-termosistem-50mp-rola-4051"
+   },
+   {
+    "denumire": "Dibluri cu cui metalic",
+    "um": "buc",
+    "consum": [
+     8,
+     10
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "tencuiala-decorativa",
+  "denumire": "Tencuiala decorativa structurata",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "varianta",
+   "eticheta": "Granulatia",
+   "optiuni": [
+    "granulatie 1,0 mm",
+    "granulatie 1,5 mm",
+    "granulatie 2,0 mm",
+    "granulatie 2,5 mm"
+   ]
+  },
+  "materiale": [
+   {
+    "denumire": "Tencuiala decorativa",
+    "um": "kg",
+    "peVarianta": {
+     "granulatie 1,0 mm": [
+      1.8,
+      2.4
+     ],
+     "granulatie 1,5 mm": [
+      2.4,
+      3.0
+     ],
+     "granulatie 2,0 mm": [
+      3.0,
+      3.6
+     ],
+     "granulatie 2,5 mm": [
+      3.6,
+      4.2
+     ]
+    },
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta",
+    "nota": "Consumul creste direct cu granulatia: bobul mai mare cere strat mai gros."
+   },
+   {
+    "denumire": "Amorsa pigmentata",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "https://com-consulting.ro/etapele-unui-termosistem-cu-polistiren-si-tencuiala-decorativa/"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "izolatie-pod",
+  "denumire": "Izolatie termica in pod",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Vata minerala in rulou",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Bariera de vapori",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda adeziva de etansare",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "izolatie-planseu-subsol",
+  "denumire": "Izolatie la planseul peste subsol",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Polistiren extrudat XPS",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Dibluri",
+    "um": "buc",
+    "consum": [
+     5,
+     7
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "izolatie-soclu",
+  "denumire": "Izolatie la soclu cu XPS",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului de armare",
+   "implicit": 4,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Polistiren extrudat XPS",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv bicomponent",
+    "um": "kg",
+    "consum": [
+     4.0,
+     5.5
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Masa de spaclu",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "https://mathaus.ro/blog/placarea-cu-polistiren-sfaturi-de-la-experti-in-termoizolatii-Art232"
+   },
+   {
+    "denumire": "Plasa din fibra de sticla",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "ambalaj": {
+     "um": "rola 50 mp",
+     "continut": 50
+    },
+    "sursa": "https://www.unimat.ro/cumpara/plasa-din-fibra-de-sticla-145g-mp-pentru-termosistem-50mp-rola-4051"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "izolatie-terasa",
+  "denumire": "Termoizolatie la terasa necirculabila",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Polistiren pentru terase",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Bariera de vapori",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Strat de difuzie",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "izolatie-fonica-perete",
+  "denumire": "Izolatie fonica in pereti usori",
+  "categorie": "Termoizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Vata minerala 5 cm",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de etansare fonica",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "membrana-terasa",
+  "denumire": "Hidroizolatie cu membrana bituminoasa",
+  "categorie": "Hidroizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa bituminoasa",
+    "um": "l",
+    "consum": [
+     0.3,
+     0.45
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Membrana bituminoasa strat 1",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Membrana bituminoasa strat 2 (ardezata)",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Gaz pentru lipire",
+    "um": "kg",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8,
+  "nota": "Petrecerile longitudinale de 10 cm si cele frontale de 15 cm sunt deja in consum."
+ },
+ {
+  "id": "hidroizolatie-baie",
+  "denumire": "Hidroizolatie lichida in baie",
+  "categorie": "Hidroizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Hidroizolatie lichida",
+    "um": "kg",
+    "consum": [
+     1.5,
+     2.5
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta",
+    "nota": "Doua straturi."
+   },
+   {
+    "denumire": "Banda de etansare la colturi",
+    "um": "ml",
+    "consum": [
+     1.2,
+     2.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mansete pentru scurgeri si tevi",
+    "um": "buc",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "hidroizolatie-cuva",
+  "denumire": "Hidroizolatie rigida la cuve si bazine",
+  "categorie": "Hidroizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Mortar de hidroizolare",
+    "um": "kg",
+    "consum": [
+     3.0,
+     4.5
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de etansare",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "bariera-vapori",
+  "denumire": "Bariera de vapori",
+  "categorie": "Hidroizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Folie bariera de vapori",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "ambalaj": {
+     "um": "rola 75 mp",
+     "continut": 75
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda adeziva",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "hidroizolatie-sub-sapa",
+  "denumire": "Hidroizolatie sub sapa",
+  "categorie": "Hidroizolatii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Folie PE",
+    "um": "mp",
+    "consum": [
+     1.15,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda perimetrala",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "etansare-rosturi",
+  "denumire": "Etansare rosturi cu silicon sau poliuretan",
+  "categorie": "Hidroizolatii",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Silicon sau poliuretan",
+    "um": "ml tub",
+    "consum": [
+     0.04,
+     0.08
+    ],
+    "sursa": "practica curenta",
+    "nota": "Un tub de 300 ml acopera 4-8 ml de rost de 8x8 mm."
+   },
+   {
+    "denumire": "Fund de rost",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "tencuiala-interior",
+  "denumire": "Tencuiala interioara manuala",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea tencuielii",
+   "implicit": 12,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Mortar de tencuit",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636",
+    "nota": "Strat obisnuit de 10-15 mm."
+   },
+   {
+    "denumire": "Amorsa de aderenta",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare de protectie",
+    "um": "ml",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "tencuiala-mecanizata",
+  "denumire": "Tencuiala mecanizata cu ipsos",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea tencuielii",
+   "implicit": 10,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Tencuiala de ipsos",
+    "um": "kg",
+    "peMm": [
+     0.9,
+     1.1
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare",
+    "um": "ml",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "tencuiala-exterior",
+  "denumire": "Tencuiala exterioara",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea tencuielii",
+   "implicit": 20,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Mortar de tencuit exterior",
+    "um": "kg",
+    "peMm": [
+     1.5,
+     1.8
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "https://mathaus.ro/blog/calculator-mortar-zidarie-Art636"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plasa de armare in zone critice",
+    "um": "mp",
+    "consum": [
+     0.15,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "sprit-tencuiala",
+  "denumire": "Sprit de aderenta sub tencuiala",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Mortar de sprit",
+    "um": "kg",
+    "consum": [
+     4,
+     7
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "glet-ipsos",
+  "denumire": "Glet de ipsos",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea gletului",
+   "implicit": 2,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Glet de ipsos",
+    "um": "kg",
+    "peMm": [
+     0.9,
+     1.1
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta",
+    "nota": "Uzual doua straturi, 1-2 mm in total."
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Hirtie abraziva",
+    "um": "buc",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "glet-vinilic",
+  "denumire": "Glet vinilic",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea gletului",
+   "implicit": 1,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Glet vinilic gata preparat",
+    "um": "kg",
+    "peMm": [
+     1.2,
+     1.5
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "amorsa-perete",
+  "denumire": "Amorsare pereti",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta",
+    "nota": "Pe suport absorbant urca spre capatul de sus."
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "reparatii-tencuiala",
+  "denumire": "Reparatii locale de tencuiala",
+  "categorie": "Tencuieli si gleturi",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului",
+   "implicit": 15,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Mortar de reparatii",
+    "um": "kg",
+    "peMm": [
+     1.5,
+     1.8
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plasa de armare",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
+  "id": "sapa-ciment",
+  "denumire": "Sapa clasica de ciment",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea sapei",
+   "implicit": 50,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Sapa gata preparata",
+    "um": "kg",
+    "peMm": [
+     1.8,
+     2.0
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda perimetrala",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "sapa-santier",
+  "denumire": "Sapa preparata pe santier",
+  "categorie": "Pardoseli",
+  "um": "mc",
+  "materiale": [
+   {
+    "denumire": "Ciment",
+    "um": "kg",
+    "consum": [
+     300,
+     350
+    ],
+    "ambalaj": {
+     "um": "sac 40 kg",
+     "continut": 40
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip 0-4 mm",
+    "um": "kg",
+    "consum": [
+     1600,
+     1800
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Apa",
+    "um": "l",
+    "consum": [
+     150,
+     180
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 3
+ },
+ {
+  "id": "sapa-autonivelanta",
+  "denumire": "Sapa autonivelanta",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului",
+   "implicit": 5,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Sapa autonivelanta",
+    "um": "kg",
+    "peMm": [
+     1.5,
+     1.7
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "sapa-fibre",
+  "denumire": "Sapa cu fibre de polipropilena",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea sapei",
+   "implicit": 50,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Sapa gata preparata",
+    "um": "kg",
+    "peMm": [
+     1.8,
+     2.0
+    ],
+    "ambalaj": {
+     "um": "sac 30 kg",
+     "continut": 30
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Fibre de polipropilena",
+    "um": "kg",
+    "consum": [
+     0.06,
+     0.09
+    ],
+    "sursa": "practica curenta",
+    "nota": "~0,9-1,2 kg pe mc de sapa."
+   },
+   {
+    "denumire": "Banda perimetrala",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "gresie-pardoseala",
+  "denumire": "Montaj gresie pe pardoseala",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "parametru": {
+   "cheie": "varianta",
+   "eticheta": "Dimensiunea placii",
+   "optiuni": [
+    "sub 30x30",
+    "30x60",
+    "60x120",
+    "120x120 si peste"
+   ]
+  },
+  "materiale": [
+   {
+    "denumire": "Placi de gresie",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta",
+    "nota": "Pierderile la taiere le adaugi din rezerva, nu din consum."
+   },
+   {
+    "denumire": "Adeziv pentru gresie",
+    "um": "kg",
+    "peVarianta": {
+     "sub 30x30": [
+      2,
+      3
+     ],
+     "30x60": [
+      4,
+      5
+     ],
+     "60x120": [
+      5,
+      6
+     ],
+     "120x120 si peste": [
+      6,
+      8
+     ]
+    },
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://itiles.ro/blog/consum-adeziv-gresie-pe-metru-patrat.html",
+    "nota": "Aplicarea dubla, obligatorie la placi mari, creste consumul cu ~60%."
+   },
+   {
+    "denumire": "Chit de rosturi",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "ambalaj": {
+     "um": "sac 5 kg",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profile de trecere",
+    "um": "ml",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
+  "id": "parchet-laminat",
+  "denumire": "Montaj parchet laminat",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Parchet laminat",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Folie suport (spuma)",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Folie PE anti-umezeala",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.15
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plinta",
+    "um": "ml",
+    "consum": [
+     0.35,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8,
+  "nota": "Rezerva de 8% acopera taierile; la montaj pe diagonala urca la 12-15%."
+ },
+ {
+  "id": "parchet-masiv",
+  "denumire": "Montaj parchet din lemn masiv",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Parchet masiv",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru parchet",
+    "um": "kg",
+    "consum": [
+     0.9,
+     1.4
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Lac sau ulei",
+    "um": "l",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta",
+    "nota": "Trei straturi."
+   },
+   {
+    "denumire": "Plinta lemn",
+    "um": "ml",
+    "consum": [
+     0.35,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
+  "id": "covor-pvc",
+  "denumire": "Montaj covor PVC",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Covor PVC",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru PVC",
+    "um": "kg",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Snur de sudura",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "mocheta",
+  "denumire": "Montaj mocheta",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Mocheta",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru mocheta",
+    "um": "kg",
+    "consum": [
+     0.2,
+     0.35
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "plinte",
+  "denumire": "Montaj plinte",
+  "categorie": "Pardoseli",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Plinta",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Coltare si capete",
+    "um": "buc",
+    "consum": [
+     0.15,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv sau cleme",
+    "um": "buc",
+    "consum": [
+     1.5,
+     2.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "pardoseala-epoxidica",
+  "denumire": "Pardoseala epoxidica",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului",
+   "implicit": 2,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Amorsa epoxidica",
+    "um": "kg",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Rasina epoxidica",
+    "um": "kg",
+    "peMm": [
+     1.4,
+     1.6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip de cuart",
+    "um": "kg",
+    "consum": [
+     0.5,
+     1.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "piatra-naturala-pardoseala",
+  "denumire": "Pardoseala din piatra naturala",
+  "categorie": "Pardoseli",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placi de piatra",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv flexibil",
+    "um": "kg",
+    "consum": [
+     5,
+     8
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://itiles.ro/blog/consum-adeziv-gresie-pe-metru-patrat.html"
+   },
+   {
+    "denumire": "Chit de rosturi",
+    "um": "kg",
+    "consum": [
+     0.4,
+     0.8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Impregnant de protectie",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 12
+ },
+ {
+  "id": "trepte-gresie",
+  "denumire": "Placare trepte cu gresie",
+  "categorie": "Pardoseli",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Placi de gresie",
+    "um": "mp",
+    "consum": [
+     0.55,
+     0.7
+    ],
+    "sursa": "practica curenta",
+    "nota": "Treapta plus contratreapta la o scara obisnuita."
+   },
+   {
+    "denumire": "Adeziv flexibil",
+    "um": "kg",
+    "consum": [
+     4,
+     6
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://itiles.ro/blog/consum-adeziv-gresie-pe-metru-patrat.html"
+   },
+   {
+    "denumire": "Chit de rosturi",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profil de treapta",
+    "um": "ml",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 12
+ },
+ {
+  "id": "faianta-perete",
+  "denumire": "Montaj faianta pe perete",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placi de faianta",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv pentru faianta",
+    "um": "kg",
+    "consum": [
+     2.5,
+     4.5
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "https://itiles.ro/blog/consum-adeziv-gresie-pe-metru-patrat.html"
+   },
+   {
+    "denumire": "Chit de rosturi",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "ambalaj": {
+     "um": "sac 5 kg",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profile de colt",
+    "um": "ml",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 10
+ },
+ {
+  "id": "placaj-piatra-perete",
+  "denumire": "Placaj de piatra pe perete",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placi de piatra",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Adeziv flexibil",
+    "um": "kg",
+    "consum": [
+     6,
+     9
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Chit de rosturi",
+    "um": "kg",
+    "consum": [
+     0.5,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Impregnant",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 12
+ },
+ {
+  "id": "rigips-perete-simplu",
+  "denumire": "Perete de gips-carton, placat simplu",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placa de gips-carton 12,5 mm",
+    "um": "mp",
+    "consum": [
+     2.0,
+     2.1
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate",
+    "nota": "Doua fete."
+   },
+   {
+    "denumire": "Profil CW",
+    "um": "ml",
+    "consum": [
+     2.0,
+     2.2
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Profil UW",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.0
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Suruburi pentru gips-carton",
+    "um": "buc",
+    "consum": [
+     28,
+     35
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Dibluri si suruburi de ancorare",
+    "um": "buc",
+    "consum": [
+     1.6,
+     2.2
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Vata minerala 5 cm",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de armare rosturi",
+    "um": "ml",
+    "consum": [
+     2.0,
+     2.6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Glet pentru rosturi",
+    "um": "kg",
+    "consum": [
+     0.5,
+     0.9
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "rigips-perete-dublu",
+  "denumire": "Perete de gips-carton, placat dublu",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placa de gips-carton 12,5 mm",
+    "um": "mp",
+    "consum": [
+     4.0,
+     4.2
+    ],
+    "sursa": "https://www.rigips.ro/documents/cataloage/service-charter-rigips-2023-toate-capitolele.pdf",
+    "nota": "Doua straturi pe fiecare fata."
+   },
+   {
+    "denumire": "Profil CW",
+    "um": "ml",
+    "consum": [
+     2.0,
+     2.2
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Profil UW",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.0
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Suruburi pentru gips-carton",
+    "um": "buc",
+    "consum": [
+     48,
+     60
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Vata minerala 7,5 cm",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de armare rosturi",
+    "um": "ml",
+    "consum": [
+     3.5,
+     4.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Glet pentru rosturi",
+    "um": "kg",
+    "consum": [
+     0.8,
+     1.3
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "rigips-tavan",
+  "denumire": "Tavan de gips-carton pe structura metalica",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placa de gips-carton 12,5 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "https://www.rigips.ro/documents/cataloage/service-charter-rigips-2023-toate-capitolele.pdf"
+   },
+   {
+    "denumire": "Profil CD",
+    "um": "ml",
+    "consum": [
+     2.9,
+     3.3
+    ],
+    "sursa": "https://www.rigips.ro/documents/cataloage/service-charter-rigips-2023-toate-capitolele.pdf"
+   },
+   {
+    "denumire": "Profil UD",
+    "um": "ml",
+    "consum": [
+     0.8,
+     1.0
+    ],
+    "sursa": "https://www.rigips.ro/documents/cataloage/service-charter-rigips-2023-toate-capitolele.pdf"
+   },
+   {
+    "denumire": "Tije si ancore de tavan",
+    "um": "buc",
+    "consum": [
+     1.7,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Conectori si cruci",
+    "um": "buc",
+    "consum": [
+     2.0,
+     2.6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi",
+    "um": "buc",
+    "consum": [
+     17,
+     23
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de armare rosturi",
+    "um": "ml",
+    "consum": [
+     1.6,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Glet pentru rosturi",
+    "um": "kg",
+    "consum": [
+     0.4,
+     0.7
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "rigips-placare-zidarie",
+  "denumire": "Placare zidarie cu gips-carton",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Placa de gips-carton 12,5 mm",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "https://www.magnetcenter.ro/montare-rigips-ghid-complet-pentru-tavan-pereti-si-alte-suprafete-schema-suruburi-si-alte-materiale-recomandate"
+   },
+   {
+    "denumire": "Adeziv de lipire placi",
+    "um": "kg",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de armare rosturi",
+    "um": "ml",
+    "consum": [
+     1.6,
+     2.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Glet pentru rosturi",
+    "um": "kg",
+    "consum": [
+     0.4,
+     0.7
+    ],
+    "ambalaj": {
+     "um": "sac 20 kg",
+     "continut": 20
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "tavan-casetat",
+  "denumire": "Tavan casetat modular",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Casete 60x60",
+    "um": "buc",
+    "consum": [
+     2.8,
+     2.9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profile principale",
+    "um": "ml",
+    "consum": [
+     0.85,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profile secundare",
+    "um": "ml",
+    "consum": [
+     2.5,
+     3.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Profil perimetral",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.7
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Tije de suspendare",
+    "um": "buc",
+    "consum": [
+     0.7,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "lambriu",
+  "denumire": "Montaj lambriu de lemn",
+  "categorie": "Placaje si gips-carton",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Lambriu",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sipci de sustinere",
+    "um": "ml",
+    "consum": [
+     2.5,
+     3.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cuie sau cleme",
+    "um": "buc",
+    "consum": [
+     14,
+     20
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Lac de protectie",
+    "um": "l",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "lavabil-interior",
+  "denumire": "Zugraveli lavabile la interior",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Vopsea lavabila de interior",
+    "um": "l",
+    "consum": [
+     0.25,
+     0.35
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta",
+    "nota": "Doua straturi. Randamentul uzual e 8-12 mp/l pe strat."
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de mascare",
+    "um": "ml",
+    "consum": [
+     0.3,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "lavabil-exterior",
+  "denumire": "Zugraveli lavabile la exterior",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Vopsea lavabila de exterior",
+    "um": "l",
+    "consum": [
+     0.3,
+     0.45
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta",
+    "nota": "Doua straturi."
+   },
+   {
+    "denumire": "Amorsa de exterior",
+    "um": "l",
+    "consum": [
+     0.12,
+     0.2
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "var-lavabil-tavan",
+  "denumire": "Zugraveli la tavan",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Vopsea lavabila pentru tavan",
+    "um": "l",
+    "consum": [
+     0.25,
+     0.35
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Amorsa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "vopsea-lemn",
+  "denumire": "Vopsitorii pe lemn",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Grund pentru lemn",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.15
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Vopsea sau lac pentru lemn",
+    "um": "l",
+    "consum": [
+     0.2,
+     0.3
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta",
+    "nota": "Doua straturi."
+   },
+   {
+    "denumire": "Hirtie abraziva",
+    "um": "buc",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "vopsea-metal",
+  "denumire": "Vopsitorii pe metal",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Grund anticoroziv",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.16
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Vopsea de finisaj",
+    "um": "l",
+    "consum": [
+     0.18,
+     0.28
+    ],
+    "ambalaj": {
+     "um": "bidon 5 l",
+     "continut": 5
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Diluant",
+    "um": "l",
+    "consum": [
+     0.03,
+     0.06
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "vopsea-epoxidica-perete",
+  "denumire": "Vopsitorie epoxidica pe perete",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa epoxidica",
+    "um": "kg",
+    "consum": [
+     0.12,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Vopsea epoxidica",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.45
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "amorsa-exterior",
+  "denumire": "Amorsare suprafete exterioare",
+  "categorie": "Zugraveli si vopsitorii",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Amorsa de exterior",
+    "um": "l",
+    "consum": [
+     0.12,
+     0.22
+    ],
+    "ambalaj": {
+     "um": "galeata 15 l",
+     "continut": 15
+    },
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "montaj-tamplarie-pvc",
+  "denumire": "Montaj tamplarie PVC",
+  "categorie": "Tamplarie si inchideri",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Tamplarie PVC cu geam termoizolant",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Spuma poliuretanica",
+    "um": "ml tub",
+    "consum": [
+     0.35,
+     0.6
+    ],
+    "sursa": "practica curenta",
+    "nota": "Un tub de 750 ml acopera 2-3 mp de tamplarie."
+   },
+   {
+    "denumire": "Diblu si surub de ancorare",
+    "um": "buc",
+    "consum": [
+     3.5,
+     5.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda de etansare",
+    "um": "ml",
+    "consum": [
+     1.8,
+     2.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon",
+    "um": "ml tub",
+    "consum": [
+     0.15,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "montaj-tamplarie-alu",
+  "denumire": "Montaj tamplarie de aluminiu",
+  "categorie": "Tamplarie si inchideri",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Tamplarie aluminiu cu geam termoizolant",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Spuma poliuretanica",
+    "um": "ml tub",
+    "consum": [
+     0.35,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Ancore metalice",
+    "um": "buc",
+    "consum": [
+     4,
+     6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon structural",
+    "um": "ml tub",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "montaj-usi-interior",
+  "denumire": "Montaj usi de interior",
+  "categorie": "Tamplarie si inchideri",
+  "um": "buc",
+  "materiale": [
+   {
+    "denumire": "Usa cu toc",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Spuma poliuretanica",
+    "um": "ml tub",
+    "consum": [
+     0.5,
+     0.8
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Pene de montaj",
+    "um": "buc",
+    "consum": [
+     6,
+     10
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon",
+    "um": "ml tub",
+    "consum": [
+     0.2,
+     0.35
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "glafuri",
+  "denumire": "Montaj glafuri interioare si exterioare",
+  "categorie": "Tamplarie si inchideri",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Glaf",
+    "um": "ml",
+    "consum": [
+     1.02,
+     1.08
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Spuma sau adeziv de montaj",
+    "um": "ml tub",
+    "consum": [
+     0.2,
+     0.35
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon",
+    "um": "ml tub",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "rulouri-exterioare",
+  "denumire": "Montaj rulouri exterioare",
+  "categorie": "Tamplarie si inchideri",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Rulou exterior cu caseta",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Suruburi si ancore",
+    "um": "buc",
+    "consum": [
+     6,
+     9
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon",
+    "um": "ml tub",
+    "consum": [
+     0.15,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "instalatie-apa-ppr",
+  "denumire": "Distributie apa rece si calda din PPR",
+  "categorie": "Instalatii sanitare",
+  "um": "punct",
+  "materiale": [
+   {
+    "denumire": "Teava PPR 20 mm",
+    "um": "ml",
+    "consum": [
+     7,
+     12
+    ],
+    "sursa": "practica curenta",
+    "nota": "Un punct de consum inseamna traseul de la distribuitor la obiect, dus si intors."
+   },
+   {
+    "denumire": "Fitinguri PPR",
+    "um": "buc",
+    "consum": [
+     6,
+     10
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Robinet de izolare",
+    "um": "buc",
+    "consum": [
+     1.0,
+     2.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Izolatie pentru teava",
+    "um": "ml",
+    "consum": [
+     7,
+     12
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Bratari de prindere",
+    "um": "buc",
+    "consum": [
+     5,
+     9
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "canalizare-interioara",
+  "denumire": "Canalizare interioara din PVC",
+  "categorie": "Instalatii sanitare",
+  "um": "punct",
+  "materiale": [
+   {
+    "denumire": "Teava PVC 50 mm",
+    "um": "ml",
+    "consum": [
+     2.5,
+     5.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Teava PVC 110 mm",
+    "um": "ml",
+    "consum": [
+     1.0,
+     3.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Fitinguri PVC",
+    "um": "buc",
+    "consum": [
+     3,
+     6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Bratari",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sifon",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "canalizare-exterioara",
+  "denumire": "Canalizare exterioara",
+  "categorie": "Instalatii sanitare",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Teava PVC SN4 110-160 mm",
+    "um": "ml",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip de pat si umplutura",
+    "um": "mc",
+    "consum": [
+     0.25,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Garnituri si fitinguri",
+    "um": "buc",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "montaj-obiecte-sanitare",
+  "denumire": "Montaj obiecte sanitare",
+  "categorie": "Instalatii sanitare",
+  "um": "buc",
+  "materiale": [
+   {
+    "denumire": "Obiect sanitar",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Baterie",
+    "um": "buc",
+    "consum": [
+     0.8,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Racorduri flexibile",
+    "um": "buc",
+    "consum": [
+     2,
+     3
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Silicon sanitar",
+    "um": "ml tub",
+    "consum": [
+     0.2,
+     0.4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Dibluri si suruburi",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "incalzire-pardoseala",
+  "denumire": "Incalzire in pardoseala",
+  "categorie": "Instalatii sanitare",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Teava PE-RT 16 mm",
+    "um": "ml",
+    "consum": [
+     5.5,
+     7.0
+    ],
+    "sursa": "practica curenta",
+    "nota": "Pas de 15 cm; la pas de 20 cm scade spre 5 ml/mp."
+   },
+   {
+    "denumire": "Placa cu nuturi sau clipsuri",
+    "um": "mp",
+    "consum": [
+     1.02,
+     1.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Banda perimetrala",
+    "um": "ml",
+    "consum": [
+     0.4,
+     0.6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Aditiv plastifiant pentru sapa",
+    "um": "l",
+    "consum": [
+     0.1,
+     0.2
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "radiatoare",
+  "denumire": "Montaj radiatoare si distributie",
+  "categorie": "Instalatii sanitare",
+  "um": "buc",
+  "materiale": [
+   {
+    "denumire": "Radiator",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Teava de distributie",
+    "um": "ml",
+    "consum": [
+     8,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Robineti si holendere",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Console de prindere",
+    "um": "buc",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "circuit-prize",
+  "denumire": "Circuit de prize",
+  "categorie": "Instalatii electrice",
+  "um": "punct",
+  "materiale": [
+   {
+    "denumire": "Cablu 3x2,5 mmp",
+    "um": "ml",
+    "consum": [
+     9,
+     16
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Tub de protectie",
+    "um": "ml",
+    "consum": [
+     9,
+     16
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Doza de aparat",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Priza cu rama",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "circuit-iluminat",
+  "denumire": "Circuit de iluminat",
+  "categorie": "Instalatii electrice",
+  "um": "punct",
+  "materiale": [
+   {
+    "denumire": "Cablu 3x1,5 mmp",
+    "um": "ml",
+    "consum": [
+     8,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Tub de protectie",
+    "um": "ml",
+    "consum": [
+     8,
+     14
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Doza de derivatie",
+    "um": "buc",
+    "consum": [
+     0.5,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Intrerupator cu rama",
+    "um": "buc",
+    "consum": [
+     0.5,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "tablou-electric",
+  "denumire": "Tablou electric",
+  "categorie": "Instalatii electrice",
+  "um": "buc",
+  "materiale": [
+   {
+    "denumire": "Carcasa de tablou",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Sigurante automate",
+    "um": "buc",
+    "consum": [
+     8,
+     16
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Diferential",
+    "um": "buc",
+    "consum": [
+     1,
+     3
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cablu de alimentare",
+    "um": "ml",
+    "consum": [
+     8,
+     20
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 0
+ },
+ {
+  "id": "tuburi-doze-ingropate",
+  "denumire": "Tuburi si doze ingropate in zidarie",
+  "categorie": "Instalatii electrice",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Tub de protectie",
+    "um": "ml",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Mortar de reparatie a santului",
+    "um": "kg",
+    "consum": [
+     1.5,
+     3.0
+    ],
+    "ambalaj": {
+     "um": "sac 25 kg",
+     "continut": 25
+    },
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cleme de fixare",
+    "um": "buc",
+    "consum": [
+     2,
+     3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "priza-de-pamant",
+  "denumire": "Priza de pamant",
+  "categorie": "Instalatii electrice",
+  "um": "buc",
+  "materiale": [
+   {
+    "denumire": "Electrozi de impamantare",
+    "um": "buc",
+    "consum": [
+     3,
+     6
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Platbanda de otel zincat",
+    "um": "ml",
+    "consum": [
+     10,
+     25
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Piesa de separatie",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "trotuar-beton",
+  "denumire": "Trotuar de beton",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea placii",
+   "implicit": 100,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Beton C16/20",
+    "um": "mc",
+    "peMm": [
+     0.00102,
+     0.00105
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Balast de sub trotuar",
+    "um": "mc",
+    "consum": [
+     0.12,
+     0.18
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Plasa sudata",
+    "um": "mp",
+    "consum": [
+     1.1,
+     1.2
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Rost de dilatatie",
+    "um": "ml",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "pavaj-autoblocant",
+  "denumire": "Pavaj din placi autoblocante",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Pavele autoblocante",
+    "um": "mp",
+    "consum": [
+     1.0,
+     1.0
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip de poza",
+    "um": "mc",
+    "consum": [
+     0.04,
+     0.06
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Balast de fundatie",
+    "um": "mc",
+    "consum": [
+     0.15,
+     0.25
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Nisip de rostuire",
+    "um": "kg",
+    "consum": [
+     2,
+     4
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 8
+ },
+ {
+  "id": "borduri",
+  "denumire": "Montaj borduri",
+  "categorie": "Exterioare",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Bordura",
+    "um": "buc",
+    "consum": [
+     1.0,
+     1.02
+    ],
+    "sursa": "practica curenta",
+    "nota": "Bordurile uzuale au 1 ml bucata."
+   },
+   {
+    "denumire": "Beton de poza",
+    "um": "mc",
+    "consum": [
+     0.03,
+     0.05
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "alee-piatra",
+  "denumire": "Alee din balast si piatra sparta",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Balast",
+    "um": "mc",
+    "consum": [
+     0.15,
+     0.22
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Piatra sparta",
+    "um": "mc",
+    "consum": [
+     0.06,
+     0.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Geotextil",
+    "um": "mp",
+    "consum": [
+     1.05,
+     1.1
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "gard-plasa",
+  "denumire": "Gard din plasa bordurata",
+  "categorie": "Exterioare",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Panou de plasa bordurata",
+    "um": "buc",
+    "consum": [
+     0.4,
+     0.55
+    ],
+    "sursa": "practica curenta",
+    "nota": "Panourile uzuale au 2-2,5 ml."
+   },
+   {
+    "denumire": "Stalp metalic",
+    "um": "buc",
+    "consum": [
+     0.4,
+     0.55
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Beton pentru fundatia stalpului",
+    "um": "mc",
+    "consum": [
+     0.02,
+     0.04
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Cleme si suruburi",
+    "um": "buc",
+    "consum": [
+     3,
+     5
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "gard-beton",
+  "denumire": "Gard din panouri de beton",
+  "categorie": "Exterioare",
+  "um": "ml",
+  "materiale": [
+   {
+    "denumire": "Panou de beton",
+    "um": "buc",
+    "consum": [
+     0.4,
+     0.55
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Stalp de beton",
+    "um": "buc",
+    "consum": [
+     0.4,
+     0.55
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Beton pentru fundatie",
+    "um": "mc",
+    "consum": [
+     0.03,
+     0.06
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "gazon",
+  "denumire": "Amenajare gazon",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "materiale": [
+   {
+    "denumire": "Seminte de gazon",
+    "um": "kg",
+    "consum": [
+     0.03,
+     0.05
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Pamant vegetal",
+    "um": "mc",
+    "consum": [
+     0.05,
+     0.1
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Ingrasamint de pornire",
+    "um": "kg",
+    "consum": [
+     0.03,
+     0.05
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ },
+ {
+  "id": "asfalt-platforma",
+  "denumire": "Imbracaminte asfaltica pe platforma",
+  "categorie": "Exterioare",
+  "um": "mp",
+  "parametru": {
+   "cheie": "grosime",
+   "eticheta": "Grosimea stratului",
+   "implicit": 40,
+   "sufix": "mm"
+  },
+  "materiale": [
+   {
+    "denumire": "Mixtura asfaltica",
+    "um": "kg",
+    "peMm": [
+     2.3,
+     2.5
+    ],
+    "sursa": "practica curenta",
+    "nota": "Densitatea mixturii compactate e ~2,3-2,5 to/mc."
+   },
+   {
+    "denumire": "Emulsie bituminoasa de amorsare",
+    "um": "kg",
+    "consum": [
+     0.3,
+     0.5
+    ],
+    "sursa": "practica curenta"
+   },
+   {
+    "denumire": "Balast de fundatie",
+    "um": "mc",
+    "consum": [
+     0.2,
+     0.3
+    ],
+    "sursa": "practica curenta"
+   }
+  ],
+  "rezervaImplicita": 5
+ }
+]

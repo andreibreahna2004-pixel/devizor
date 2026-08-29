@@ -25,14 +25,11 @@ export default async function MaterialsPage({
   const materiale = await cautaMateriale(q, countyCode, "1A");
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-ink-900">Materiale</h1>
-        <p className="mt-1 max-w-2xl text-sm text-ink-500">
-          Preturi de referinta, cu evolutia lor in timp. Sunt repere de piata, nu
-          preturile tale: pe deviz ramine cifra pe care o scrii tu.
-        </p>
-      </div>
+    <div className="space-y-5">
+      <p className="max-w-2xl text-sm text-ink-500">
+        Preturi de referinta, cu evolutia lor in timp. Sunt repere de piata, nu
+        preturile tale: pe deviz ramine cifra pe care o scrii tu.
+      </p>
 
       <MaterialSearch
         q={q}
