@@ -150,6 +150,11 @@ indicele judetului.
 (terasamente, 232). Stau in fisiere JSON, nu in baza de date: sint liste
 nationale, aceleasi pentru toate firmele, nu se editeaza si nu au `orgId`.
 
+Cum se compune o norma — reteta, consumurile, normele locale, codificarea si
+statutul legal (P 91/1-02, HG 907/2016, F3) — sta in
+`.claude/skills/norma-deviz/`. Acolo scrie si ce nu poate produce aplicatia din
+cauza ca nu tine consumuri: extrasele C6-C9 si formularul F3.
+
 Din indicator se iau doar **codul, denumirea si unitatea**. Consumurile normate
 nu intra in aplicatie: sint calibrate pentru tehnologia anilor '80, iar un consum
 vechi inmultit cu un pret de azi da o cifra care pare riguroasa si nu e.
