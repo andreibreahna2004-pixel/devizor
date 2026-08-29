@@ -206,6 +206,20 @@ operatii intra in norma aceea. Asta e temeiul regulii "un cod oficial fals e cit
 ca un angajament", si motivul pentru care `lib/ai/map-tool-output.ts` arunca un cod
 inexistent in loc sa-l lase pe linie.
 
+**Consumurile din `lib/consum/` nu sint o exceptie de la cele de mai sus.**
+Aplicatia tine acum retete de consum, dar pentru alta intrebare si din alta sursa:
+
+| | consumurile din 1981 | `lib/consum/` |
+|---|---|---|
+| sursa | indicatoare ICCPDC, tehnologia anilor '80 | fise tehnice de producator si practica de azi |
+| la ce servesc | calcularea pretului unitar | cit material cumperi |
+| ating banii din deviz | ar atinge | **nu** |
+| forma | o cifra, data ca exacta | interval min-max, cu sursa pe fiecare rind |
+
+Calculatorul nu produce niciun leu si nu scrie in nicio linie. Daca cineva vrea
+sa lege consumurile de preturi ca sa iasa un pret unitar calculat, aia e alta
+discutie — si e discutia de la punctul urmator.
+
 **Catalogul din `lib/materials/` e pe partea de resurse, nu de lucrari.** Daca
 vreodata se vor retete, piesele exista: catalog de preturi + reteta = pret unitar
 calculat. Dar ala ar fi **al doilea izvor de adevar pentru bani**, si s-ar ciocni

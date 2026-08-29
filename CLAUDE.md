@@ -63,6 +63,7 @@ components/
 lib/
   ai/              prompt, unelte, bucla agentica, mapare apel -> linie
   charts/          trasee SVG si bucketare pe intervale — module pure, testate direct
+  consum/          consumuri specifice: cit material intra intr-o lucrare
   dashboard/       agregarile de pe panou: serii, sparkline, activitate
   norme/           indicatoarele de norme: cautare, coduri, grupe
   pricing/         motorul de calcul — sursa unica de adevar pentru cifre
@@ -78,7 +79,7 @@ lib/
   theme.ts         tema din localStorage + scriptul care o pune inainte de pictura
   money.ts         rotunjiri half-up
   money-db.ts      conversii spre Decimal
-data/              norme-c.json, norme-rpc.json, norme-ts.json
+data/              norme-c.json, norme-rpc.json, norme-ts.json, consumuri.json
 scripts/           import indicatoare si preturi, seed demo, istoric demo, token
 prisma/            schema, migrari, seed
 ```
@@ -253,6 +254,42 @@ trimestru ar fi doua adevaruri despre el.
 paginii; scris fara sa vezi site-ul, iese cod care arata a functie livrata si nu
 extrage nimic corect. Pina atunci, sursele reale sint API-ul si listele de preturi.
 
+## Consumurile specifice
+
+`lib/consum/` raspunde la alta intrebare decit devizul: nu cit costa lucrarea, ci
+**cit material cumperi ca s-o faci**. 121 de lucrari, aproape 400 de rinduri de
+material, in `data/consumuri.json`.
+
+Pare ca ar incalca hotarirea de a nu tine consumuri (vezi indicatoarele mai sus),
+si nu o incalca, din doua motive care trebuie tinute amindoua:
+
+- **sursa** — fise tehnice de producator si practica de azi, nu consumurile din
+  1981, calibrate pe tehnologia de atunci;
+- **la ce serveste** — o cantitate de comanda, nu un pret. Nu produce niciun leu
+  si nu scrie in nicio linie de deviz, deci regula 1 ramine neatinsa.
+
+Datele stau in fisier, ca indicatoarele: sint nationale si nu se schimba de la o
+zi la alta, iar in git se vede cine a schimbat o cifra si cind — ceea ce la niste
+numere care ajung intr-o comanda de materiale conteaza mai mult decit editarea
+din aplicatie.
+
+**Un consum nu e un numar.** Are trei forme, si toate trei apar in date:
+
+- fix pe unitatea lucrarii — plasa de fibra, 1,10 mp/mp, unde restul e petrecerea;
+- **pe milimetru de grosime** — mortare, sape, mase de spaclu. Aici e capcana:
+  cine tine doar "kg/mp" ori minte la 5 mm, ori minte la 20;
+- pe varianta — adezivul de gresie, 2-3 kg/mp la placi mici si 6-8 la placi mari.
+
+**Fiecare cifra e un interval si isi spune sursa.** Cimpul `sursa` e fie un URL,
+fie eticheta `practica curenta`, si interfata le arata diferit. Un interval din
+practica, spus ca atare, e util; acelasi interval prezentat ca fisa tehnica ar fi
+o minciuna mica si greu de prins. Testul de integritate din
+`lib/consum/index.test.ts` refuza un material fara sursa.
+
+**Ambalajele se rotunjesc in sus.** Nimeni nu cumpara 137 kg de adeziv; cumpara
+6 saci de 25. Rotunjirea la cel mai apropiat ar trimite omul pe santier cu un sac
+lipsa.
+
 ## AI
 
 AI-ul propune, omul semneaza. Nimic generat nu se emite automat.
@@ -354,7 +391,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 254 de teste
+npm test          # 287 de teste
 npm run typecheck
 npm run build
 ```
