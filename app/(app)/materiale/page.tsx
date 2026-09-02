@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { COUNTIES } from "@/lib/counties";
-import { cautaMateriale } from "@/lib/materials/service";
+import { cautaMaterialeProaspete } from "@/lib/materials/service";
 import { requireUser } from "@/lib/tenant";
 import { MaterialSearch } from "./material-search";
 
@@ -22,7 +22,10 @@ export default async function MaterialsPage({
   const { q = "", judet = "" } = await searchParams;
   const countyCode = judet || null;
 
-  const materiale = await cautaMateriale(q, countyCode, "1A");
+  // Cautarea isi improspateaza singura catalogul: cand nu are nimic pentru
+  // interogarea asta, sau cand ce are e vechi, cere la magazin si scrie ce
+  // gaseste. Vezi `cautaMaterialeProaspete`.
+  const { materiale, cerutLaFurnizor } = await cautaMaterialeProaspete(q, countyCode, "1A");
 
   return (
     <div className="space-y-5">
@@ -35,6 +38,7 @@ export default async function MaterialsPage({
         q={q}
         judet={judet}
         judete={COUNTIES.map((c) => ({ code: c.code, name: c.name }))}
+        cerutLaFurnizor={cerutLaFurnizor}
         materiale={materiale.map((m) => ({
           id: m.id,
           name: m.name,

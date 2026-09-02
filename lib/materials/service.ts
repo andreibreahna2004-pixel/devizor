@@ -6,6 +6,7 @@ import { toNumber } from "@/lib/money";
 import { toDecimal } from "@/lib/money-db";
 import { type PriceObservation } from "./import";
 import { type LaborIndexObservation } from "./labor-source";
+import { cautaLaFurnizor, scraperActiv } from "./scraper";
 import { type Reper, potrivesteMaterial, reperPentruJudet } from "./pricing";
 
 /**
@@ -256,4 +257,66 @@ export async function indiceManopera(countyCode: string | null): Promise<number 
   });
 
   return indice ? toNumber(indice.value) : null;
+}
+
+export interface CautareProaspata {
+  materiale: MaterialCuReper[];
+  /** Adevarat cand s-a cerut la magazin in cautarea asta. */
+  cerutLaFurnizor: boolean;
+  /** Cate observatii noi au intrat in catalog. */
+  observatiiNoi: number;
+}
+
+/** Sub atita, ce e in catalog se considera proaspat si nu se mai cere nimic. */
+function ttlOre(): number {
+  const din = Number(process.env.SCRAPER_TTL_ORE);
+  return Number.isFinite(din) && din > 0 ? din : 24;
+}
+
+/**
+ * Cautarea care isi improspateaza singura catalogul.
+ *
+ * Local intii — instant, si de cele mai multe ori destul. Se iese la magazin
+ * numai cand catalogul n-are nimic pentru interogarea asta, sau cand ce are e
+ * mai vechi decat TTL-ul.
+ *
+ * De ce nu se afiseaza direct ce s-a gasit acum, fara sa mai treaca prin baza:
+ * `MaterialPrice` **creste, nu se rescrie**, si de acolo iese graficul de
+ * evolutie. Trecand prin catalog, fiecare cautare a unui om lasa in urma o
+ * masuratoare datata — asa se construieste seria in timp, in loc sa se arate un
+ * pret fara istorie.
+ */
+export async function cautaMaterialeProaspete(
+  interogare: string,
+  countyCode: string | null,
+  range: RangeKey = "1A",
+  cauta: (interogare: string) => Promise<PriceObservation[]> = cautaLaFurnizor,
+): Promise<CautareProaspata> {
+  const local = await cautaMateriale(interogare, countyCode, range);
+
+  if (!interogare.trim() || !scraperActiv()) {
+    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0 };
+  }
+
+  const celMaiNou = local.reduce<number>(
+    (max, m) => Math.max(max, m.reper?.observedAt.getTime() ?? 0),
+    0,
+  );
+  const invechit = Date.now() - celMaiNou > ttlOre() * 3_600_000;
+  if (local.length > 0 && !invechit) {
+    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0 };
+  }
+
+  const observatii = await cauta(interogare);
+  if (observatii.length === 0) {
+    return { materiale: local, cerutLaFurnizor: true, observatiiNoi: 0 };
+  }
+
+  const scrise = await importaObservatii(observatii, "FURNIZOR");
+
+  return {
+    materiale: await cautaMateriale(interogare, countyCode, range),
+    cerutLaFurnizor: true,
+    observatiiNoi: scrise.observatii,
+  };
 }
