@@ -32,11 +32,14 @@ export function MaterialSearch({
   judet,
   judete,
   materiale,
+  cerutLaFurnizor = false,
 }: {
   q: string;
   judet: string;
   judete: { code: string; name: string }[];
   materiale: MaterialRow[];
+  /** Adevarat cand cautarea asta a iesit si la magazin dupa preturi. */
+  cerutLaFurnizor?: boolean;
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -96,12 +99,21 @@ export function MaterialSearch({
         </button>
       </form>
 
+      {cerutLaFurnizor && (
+        <p className="text-xs text-ink-500">
+          Preturile pentru cautarea asta au fost cerute acum la magazin si au ramas
+          in catalog, cu data lor.
+        </p>
+      )}
+
       {materiale.length === 0 ? (
         <div className="card p-8 text-center sm:p-12">
           <p className="text-sm text-ink-500">
             {q
-              ? "Niciun material care sa se potriveasca."
-              : "Catalogul e gol. Incarca o lista de preturi de la furnizor ca sa apara ceva aici."}
+              ? cerutLaFurnizor
+                ? "Nici in catalog, nici la magazin nu s-a gasit nimic pentru cautarea asta."
+                : "Niciun material care sa se potriveasca."
+              : "Catalogul e gol. Cauta un material si preturile se aduc de la magazin, sau incarca o lista de preturi de la furnizor."}
           </p>
         </div>
       ) : (

@@ -70,7 +70,8 @@ lib/
   estimates/       operatiile pe deviz
   progress/        situatii de lucrari, cantitati executate cumulat
   invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
-  materials/       catalog de preturi: cautare, reper pe judet, import din API si liste
+  materials/       catalog de preturi: cautare, reper pe judet, import din API,
+                   liste si direct de la magazin (scraper/)
   efactura/        generator UBL 2.1 + validator CIUS-RO
   pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
@@ -250,9 +251,50 @@ insa o statistica ce se revizuieste: perechea (judet, perioada) e unica in schem
 si valoarea corectata o inlocuieste pe cea provizorie. Doua randuri pe acelasi
 trimestru ar fi doua adevaruri despre el.
 
-**Adaptoarele de site nu sint scrise.** Un extractor se face pe structura reala a
-paginii; scris fara sa vezi site-ul, iese cod care arata a functie livrata si nu
-extrage nimic corect. Pina atunci, sursele reale sint API-ul si listele de preturi.
+### Preturi luate direct de la magazin
+
+`lib/materials/scraper/` cere pagina de cautare a magazinului cind omul cauta un
+material pe care catalogul nu-l are, sau il are invechit. `cautaMaterialeProaspete`
+din `service.ts` ia decizia; ce se gaseste intra prin `importaObservatii`, deci
+**fiecare cautare a unui om lasa in urma o masuratoare datata** si construieste
+seria din care iese graficul. O cautare care doar ar afisa ce a gasit acum ar arata
+un pret fara istorie.
+
+**Nimic nu iese pe internet fara `SCRAPER_ACTIV=true`.** Pornirea e o decizie, nu
+un efect secundar al unui deploy. Restul comenzilor (ritm, timeout, cache, TTL,
+User-Agent) sint in `.env.example`.
+
+Se poarta cuviincios, si fiecare parte are motivul ei: **respecta `robots.txt`**
+(un magazin care spune ca nu vrea ajunge oricum sa blocheze, deci catalogul se
+opreste la fel), **tine ritm** intre cereri catre aceeasi origine, **se prezinta**
+cu un User-Agent care spune cine e, si **tine cache** ca doi oameni care cauta
+"parchet" in acelasi minut sa nu faca doua cereri identice.
+
+**Cind magazinul nu raspunde, pagina se afiseaza oricum**, cu ce e in catalog.
+Verificat pe server real: cerere respinsa, pagina 200. O cautare de materiale nu e
+locul unde sa cada aplicatia din cauza unui site strain.
+
+**Extractorul are doua straturi**, in ordinea increderii: **JSON-LD**
+(`schema.org/Product`), pe care magazinele il pun pentru Google si care
+supravietuieste unui redesign, si abia apoi selectoare CSS. Pretul vechi, taiat, se
+**sterge din card** inainte de citirea celui curent — la un parchet redus scrie
+57,90 linga 67,91, iar cel taiat ar intra in catalog ca un pret care nu se mai
+practica.
+
+**Selectoarele din `dedeman.ts` sint de confirmat.** Mediul in care s-a scris codul
+n-are acces la internet, deci sunt scrise pe tipare uzuale, nu pe pagina reala. Se
+corecteaza cu `npm run proba:furnizor -- parchet`, care arata ce s-a extras si din
+ce strat; cu `--salveaza` pune pagina in `fixtures/`, ca testele sa se scrie pe
+HTML adevarat.
+
+**Pretul de la magazinul online e national.** Judetul ales schimba disponibilitatea
+si magazinul, nu cifra, deci observatiile intra cu `countyCode` null — de aceea
+`reperPentruJudet` are rezerva nationala, aratata ca atare. Nu se inventeaza o
+dimensiune pe judet care nu exista in sursa.
+
+**Calea sanctionata ramine feed-ul de afiliere** (2Performant), care da preturile
+cu acordul magazinului. Intra pe aceeasi interfata `PriceSource`, deci trecerea la
+el nu rescrie nimic.
 
 ## Consumurile specifice
 
@@ -404,7 +446,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 305 de teste
+npm test          # 343 de teste
 npm run typecheck
 npm run build
 ```
