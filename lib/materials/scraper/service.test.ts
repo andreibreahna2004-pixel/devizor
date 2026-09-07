@@ -1,7 +1,12 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { type PriceObservation } from "../import";
-import { cautaMaterialeProaspete } from "../service";
+import { cautaMaterialeProaspete, importaObservatii } from "../service";
+import {
+  noteazaEsec,
+  salveazaSelectoare,
+  selectoareInvatate,
+} from "./selectoare-invatate";
 
 const prisma = new PrismaClient();
 
@@ -130,5 +135,85 @@ describe("cautaMaterialeProaspete", () => {
     expect(rezultat.observatiiNoi).toBe(0);
     // Catalogul local ramane raspunsul, si el e bun.
     expect(rezultat.materiale).toHaveLength(1);
+  });
+});
+
+describe("importaObservatii cu mai multe magazine", () => {
+  const NUME_MULTI = `Ciment proba ${Date.now()}`;
+
+  afterAll(async () => {
+    await prisma.material.deleteMany({ where: { name: NUME_MULTI } }).catch(() => {});
+  });
+
+  it("pastreaza cate un rand pentru fiecare magazin, la acelasi pret si aceeasi clipa", async () => {
+    // Cu o singura marca de timp pe toata cautarea, doua magazine care listeaza
+    // acelasi produs la acelasi pret ar parea aceeasi masuratoare, iar al doilea
+    // furnizor ar disparea din catalog.
+    const acum = new Date();
+    const de = (supplier: string) => ({
+      name: NUME_MULTI,
+      unit: "sac",
+      price: 32.5,
+      countyCode: null,
+      observedAt: acum,
+      supplier,
+      sourceUrl: null,
+    });
+
+    const scris = await importaObservatii([de("Dedeman"), de("Hornbach")], "FURNIZOR");
+    expect(scris.observatii).toBe(2);
+    expect(scris.duplicate).toBe(0);
+
+    const material = await prisma.material.findFirstOrThrow({ where: { name: NUME_MULTI } });
+    const randuri = await prisma.materialPrice.findMany({
+      where: { materialId: material.id },
+      select: { supplier: true },
+    });
+    expect(randuri.map((r) => r.supplier).sort()).toEqual(["Dedeman", "Hornbach"]);
+  });
+
+  it("nu scrie de doua ori aceeasi masuratoare a aceluiasi magazin", async () => {
+    const acum = new Date();
+    const o = {
+      name: NUME_MULTI,
+      unit: "sac",
+      price: 41.9,
+      countyCode: null,
+      observedAt: acum,
+      supplier: "Dedeman",
+      sourceUrl: null,
+    };
+
+    await importaObservatii([o], "FURNIZOR");
+    const aDoua = await importaObservatii([o], "FURNIZOR");
+
+    expect(aDoua.observatii).toBe(0);
+    expect(aDoua.duplicate).toBe(1);
+  });
+});
+
+describe("selectoarele invatate", () => {
+  const MAGAZIN = `proba-${Date.now()}`;
+  const SELECTOARE = { card: ".produs", denumire: ".titlu", pret: ".pret" };
+
+  afterAll(async () => {
+    await prisma.magazinSelector.deleteMany({ where: { magazin: MAGAZIN } }).catch(() => {});
+  });
+
+  it("se salveaza si se citesc inapoi", async () => {
+    await salveazaSelectoare(MAGAZIN, SELECTOARE);
+    expect(await selectoareInvatate(MAGAZIN)).toMatchObject(SELECTOARE);
+  });
+
+  it("se sterg dupa al doilea esec la rand", async () => {
+    // Magazinul s-a refacut si selectoarele nu mai prind: se reinvata la
+    // urmatoarea cautare, in loc sa ramana in baza cu aerul unui fapt.
+    await salveazaSelectoare(MAGAZIN, SELECTOARE);
+
+    await noteazaEsec(MAGAZIN);
+    expect(await selectoareInvatate(MAGAZIN)).not.toBeNull();
+
+    await noteazaEsec(MAGAZIN);
+    expect(await selectoareInvatate(MAGAZIN)).toBeNull();
   });
 });

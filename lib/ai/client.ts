@@ -21,6 +21,14 @@ export const AI_MAX_TOKENS = 32000;
  */
 export const AI_EFFORT = "high" as const;
 
+/**
+ * Citirea unei pagini de magazin e munca mecanica, nu rationament de deviz: se
+ * cauta produsele care sunt acolo, nu se deduce nimic. Efort mic si un plafon de
+ * iesire pe masura listei de rezultate — cateva zeci de produse, nu un document.
+ */
+export const AI_EXTRAGERE_EFFORT = "low" as const;
+export const AI_EXTRAGERE_MAX_TOKENS = 8000;
+
 let cached: Anthropic | null = null;
 
 export function isAiConfigured(): boolean {

@@ -267,9 +267,9 @@ model Estimate {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  org             Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  client          Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  project         Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  org             Organization         @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  client          Client?              @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  project         Project?             @relation(fields: [projectId], references: [id], onDelete: SetNull)
   sections        EstimateSection[]
   lines           EstimateLine[]
   suggestions     EstimateSuggestion[]
@@ -363,16 +363,16 @@ model EstimateLine {
   sortOrder Int @default(0)
 
   // --- provenienta AI ---
-  aiGenerated     Boolean       @default(false)
+  aiGenerated        Boolean       @default(false)
   /// Cum a ajuns AI-ul la cantitate: "perimetru 46 ml x h 2.80 m - goluri 18 mp".
-  aiJustification String?
-  aiConfidence    AiConfidence?
+  aiJustification    String?
+  aiConfidence       AiConfidence?
   /// Normele gasite potrivite pentru aceeasi lucrare, intre care descrierea nu
   /// departajeaza — inclusiv cea pusa pe linie, ca sa se poata reveni la ea.
   /// Doar coduri: denumirea si unitatea se citesc din indicator la afisare.
   aiAlternativeCodes String[]
   /// Bifat de om dupa ce a verificat linia.
-  reviewed        Boolean       @default(false)
+  reviewed           Boolean       @default(false)
 
   estimate      Estimate         @relation(fields: [estimateId], references: [id], onDelete: Cascade)
   section       EstimateSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
@@ -478,6 +478,26 @@ enum ProgressStatus {
   CIORNA
   APROBATA
   FACTURATA
+}
+
+/// Selectoarele prin care se citeste lista de produse a unui magazin.
+///
+/// Nu se scriu de mana si nu se ghicesc: le gaseste modelul, uitandu-se la pagina
+/// reala, si se salveaza doar dupa ce s-au verificat pe aceeasi pagina. De aici
+/// vine faptul ca modelul e chemat o data per magazin per redesign, nu la fiecare
+/// cautare. Cand se rup, randul se sterge si magazinul se reinvata.
+///
+/// National, fara `orgId`: e o observatie despre un site public, ca normele.
+model MagazinSelector {
+  id      String @id @default(cuid())
+  /// Cheia magazinului din `lib/materials/scraper/magazine.ts`.
+  magazin String @unique
+
+  selectoare Json
+
+  invatatLa DateTime @default(now())
+  reusite   Int      @default(0)
+  esecuri   Int      @default(0)
 }
 
 model ProgressReport {
@@ -663,6 +683,8 @@ model InvoiceLine {
 enum AiRunKind {
   DEVIZ
   FACTURA
+  /// Citirea unei pagini de magazin, cand niciun strat determinist n-a prins.
+  MATERIALE
 }
 
 model AiRun {

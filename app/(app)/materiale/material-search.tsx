@@ -33,6 +33,7 @@ export function MaterialSearch({
   judete,
   materiale,
   cerutLaFurnizor = false,
+  furnizori = [],
 }: {
   q: string;
   judet: string;
@@ -40,6 +41,8 @@ export function MaterialSearch({
   materiale: MaterialRow[];
   /** Adevarat cand cautarea asta a iesit si la magazin dupa preturi. */
   cerutLaFurnizor?: boolean;
+  /** Magazinele care au raspuns. Care n-a raspuns nu se arata: e treaba noastra. */
+  furnizori?: string[];
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -101,8 +104,9 @@ export function MaterialSearch({
 
       {cerutLaFurnizor && (
         <p className="text-xs text-ink-500">
-          Preturile pentru cautarea asta au fost cerute acum la magazin si au ramas
-          in catalog, cu data lor.
+          {furnizori.length > 0
+            ? `Preturile pentru cautarea asta au fost cerute acum la ${furnizori.join(", ")} si au ramas in catalog, cu data lor.`
+            : "Preturile pentru cautarea asta au fost cerute acum la magazine si au ramas in catalog, cu data lor."}
         </p>
       )}
 

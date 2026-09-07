@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { type ConfigSite, dinJsonLd, dinSelectoare, extrageProduse, unitateDinText } from "./extract";
 
 const SITE: ConfigSite = {
+  cheie: "proba",
   nume: "Magazin de proba",
   baseUrl: "https://exemplu.invalid",
   caleCautare: (q) => `/cauta?q=${q}`,
@@ -111,7 +112,7 @@ describe("dinSelectoare", () => {
   it("ia pretul curent chiar cand cel taiat e scris primul si prinde acelasi selector", () => {
     const laxe: ConfigSite = {
       ...SITE,
-      selectoare: { ...SITE.selectoare, pret: "span", pretVechi: ".pret-vechi" },
+      selectoare: { ...SITE.selectoare!, pret: "span", pretVechi: ".pret-vechi" },
     };
     const html = `<ul><li class="produs">
       <span class="pret-vechi">67,91 lei</span><span class="titlu">X</span><span>57,90 lei</span>

@@ -1,5 +1,5 @@
 import "server-only";
-import { type MaterialPriceSource } from "@prisma/client";
+import { type MaterialPriceSource, type Prisma } from "@prisma/client";
 import { type RangeKey, bucketsFor, ultima } from "@/lib/charts/buckets";
 import { prisma } from "@/lib/db";
 import { toNumber } from "@/lib/money";
@@ -142,59 +142,103 @@ export async function importaObservatii(
   observatii: PriceObservation[],
   sursa?: MaterialPriceSource,
 ): Promise<ImportResult> {
+  if (observatii.length === 0) return { materialeNoi: 0, observatii: 0, duplicate: 0 };
+
+  // Pe loturi, nu observatie cu observatie. Cu patru magazine intrebate deodata,
+  // scrierea una cate una ar face cateva sute de dus-intors la baza chiar pe calea
+  // de randare a paginii omului. Semantica ramane neschimbata: se cauta materialul
+  // dupa (nume, unitate), se sare peste masuratorile identice, nimic nu se rescrie.
+  const perechi = new Map<string, { name: string; unit: string }>();
+  for (const o of observatii) perechi.set(`${o.name}|${o.unit}`, { name: o.name, unit: o.unit });
+
+  const existente = await prisma.material.findMany({
+    where: { OR: [...perechi.values()] },
+    select: { id: true, name: true, unit: true },
+  });
+
+  const idMaterial = new Map(existente.map((m) => [`${m.name}|${m.unit}`, m.id]));
   let materialeNoi = 0;
-  let scrise = 0;
+
+  for (const [cheie, date] of perechi) {
+    if (idMaterial.has(cheie)) continue;
+    const creat = await prisma.material.create({ data: date, select: { id: true } });
+    idMaterial.set(cheie, creat.id);
+    materialeNoi++;
+  }
+
+  const ids = [...idMaterial.values()];
+  const deja = await prisma.materialPrice.findMany({
+    where: {
+      materialId: { in: ids },
+      observedAt: { in: [...new Set(observatii.map((o) => o.observedAt.getTime()))].map((t) => new Date(t)) },
+    },
+    select: {
+      materialId: true,
+      countyCode: true,
+      observedAt: true,
+      price: true,
+      supplier: true,
+    },
+  });
+
+  const vazute = new Set(
+    deja.map((p) =>
+      cheieMasuratoare(p.materialId, p.countyCode, p.observedAt, toNumber(p.price), p.supplier),
+    ),
+  );
+
+  const deScris: Prisma.MaterialPriceCreateManyInput[] = [];
   let duplicate = 0;
 
   for (const o of observatii) {
-    let material = await prisma.material.findFirst({
-      where: { name: o.name, unit: o.unit },
-      select: { id: true },
-    });
+    const materialId = idMaterial.get(`${o.name}|${o.unit}`);
+    if (!materialId) continue;
 
-    if (!material) {
-      material = await prisma.material.create({
-        data: { name: o.name, unit: o.unit },
-        select: { id: true },
-      });
-      materialeNoi++;
-    }
-
-    // Aceeasi observatie, adusa a doua oara, nu se mai scrie. Nu contrazice
-    // regula de mai sus: nimic nu se suprascrie si nimic nu se sterge. Un API
-    // care intoarce tot istoricul la fiecare rulare ar umple tabelul cu copii
-    // ale aceleiasi masuratori, iar graficul ar arata la fel — doar ca peste
-    // cateva mii de randuri degeaba.
-    const existenta = await prisma.materialPrice.findFirst({
-      where: {
-        materialId: material.id,
-        countyCode: o.countyCode,
-        observedAt: o.observedAt,
-        price: toDecimal(o.price, 4),
-      },
-      select: { id: true },
-    });
-
-    if (existenta) {
+    const cheie = cheieMasuratoare(materialId, o.countyCode, o.observedAt, o.price, o.supplier);
+    if (vazute.has(cheie)) {
       duplicate++;
       continue;
     }
+    vazute.add(cheie);
 
-    await prisma.materialPrice.create({
-      data: {
-        materialId: material.id,
-        countyCode: o.countyCode,
-        price: toDecimal(o.price, 4),
-        source: sursa ?? (o.supplier ? "LISTA" : "MANUAL"),
-        supplier: o.supplier,
-        sourceUrl: o.sourceUrl,
-        observedAt: o.observedAt,
-      },
+    deScris.push({
+      materialId,
+      countyCode: o.countyCode,
+      price: toDecimal(o.price, 4),
+      source: sursa ?? (o.supplier ? "LISTA" : "MANUAL"),
+      supplier: o.supplier,
+      sourceUrl: o.sourceUrl,
+      observedAt: o.observedAt,
     });
-    scrise++;
   }
 
-  return { materialeNoi, observatii: scrise, duplicate };
+  if (deScris.length > 0) await prisma.materialPrice.createMany({ data: deScris });
+
+  return { materialeNoi, observatii: deScris.length, duplicate };
+}
+
+/**
+ * Ce inseamna "aceeasi masuratoare".
+ *
+ * `supplier` face parte din cheie, si asta conteaza de cand se intreaba mai multe
+ * magazine deodata: cu o singura marca de timp pe toata cautarea, doua magazine
+ * care listeaza acelasi produs la acelasi pret ar parea aceeasi observatie, iar al
+ * doilea furnizor ar disparea din catalog. Doua magazine sunt doua masuratori.
+ */
+function cheieMasuratoare(
+  materialId: string,
+  countyCode: string | null,
+  observedAt: Date,
+  price: number,
+  supplier: string | null,
+): string {
+  return [
+    materialId,
+    countyCode ?? "",
+    observedAt.getTime(),
+    price.toFixed(4),
+    supplier ?? "",
+  ].join("|");
 }
 
 export interface LaborImportResult {
@@ -265,6 +309,8 @@ export interface CautareProaspata {
   cerutLaFurnizor: boolean;
   /** Cate observatii noi au intrat in catalog. */
   observatiiNoi: number;
+  /** Magazinele care au raspuns la cautarea asta. */
+  furnizori: string[];
 }
 
 /** Sub atita, ce e in catalog se considera proaspat si nu se mai cere nimic. */
@@ -290,12 +336,16 @@ export async function cautaMaterialeProaspete(
   interogare: string,
   countyCode: string | null,
   range: RangeKey = "1A",
-  cauta: (interogare: string) => Promise<PriceObservation[]> = cautaLaFurnizor,
+  cauta?: (interogare: string) => Promise<PriceObservation[]>,
+  /** Firma care cauta: numai pentru auditul apelurilor de model. Vezi `audit.ts`. */
+  cine?: { orgId: string; userId?: string | null },
 ): Promise<CautareProaspata> {
+  const laMagazine =
+    cauta ?? ((q: string) => cautaLaFurnizor(q, { orgId: cine?.orgId, userId: cine?.userId }));
   const local = await cautaMateriale(interogare, countyCode, range);
 
   if (!interogare.trim() || !scraperActiv()) {
-    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0 };
+    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0, furnizori: [] };
   }
 
   const celMaiNou = local.reduce<number>(
@@ -304,12 +354,16 @@ export async function cautaMaterialeProaspete(
   );
   const invechit = Date.now() - celMaiNou > ttlOre() * 3_600_000;
   if (local.length > 0 && !invechit) {
-    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0 };
+    return { materiale: local, cerutLaFurnizor: false, observatiiNoi: 0, furnizori: [] };
   }
 
-  const observatii = await cauta(interogare);
+  const observatii = await laMagazine(interogare);
+  const furnizori = [
+    ...new Set(observatii.map((o) => o.supplier).filter((f): f is string => Boolean(f))),
+  ];
+
   if (observatii.length === 0) {
-    return { materiale: local, cerutLaFurnizor: true, observatiiNoi: 0 };
+    return { materiale: local, cerutLaFurnizor: true, observatiiNoi: 0, furnizori };
   }
 
   const scrise = await importaObservatii(observatii, "FURNIZOR");
@@ -318,5 +372,6 @@ export async function cautaMaterialeProaspete(
     materiale: await cautaMateriale(interogare, countyCode, range),
     cerutLaFurnizor: true,
     observatiiNoi: scrise.observatii,
+    furnizori,
   };
 }

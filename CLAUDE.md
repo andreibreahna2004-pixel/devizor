@@ -71,7 +71,8 @@ lib/
   progress/        situatii de lucrari, cantitati executate cumulat
   invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
   materials/       catalog de preturi: cautare, reper pe judet, import din API,
-                   liste si direct de la magazin (scraper/)
+                   liste si direct de la magazine (scraper/ — patru magazine,
+                   cascada de straturi, selectoare invatate)
   efactura/        generator UBL 2.1 + validator CIUS-RO
   pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
@@ -253,48 +254,132 @@ trimestru ar fi doua adevaruri despre el.
 
 ### Preturi luate direct de la magazin
 
-`lib/materials/scraper/` cere pagina de cautare a magazinului cind omul cauta un
+`lib/materials/scraper/` cere pagina de cautare a magazinelor cind omul cauta un
 material pe care catalogul nu-l are, sau il are invechit. `cautaMaterialeProaspete`
 din `service.ts` ia decizia; ce se gaseste intra prin `importaObservatii`, deci
 **fiecare cautare a unui om lasa in urma o masuratoare datata** si construieste
 seria din care iese graficul. O cautare care doar ar afisa ce a gasit acum ar arata
 un pret fara istorie.
 
-**Nimic nu iese pe internet fara `SCRAPER_ACTIV=true`.** Pornirea e o decizie, nu
-un efect secundar al unui deploy. Restul comenzilor (ritm, timeout, cache, TTL,
-User-Agent) sint in `.env.example`.
+**Patru magazine, intrebate deodata**: Dedeman, Leroy Merlin, Hornbach, Bricostore,
+in `magazine.ts`. Sint origini diferite, deci ritmul per origine nu se incalca, iar
+un magazin cazut nu-i tine in loc pe ceilalti (`Promise.allSettled`). Toate
+observatiile unei cautari poarta **aceeasi marca de timp**: cu cite una per magazin,
+`reperPentruJudet` — care ia cea mai noua — ar alege furnizorul aratat omului dupa
+cine a raspuns primul, adica dupa o cursa de retea.
 
-Se poarta cuviincios, si fiecare parte are motivul ei: **respecta `robots.txt`**
-(un magazin care spune ca nu vrea ajunge oricum sa blocheze, deci catalogul se
-opreste la fel), **tine ritm** intre cereri catre aceeasi origine, **se prezinta**
-cu un User-Agent care spune cine e, si **tine cache** ca doi oameni care cauta
-"parchet" in acelasi minut sa nu faca doua cereri identice.
+**Nimic nu iese pe internet fara `SCRAPER_ACTIV=true`.** Pornirea e o decizie, nu un
+efect secundar al unui deploy. Restul comenzilor (ritm, timeout, cache, TTL,
+User-Agent, ce magazine, racire) sint in `.env.example`.
+
+Se poarta cuviincios, si fiecare parte are motivul ei: **respecta `robots.txt`** (un
+magazin care spune ca nu vrea ajunge oricum sa blocheze, deci catalogul se opreste
+la fel), **tine ritm** intre cereri catre aceeasi origine, **se prezinta** cu un
+User-Agent care spune cine e, si **tine cache** ca doi oameni care cauta "parchet" in
+acelasi minut sa nu faca doua cereri identice. Cache-ul tine promisiunea, nu textul:
+altfel doua cereri pornite in aceeasi clipa nu s-ar vedea una pe alta. Rezervarea
+slotului de ritm se face sincron, inainte de orice `await`, din acelasi motiv.
 
 **Cind magazinul nu raspunde, pagina se afiseaza oricum**, cu ce e in catalog.
 Verificat pe server real: cerere respinsa, pagina 200. O cautare de materiale nu e
 locul unde sa cada aplicatia din cauza unui site strain.
 
-**Extractorul are doua straturi**, in ordinea increderii: **JSON-LD**
-(`schema.org/Product`), pe care magazinele il pun pentru Google si care
-supravietuieste unui redesign, si abia apoi selectoare CSS. Pretul vechi, taiat, se
-**sterge din card** inainte de citirea celui curent — la un parchet redus scrie
-57,90 linga 67,91, iar cel taiat ar intra in catalog ca un pret care nu se mai
-practica.
+#### Cascada de extragere
 
-**Selectoarele din `dedeman.ts` sint de confirmat.** Mediul in care s-a scris codul
-n-are acces la internet, deci sunt scrise pe tipare uzuale, nu pe pagina reala. Se
-corecteaza cu `npm run proba:furnizor -- parchet`, care arata ce s-a extras si din
-ce strat; cu `--salveaza` pune pagina in `fixtures/`, ca testele sa se scrie pe
-HTML adevarat.
+Selectoarele scrise fara sa vezi pagina sint o presupunere, si ar ramine o
+presupunere si la client. De aceea extragerea nu mai atirna de ele. Straturile, in
+ordinea increderii — si a costului:
 
-**Pretul de la magazinul online e national.** Judetul ales schimba disponibilitatea
-si magazinul, nu cifra, deci observatiile intra cu `countyCode` null — de aceea
-`reperPentruJudet` are rezerva nationala, aratata ca atare. Nu se inventeaza o
-dimensiune pe judet care nu exista in sursa.
+1. **JSON-LD** (`schema.org/Product`), in `extract.ts`. Standard, pus pentru Google,
+   supravietuieste unui redesign.
+2. **Microdate** (`itemprop`), in `microdate.ts`. Acelasi standard, alta scriere.
+3. **Starea de aplicatie** (`__NEXT_DATA__`, `__NUXT__`), in `stare-app.ts`. Singurul
+   strat care vede produsele cind lista se deseneaza abia in browser.
+4. **Selectoare** — dar numai cele **invatate de model pe pagina reala**, nu ghicite.
+5. **Tipare** (`euristica.ts`): fara niciun selector, pornind de la pretul in lei.
+6. **Modelul** (`lib/ai/extrage-produse.ts`), cind nimic de mai sus n-a prins.
 
-**Calea sanctionata ramine feed-ul de afiliere** (2Performant), care da preturile
-cu acordul magazinului. Intra pe aceeasi interfata `PriceSource`, deci trecerea la
-el nu rescrie nimic.
+Arbitrajul (`alegeStrat`) ia **primul strat cu cel putin 3 produse**, iar sub prag pe
+cel cu numarul cel mai mare. Nu "primul strat nevid": o pagina cu douazeci si patru
+de produse in grila si un singur bloc JSON-LD pentru produsul promovat din banner ar
+da un produs si s-ar opri acolo. Doua straturi nu se amesteca niciodata — rezultatele
+s-ar dubla peste aceleasi produse.
+
+**Euristica se agata de moneda, nu de structura.** Cauta text care arata a pret in
+lei in noduri cu text propriu scurt, urca cel mult sase parinti pina la cardul care
+are si legatura si titlu, si **cere un grup repetat de cel putin doua carduri**. Asa
+raman afara "de la 9,99 lei" din banner, "livrare 19,99 lei" din subsol si "Cosul meu
+0,00 lei" din bara de sus. Se testeaza pe **arhetipuri de markup**, nu pe magazine
+(`euristica.test.ts`): un test scris "pe Dedeman" ar fi tot o presupunere, doar cu
+nume adevarat pe ea.
+
+**`plauzibil.ts` ruleaza dupa fiecare strat**, si nu e cosmetizare: `MaterialPrice`
+creste si nu se rescrie, deci **poluarea catalogului e definitiva**. Pret intre 0,1 si
+100.000; denumiri intre 3 si 200 de caractere; etichetele de interfata aruncate;
+plafon de 24 de produse per magazin, ca frina de avarie. Filtrul de relevanta (macar
+un cuvint al interogarii in denumire) se aplica **doar** straturilor care ghicesc
+structura paginii — 4, 5 si 6 — nu celor declarate de magazin: e gardul pentru cazul
+in care adresa de cautare ghicita a nimerit o pagina de categorie.
+
+Moneda se verifica peste tot: un pret in euro citit ca leu intra de cinci ori mai mic
+decit adevarul si nu se mai poate distinge dupa aceea.
+
+#### Modelul citeste pagina, si isi lasa in urma selectoarele
+
+`lib/ai/extrage-produse.ts` e ultimul strat. Trei lucruri il tin onest si ieftin:
+
+- **e ultimul.** Un magazin care pune JSON-LD nu costa niciodata niciun token.
+- **ce spune se verifica in pagina.** Denumirea si cifra trebuie sa apara literal in
+  textul trimis modelului. Un model care n-a gasit destule poate completa din ce stie
+  despre materiale, si intr-un tabel append-only asta ar ramine acolo pentru
+  totdeauna. Ce nu se regaseste se arunca.
+- **intoarce si selectoarele** prin care a gasit produsele. Se pastreaza numai daca,
+  rulate cu `dinSelectoare` pe **aceeasi** pagina, prind macar jumatate din aceleasi
+  produse; altfel ar fi tot o presupunere, doar ca de-acum scrisa in baza. Salvate in
+  `MagazinSelector`, sterse la al doilea esec la rind. Asa modelul e chemat **o data
+  per magazin per redesign**, nu la fiecare cautare.
+
+Pagina nu se trimite bruta: se condenseaza (fara `script`, `style`, `svg`), cu plafon
+in `SCRAPER_AI_MAX_CARACTERE`. Ce nu incape se taie la o granita de linie si se scrie
+in log — o trunchiere tacuta ar arata pe ecran ca o pagina fara produse. Iesirea trece
+prin `output_config.format` si prin zod, ca peste tot. Fiecare apel se scrie in
+`AiRun` cu `kind = MATERIALE`: un apel care costa bani apartine tabelului de audit.
+
+**Fara `ANTHROPIC_API_KEY` stratul nu exista**, si asta nu e o eroare: cautarea merge
+mai departe cu straturile deterministe.
+
+#### Cind un magazin nu da nimic
+
+`sanatate.ts` tine socoteala, in memorie: trei goluri la rind si magazinul e sarit
+sase ore, fara nicio cerere si fara niciun apel de model. Un 403 sau 429 intra in
+racire imediat — cind magazinul spune raspicat nu, insistenta n-aduce produse, aduce
+blocare. Interdictia din `robots.txt` se scrie in log **o data**, nu la fiecare
+cautare. Un interstitial servit cu status 200 ("Just a moment") se recunoaste dupa
+vocabular, nu dupa vreun selector.
+
+Adresa de cautare a unui magazin **nu e un fapt verificabil de aici**: se incearca
+formele uzuale, in ordine, pina cind una da produse, iar cea cistigatoare se tine
+minte. `SCRAPER_URL_<CHEIE>` o suprascrie, pentru ziua in care magazinul si-o muta.
+
+**Pretul de la magazinul online e national.** Judetul ales schimba disponibilitatea si
+magazinul, nu cifra, deci observatiile intra cu `countyCode` null — de aceea
+`reperPentruJudet` are rezerva nationala, aratata ca atare.
+
+**`supplier` e singura identitate a magazinului in baza**, si de aceea intra si in
+cheia de dedublare din `importaObservatii`: cu o singura marca de timp pe toata
+cautarea, doua magazine care listeaza acelasi produs la acelasi pret ar parea aceeasi
+masuratoare, iar al doilea furnizor ar disparea. Doua magazine sint doua masuratori.
+
+**Singurele selectoare scrise de mina sint cele ale Dedeman-ului, din `magazine.ts`,
+si sint de confirmat**: mediul in care s-au scris n-are acces la internet, deci vin
+din tipare uzuale, nu de pe pagina reala. Nu se mai adauga altele ghicite — celelalte
+trei magazine n-au niciunul, si nici n-au nevoie. Se verifica cu
+`npm run proba:furnizor -- ciment`, care arata ce a dat fiecare strat si de ce n-a dat
+nimic; `--fisier` merge si pe o pagina salvata, deci si fara internet.
+
+**Calea sanctionata ramine feed-ul de afiliere** (2Performant), care da preturile cu
+acordul magazinului. Intra pe aceeasi interfata `PriceSource`, deci trecerea la el nu
+rescrie nimic.
 
 ## Consumurile specifice
 
@@ -446,7 +531,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 343 de teste
+npm test          # 420 de teste
 npm run typecheck
 npm run build
 ```

@@ -17,7 +17,7 @@ export default async function MaterialsPage({
 }: {
   searchParams: Promise<{ q?: string; judet?: string }>;
 }) {
-  await requireUser();
+  const { orgId, userId } = await requireUser();
 
   const { q = "", judet = "" } = await searchParams;
   const countyCode = judet || null;
@@ -25,7 +25,13 @@ export default async function MaterialsPage({
   // Cautarea isi improspateaza singura catalogul: cand nu are nimic pentru
   // interogarea asta, sau cand ce are e vechi, cere la magazin si scrie ce
   // gaseste. Vezi `cautaMaterialeProaspete`.
-  const { materiale, cerutLaFurnizor } = await cautaMaterialeProaspete(q, countyCode, "1A");
+  const { materiale, cerutLaFurnizor, furnizori } = await cautaMaterialeProaspete(
+    q,
+    countyCode,
+    "1A",
+    undefined,
+    { orgId, userId },
+  );
 
   return (
     <div className="space-y-5">
@@ -39,6 +45,7 @@ export default async function MaterialsPage({
         judet={judet}
         judete={COUNTIES.map((c) => ({ code: c.code, name: c.name }))}
         cerutLaFurnizor={cerutLaFurnizor}
+        furnizori={furnizori}
         materiale={materiale.map((m) => ({
           id: m.id,
           name: m.name,

@@ -115,6 +115,7 @@ export async function iaRobots(
   origine: string,
   agent: string,
   fetchImpl: typeof fetch = fetch,
+  timeoutMs = 8000,
 ): Promise<Robots> {
   const cheie = `${origine}|${agent}`;
   const dinCache = CACHE.get(cheie);
@@ -122,8 +123,12 @@ export async function iaRobots(
 
   let robots: Robots = { reguli: [] };
   try {
+    // Timeout si aici, nu doar la pagina: cu patru magazine intrebate deodata, un
+    // singur robots.txt care nu raspunde ar tine in loc cautarea omului, fiindca
+    // se cere inaintea paginii. Fara semnal, `fetch` asteapta cat vrea reteaua.
     const raspuns = await fetchImpl(new URL("/robots.txt", origine).toString(), {
       headers: { "User-Agent": agent },
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (raspuns.ok) robots = parseRobots(await raspuns.text(), agent);
   } catch {

@@ -89,4 +89,18 @@ describe("iaRobots", () => {
     const r = await iaRobots("https://exemplu.invalid", AGENT, cade);
     expect(estePermis(r, "/orice")).toBe(true);
   });
+
+  it("renunta la timp daca robots.txt nu raspunde", async () => {
+    // Fara semnal de oprire, un singur magazin mut ar tine in loc toata cautarea:
+    // robots.txt se cere inaintea paginii.
+    let semnal: AbortSignal | undefined;
+    const impl = (async (_url: string, init?: RequestInit) => {
+      semnal = init?.signal ?? undefined;
+      return { ok: true, text: async () => "" } as unknown as Response;
+    }) as unknown as typeof fetch;
+
+    await iaRobots("https://exemplu.invalid", "Devizor/1.0", impl, 50);
+
+    expect(semnal).toBeInstanceOf(AbortSignal);
+  });
 });
