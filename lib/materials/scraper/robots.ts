@@ -35,7 +35,12 @@ function tiparInRegex(cale: string): RegExp {
 }
 
 export function parseRobots(text: string, agent: string): Robots {
-  const agentMic = agent.toLowerCase();
+  // Numai numele produsului din User-Agent: "Devizor/1.0 (+adresa)" da "devizor".
+  // Comparatia se face exact, nu prin `includes`: un grup scris `User-agent: e`
+  // s-ar potrivi altfel cu orice agent care are un "e" in el, si am ajunge sa
+  // ascultam regulile altcuiva in loc de cele pentru `*`. In ambele sensuri e o
+  // greseala de conformare.
+  const numeleNostru = agent.split("/")[0].trim().toLowerCase();
   const grupuri = new Map<string, Regula[]>();
   let agentiCurenti: string[] = [];
   let inGrup = false;
@@ -75,16 +80,21 @@ export function parseRobots(text: string, agent: string): Robots {
     }
   }
 
-  const alNostru = [...grupuri.entries()].find(([a]) => agentMic.includes(a) && a !== "*");
-  const reguli = alNostru?.[1] ?? grupuri.get("*") ?? [];
+  const reguli = grupuri.get(numeleNostru) ?? grupuri.get("*") ?? [];
   return { reguli };
 }
 
 /**
  * Adevarat cand calea poate fi ceruta.
  *
- * Fara reguli, totul e permis — asa spune standardul, si asa se comporta si
- * cazul in care fisierul lipseste.
+ * `cale` e calea **si query-string-ul** (`/s/parchet?limit=96`), nu doar
+ * pathname-ul. Multe magazine isi scriu interdictiile pe query: Leroy Merlin are
+ * `Disallow: /*filters=*`, `/*limit=*` si `/*sort=*`, iar toate trei se pot
+ * potrivi numai daca query-ul e de fata. Cu pathname singur, verificarea ar
+ * trece iar magazinul ar fi spus nu.
+ *
+ * Fara reguli, totul e permis: asa spune standardul, si asa se comporta si cazul
+ * in care fisierul lipseste.
  */
 export function estePermis(robots: Robots, cale: string): boolean {
   let castigator: Regula | null = null;
@@ -101,6 +111,18 @@ export function estePermis(robots: Robots, cale: string): boolean {
   }
 
   return castigator ? castigator.permite : true;
+}
+
+/**
+ * Ce se da lui `estePermis` pentru o adresa intreaga.
+ *
+ * Exista ca functie, si nu scris pe loc la fiecare apel, fiindca a fost gresit
+ * exact aici: amindoua locurile treceau numai `pathname`, si o interdictie
+ * scrisa pe query trecea nevazuta. Cine cheama `estePermis` ia calea de aici.
+ */
+export function caleDinUrl(url: string): string {
+  const u = new URL(url);
+  return u.pathname + u.search;
 }
 
 const CACHE = new Map<string, Robots>();

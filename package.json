@@ -21,6 +21,7 @@
     "demo:factura": "node --conditions=react-server --import tsx scripts/demo-factura.ts",
     "demo:materiale": "tsx scripts/seed-materiale.ts",
     "import:preturi": "node --conditions=react-server --import tsx scripts/import-preturi.ts",
+    "preturi:zilnic": "node --conditions=react-server --import tsx scripts/preturi-zilnic.ts",
     "proba:furnizor": "node --conditions=react-server --import tsx scripts/proba-furnizor.ts",
     "dev:token": "tsx scripts/dev-token.ts",
     "db:deploy": "node scripts/migrate-deploy.mjs"

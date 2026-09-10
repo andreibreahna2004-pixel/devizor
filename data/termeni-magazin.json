@@ -1,0 +1,1079 @@
+[
+  {
+    "termen": "adeziv flexibil",
+    "um": "sac",
+    "material": "Adeziv flexibil",
+    "laMagazin": true,
+    "retete": [
+      "piatra-naturala-pardoseala",
+      "trepte-gresie",
+      "placaj-piatra-perete"
+    ]
+  },
+  {
+    "termen": "adeziv gresie",
+    "um": "sac",
+    "material": "Adeziv pentru gresie",
+    "laMagazin": true,
+    "retete": [
+      "gresie-pardoseala"
+    ]
+  },
+  {
+    "termen": "adeziv parchet",
+    "um": "buc",
+    "material": "Adeziv pentru parchet",
+    "laMagazin": true,
+    "retete": [
+      "parchet-masiv"
+    ]
+  },
+  {
+    "termen": "adeziv polistiren",
+    "um": "sac",
+    "material": "Adeziv pentru lipire",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-5",
+      "termosistem-eps-10",
+      "termosistem-eps-15",
+      "termosistem-vata"
+    ]
+  },
+  {
+    "termen": "adeziv rosturi subtiri",
+    "um": "sac",
+    "material": "Adeziv pentru rosturi subtiri",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-10",
+      "zidarie-bca-15",
+      "zidarie-bca-20",
+      "zidarie-bca-25",
+      "zidarie-bca-30"
+    ]
+  },
+  {
+    "termen": "amorsa",
+    "um": "buc",
+    "material": "Amorsa",
+    "laMagazin": true,
+    "retete": [
+      "profile-decorative",
+      "hidroizolatie-baie",
+      "tencuiala-mecanizata",
+      "tencuiala-exterior",
+      "glet-ipsos",
+      "glet-vinilic",
+      "amorsa-perete",
+      "reparatii-tencuiala",
+      "sapa-autonivelanta",
+      "gresie-pardoseala",
+      "faianta-perete",
+      "lavabil-interior",
+      "var-lavabil-tavan",
+      "tapet"
+    ]
+  },
+  {
+    "termen": "amorsa bituminoasa",
+    "um": "buc",
+    "material": "Amorsa bituminoasa",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-fundatie",
+      "membrana-terasa"
+    ]
+  },
+  {
+    "termen": "amorsa pigmentata",
+    "um": "buc",
+    "material": "Amorsa pigmentata",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-decorativa",
+      "tencuiala-mozaicata"
+    ]
+  },
+  {
+    "termen": "apa",
+    "um": "l",
+    "material": "Apa",
+    "laMagazin": false,
+    "motiv": "nu e marfa",
+    "retete": [
+      "beton-c8-10",
+      "beton-c12-15",
+      "beton-c16-20",
+      "beton-c20-25",
+      "beton-c25-30",
+      "sapa-santier"
+    ]
+  },
+  {
+    "termen": "balast",
+    "um": "mc",
+    "material": "Balast",
+    "laMagazin": false,
+    "motiv": "vrac, nu se vinde la bricolaj",
+    "retete": [
+      "umplutura-balast",
+      "alee-piatra"
+    ]
+  },
+  {
+    "termen": "banda armare rosturi",
+    "um": "buc",
+    "material": "Banda de armare rosturi",
+    "laMagazin": true,
+    "retete": [
+      "rigips-perete-simplu",
+      "rigips-perete-dublu",
+      "rigips-tavan",
+      "rigips-placare-zidarie"
+    ]
+  },
+  {
+    "termen": "banda etansare colturi",
+    "um": "buc",
+    "material": "Banda de etansare la colturi",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-baie"
+    ]
+  },
+  {
+    "termen": "banda perimetrala",
+    "um": "rola",
+    "material": "Banda perimetrala",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-sub-sapa",
+      "sapa-ciment",
+      "sapa-fibre",
+      "sapa-uscata",
+      "incalzire-pardoseala"
+    ]
+  },
+  {
+    "termen": "bca 10",
+    "um": "buc",
+    "material": "Blocuri BCA 10 cm",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-10"
+    ]
+  },
+  {
+    "termen": "bca 15",
+    "um": "buc",
+    "material": "Blocuri BCA 15 cm",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-15"
+    ]
+  },
+  {
+    "termen": "bca 20",
+    "um": "buc",
+    "material": "Blocuri BCA 20 cm",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-20"
+    ]
+  },
+  {
+    "termen": "bca 25",
+    "um": "buc",
+    "material": "Blocuri BCA 25 cm",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-25"
+    ]
+  },
+  {
+    "termen": "bca 30",
+    "um": "buc",
+    "material": "Blocuri BCA 30 cm",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-30"
+    ]
+  },
+  {
+    "termen": "beton c16/20",
+    "um": "mc",
+    "material": "Beton C16/20",
+    "laMagazin": false,
+    "motiv": "beton gata preparat, vine de la statie",
+    "retete": [
+      "stalpisori-beton",
+      "centura-beton",
+      "trotuar-beton"
+    ]
+  },
+  {
+    "termen": "beton c20/25",
+    "um": "mc",
+    "material": "Beton C20/25",
+    "laMagazin": false,
+    "motiv": "beton gata preparat, vine de la statie",
+    "retete": [
+      "planseu-beton-armat",
+      "scara-beton",
+      "beton-amprentat"
+    ]
+  },
+  {
+    "termen": "beton c8/10",
+    "um": "mc",
+    "material": "Beton C8/10",
+    "laMagazin": false,
+    "motiv": "beton gata preparat, vine de la statie",
+    "retete": [
+      "egalizare-beton"
+    ]
+  },
+  {
+    "termen": "beton de suprabetonare c20/25",
+    "um": "mc",
+    "material": "Beton de suprabetonare C20/25",
+    "laMagazin": false,
+    "motiv": "beton gata preparat, vine de la statie",
+    "retete": [
+      "planseu-predale"
+    ]
+  },
+  {
+    "termen": "beton gata preparat",
+    "um": "mc",
+    "material": "Beton gata preparat",
+    "laMagazin": false,
+    "motiv": "vine de la statie",
+    "retete": [
+      "beton-turnat-gata"
+    ]
+  },
+  {
+    "termen": "buiandrug prefabricat",
+    "um": "buc",
+    "material": "Buiandrug prefabricat",
+    "laMagazin": false,
+    "motiv": "prefabricat, pe comanda",
+    "retete": [
+      "buiandrug"
+    ]
+  },
+  {
+    "termen": "burlan",
+    "um": "buc",
+    "material": "Burlan",
+    "laMagazin": true,
+    "retete": [
+      "jgheaburi-burlane"
+    ]
+  },
+  {
+    "termen": "caramida cu goluri",
+    "um": "buc",
+    "material": "Caramida cu goluri 25x25x23",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-porotherm-25"
+    ]
+  },
+  {
+    "termen": "caramida plina",
+    "um": "buc",
+    "material": "Caramida plina 240x115x63",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-caramida-plina"
+    ]
+  },
+  {
+    "termen": "chit rosturi",
+    "um": "buc",
+    "material": "Chit de rosturi",
+    "laMagazin": true,
+    "retete": [
+      "gresie-pardoseala",
+      "piatra-naturala-pardoseala",
+      "trepte-gresie",
+      "faianta-perete",
+      "placaj-piatra-perete"
+    ]
+  },
+  {
+    "termen": "ciment",
+    "um": "sac",
+    "material": "Ciment",
+    "laMagazin": true,
+    "retete": [
+      "beton-c8-10",
+      "beton-c12-15",
+      "beton-c16-20",
+      "beton-c20-25",
+      "beton-c25-30",
+      "zidarie-mortar-santier",
+      "sapa-santier"
+    ]
+  },
+  {
+    "termen": "coltar cu plasa",
+    "um": "buc",
+    "material": "Coltare cu plasa",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-5",
+      "termosistem-eps-10",
+      "termosistem-eps-15"
+    ]
+  },
+  {
+    "termen": "coltar tencuiala",
+    "um": "buc",
+    "material": "Coltare de protectie",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-interior"
+    ]
+  },
+  {
+    "termen": "corpuri de umplutura",
+    "um": "buc",
+    "material": "Corpuri de umplutura",
+    "laMagazin": false,
+    "motiv": "prefabricat, pe comanda",
+    "retete": [
+      "planseu-predale"
+    ]
+  },
+  {
+    "termen": "covor pvc",
+    "um": "mp",
+    "material": "Covor PVC",
+    "laMagazin": true,
+    "retete": [
+      "covor-pvc"
+    ]
+  },
+  {
+    "termen": "cuie",
+    "um": "kg",
+    "material": "Cuie",
+    "laMagazin": true,
+    "retete": [
+      "cofraj-fundatii",
+      "astereala-scandura",
+      "sipci-contrasipci"
+    ]
+  },
+  {
+    "termen": "decofrol",
+    "um": "buc",
+    "material": "Decofrol",
+    "laMagazin": true,
+    "retete": [
+      "cofraj-fundatii",
+      "cofraj-stalpi-grinzi",
+      "cofraj-plansee"
+    ]
+  },
+  {
+    "termen": "dibluri termoizolatie",
+    "um": "cutie",
+    "material": "Dibluri cu cui metalic",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-vata"
+    ]
+  },
+  {
+    "termen": "distantieri armatura",
+    "um": "buc",
+    "material": "Distantieri armatura",
+    "laMagazin": true,
+    "retete": [
+      "beton-turnat-gata"
+    ]
+  },
+  {
+    "termen": "fibrogips",
+    "um": "buc",
+    "material": "Placi de fibrogips",
+    "laMagazin": true,
+    "retete": [
+      "sapa-uscata"
+    ]
+  },
+  {
+    "termen": "folie anticondens",
+    "um": "rola",
+    "material": "Folie anticondens",
+    "laMagazin": true,
+    "retete": [
+      "folie-anticondens"
+    ]
+  },
+  {
+    "termen": "folie pe",
+    "um": "rola",
+    "material": "Folie PE",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-sub-sapa"
+    ]
+  },
+  {
+    "termen": "folie suport parchet",
+    "um": "rola",
+    "material": "Folie suport (spuma)",
+    "laMagazin": true,
+    "retete": [
+      "parchet-laminat"
+    ]
+  },
+  {
+    "termen": "geotextil",
+    "um": "mp",
+    "material": "Geotextil",
+    "laMagazin": true,
+    "retete": [
+      "drenaj-perimetral",
+      "alee-piatra"
+    ]
+  },
+  {
+    "termen": "gips carton 12,5",
+    "um": "buc",
+    "material": "Placa de gips-carton 12,5 mm",
+    "laMagazin": true,
+    "retete": [
+      "rigips-perete-simplu",
+      "rigips-perete-dublu",
+      "rigips-tavan",
+      "rigips-placare-zidarie"
+    ]
+  },
+  {
+    "termen": "glet ipsos",
+    "um": "sac",
+    "material": "Glet de ipsos",
+    "laMagazin": true,
+    "retete": [
+      "glet-ipsos"
+    ]
+  },
+  {
+    "termen": "glet rosturi",
+    "um": "sac",
+    "material": "Glet pentru rosturi",
+    "laMagazin": true,
+    "retete": [
+      "rigips-perete-simplu",
+      "rigips-perete-dublu",
+      "rigips-tavan",
+      "rigips-placare-zidarie"
+    ]
+  },
+  {
+    "termen": "glet vinilic",
+    "um": "buc",
+    "material": "Glet vinilic gata preparat",
+    "laMagazin": true,
+    "retete": [
+      "glet-vinilic"
+    ]
+  },
+  {
+    "termen": "gresie",
+    "um": "mp",
+    "material": "Placi de gresie",
+    "laMagazin": true,
+    "retete": [
+      "gresie-pardoseala",
+      "trepte-gresie"
+    ]
+  },
+  {
+    "termen": "grund anticoroziv",
+    "um": "buc",
+    "material": "Grund anticoroziv",
+    "laMagazin": true,
+    "retete": [
+      "structura-metalica",
+      "vopsea-metal"
+    ]
+  },
+  {
+    "termen": "hidroizolatie lichida",
+    "um": "buc",
+    "material": "Hidroizolatie lichida",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-baie"
+    ]
+  },
+  {
+    "termen": "hirtie abraziva",
+    "um": "buc",
+    "material": "Hirtie abraziva",
+    "laMagazin": true,
+    "retete": [
+      "glet-ipsos",
+      "vopsea-lemn"
+    ]
+  },
+  {
+    "termen": "impregnant",
+    "um": "buc",
+    "material": "Impregnant de protectie",
+    "laMagazin": true,
+    "retete": [
+      "piatra-naturala-pardoseala"
+    ]
+  },
+  {
+    "termen": "jgheab",
+    "um": "buc",
+    "material": "Jgheab",
+    "laMagazin": true,
+    "retete": [
+      "jgheaburi-burlane"
+    ]
+  },
+  {
+    "termen": "lac parchet",
+    "um": "buc",
+    "material": "Lac sau ulei",
+    "laMagazin": true,
+    "retete": [
+      "parchet-masiv"
+    ]
+  },
+  {
+    "termen": "masa de spaclu",
+    "um": "sac",
+    "material": "Masa de spaclu",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-5",
+      "termosistem-eps-10",
+      "termosistem-eps-15",
+      "termosistem-vata",
+      "izolatie-soclu",
+      "profile-decorative"
+    ]
+  },
+  {
+    "termen": "mastic bituminos",
+    "um": "buc",
+    "material": "Mastic bituminos",
+    "laMagazin": true,
+    "retete": [
+      "carton-bituminos"
+    ]
+  },
+  {
+    "termen": "membrana bituminoasa",
+    "um": "rola",
+    "material": "Membrana bituminoasa",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-fundatie"
+    ]
+  },
+  {
+    "termen": "mixtura asfaltica",
+    "um": "kg",
+    "material": "Mixtura asfaltica",
+    "laMagazin": false,
+    "motiv": "de la statie de asfalt",
+    "retete": [
+      "asfalt-platforma"
+    ]
+  },
+  {
+    "termen": "mocheta",
+    "um": "mp",
+    "material": "Mocheta",
+    "laMagazin": true,
+    "retete": [
+      "mocheta"
+    ]
+  },
+  {
+    "termen": "mortar de zidarie",
+    "um": "mc",
+    "material": "Mortar de zidarie",
+    "laMagazin": false,
+    "motiv": "vrac; la sac vezi mortar zidarie",
+    "retete": [
+      "zidarie-piatra"
+    ]
+  },
+  {
+    "termen": "mortar hidroizolant",
+    "um": "sac",
+    "material": "Mortar de hidroizolare",
+    "laMagazin": true,
+    "retete": [
+      "hidroizolatie-cuva"
+    ]
+  },
+  {
+    "termen": "mortar reparatii",
+    "um": "sac",
+    "material": "Mortar de reparatii",
+    "laMagazin": true,
+    "retete": [
+      "reparatii-tencuiala"
+    ]
+  },
+  {
+    "termen": "mortar tencuit",
+    "um": "sac",
+    "material": "Mortar de tencuit",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-interior",
+      "tencuiala-rabit"
+    ]
+  },
+  {
+    "termen": "mortar tencuit exterior",
+    "um": "sac",
+    "material": "Mortar de tencuit exterior",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-exterior"
+    ]
+  },
+  {
+    "termen": "mortar zidarie",
+    "um": "sac",
+    "material": "Mortar pentru zidarie",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-porotherm-25",
+      "zidarie-porotherm-30",
+      "zidarie-caramida-plina"
+    ]
+  },
+  {
+    "termen": "mortar zidarie bca",
+    "um": "sac",
+    "material": "Mortar pentru zidarie BCA",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-bca-10",
+      "zidarie-bca-15",
+      "zidarie-bca-20",
+      "zidarie-bca-25",
+      "zidarie-bca-30"
+    ]
+  },
+  {
+    "termen": "nisip",
+    "um": "sac",
+    "material": "Nisip 0-4 mm",
+    "laMagazin": true,
+    "retete": [
+      "beton-c8-10",
+      "beton-c12-15",
+      "beton-c16-20",
+      "beton-c20-25",
+      "beton-c25-30",
+      "sapa-santier"
+    ]
+  },
+  {
+    "termen": "nisip",
+    "um": "mc",
+    "material": "Nisip",
+    "laMagazin": false,
+    "motiv": "vrac; la sac vezi termenul nisip",
+    "retete": [
+      "zidarie-mortar-santier"
+    ]
+  },
+  {
+    "termen": "nisip cuart",
+    "um": "sac",
+    "material": "Nisip de cuart",
+    "laMagazin": true,
+    "retete": [
+      "pardoseala-epoxidica"
+    ]
+  },
+  {
+    "termen": "osb 18",
+    "um": "buc",
+    "material": "Placa OSB 18 mm",
+    "laMagazin": true,
+    "retete": [
+      "astereala-osb"
+    ]
+  },
+  {
+    "termen": "otel beton",
+    "um": "buc",
+    "material": "Otel beton",
+    "laMagazin": true,
+    "retete": [
+      "armatura-beton",
+      "stalpisori-beton",
+      "centura-beton",
+      "planseu-beton-armat",
+      "scara-beton"
+    ]
+  },
+  {
+    "termen": "parchet laminat",
+    "um": "mp",
+    "material": "Parchet laminat",
+    "laMagazin": true,
+    "retete": [
+      "parchet-laminat"
+    ]
+  },
+  {
+    "termen": "parchet masiv",
+    "um": "mp",
+    "material": "Parchet masiv",
+    "laMagazin": true,
+    "retete": [
+      "parchet-masiv"
+    ]
+  },
+  {
+    "termen": "piatra bruta",
+    "um": "to",
+    "material": "Piatra bruta",
+    "laMagazin": false,
+    "motiv": "vrac, la tona",
+    "retete": [
+      "zidarie-piatra"
+    ]
+  },
+  {
+    "termen": "pietris",
+    "um": "sac",
+    "material": "Pietris 4-16 mm",
+    "laMagazin": true,
+    "retete": [
+      "beton-c8-10",
+      "beton-c12-15",
+      "beton-c16-20",
+      "beton-c20-25",
+      "beton-c25-30"
+    ]
+  },
+  {
+    "termen": "pietris 16-31 mm",
+    "um": "mc",
+    "material": "Pietris 16-31 mm",
+    "laMagazin": false,
+    "motiv": "vrac",
+    "retete": [
+      "pietris-sub-placa"
+    ]
+  },
+  {
+    "termen": "pietris de drenaj",
+    "um": "mc",
+    "material": "Pietris de drenaj",
+    "laMagazin": false,
+    "motiv": "vrac",
+    "retete": [
+      "drenaj-perimetral"
+    ]
+  },
+  {
+    "termen": "placaj cofraj",
+    "um": "buc",
+    "material": "Placaj de cofrare 18 mm",
+    "laMagazin": true,
+    "retete": [
+      "cofraj-stalpi-grinzi",
+      "cofraj-plansee"
+    ]
+  },
+  {
+    "termen": "placi piatra",
+    "um": "mp",
+    "material": "Placi de piatra",
+    "laMagazin": true,
+    "retete": [
+      "piatra-naturala-pardoseala",
+      "placaj-piatra-perete"
+    ]
+  },
+  {
+    "termen": "plasa fibra sticla",
+    "um": "rola",
+    "material": "Plasa din fibra de sticla",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-5",
+      "termosistem-eps-10",
+      "termosistem-eps-15",
+      "termosistem-vata",
+      "izolatie-soclu"
+    ]
+  },
+  {
+    "termen": "plasa rabit",
+    "um": "buc",
+    "material": "Plasa de rabit",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-rabit"
+    ]
+  },
+  {
+    "termen": "plasa sudata",
+    "um": "buc",
+    "material": "Plasa sudata",
+    "laMagazin": true,
+    "retete": [
+      "planseu-predale",
+      "plasa-sudata",
+      "trotuar-beton",
+      "beton-amprentat"
+    ]
+  },
+  {
+    "termen": "plinta lemn",
+    "um": "buc",
+    "material": "Plinta lemn",
+    "laMagazin": true,
+    "retete": [
+      "parchet-masiv"
+    ]
+  },
+  {
+    "termen": "polistiren expandat 10",
+    "um": "mp",
+    "material": "Polistiren expandat EPS 10 cm",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-10"
+    ]
+  },
+  {
+    "termen": "polistiren expandat 15",
+    "um": "mp",
+    "material": "Polistiren expandat EPS 15 cm",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-15"
+    ]
+  },
+  {
+    "termen": "polistiren expandat 5",
+    "um": "mp",
+    "material": "Polistiren expandat EPS 5 cm",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-eps-5"
+    ]
+  },
+  {
+    "termen": "polistiren extrudat",
+    "um": "mp",
+    "material": "Polistiren extrudat XPS",
+    "laMagazin": true,
+    "retete": [
+      "izolatie-planseu-subsol",
+      "izolatie-soclu"
+    ]
+  },
+  {
+    "termen": "predale prefabricate",
+    "um": "mp",
+    "material": "Predale prefabricate",
+    "laMagazin": false,
+    "motiv": "prefabricat, pe comanda",
+    "retete": [
+      "planseu-predale"
+    ]
+  },
+  {
+    "termen": "profil trecere",
+    "um": "buc",
+    "material": "Profile de trecere",
+    "laMagazin": true,
+    "retete": [
+      "gresie-pardoseala"
+    ]
+  },
+  {
+    "termen": "sarma neagra",
+    "um": "buc",
+    "material": "Sarma neagra pentru legat",
+    "laMagazin": true,
+    "retete": [
+      "armatura-beton"
+    ]
+  },
+  {
+    "termen": "silicon sanitar",
+    "um": "buc",
+    "material": "Silicon sau poliuretan",
+    "laMagazin": true,
+    "retete": [
+      "etansare-rosturi"
+    ]
+  },
+  {
+    "termen": "sindrila bituminoasa",
+    "um": "mp",
+    "material": "Sindrila bituminoasa",
+    "laMagazin": true,
+    "retete": [
+      "sindrila-bituminoasa"
+    ]
+  },
+  {
+    "termen": "sipca",
+    "um": "buc",
+    "material": "Sipca 30x50",
+    "laMagazin": true,
+    "retete": [
+      "sipci-contrasipci"
+    ]
+  },
+  {
+    "termen": "solutie ignifuga lemn",
+    "um": "buc",
+    "material": "Solutie ignifuga si antifungica",
+    "laMagazin": true,
+    "retete": [
+      "sarpanta-lemn"
+    ]
+  },
+  {
+    "termen": "suruburi autoforante",
+    "um": "cutie",
+    "material": "Suruburi autoforante",
+    "laMagazin": true,
+    "retete": [
+      "tigla-metalica"
+    ]
+  },
+  {
+    "termen": "suruburi gips carton",
+    "um": "cutie",
+    "material": "Suruburi",
+    "laMagazin": true,
+    "retete": [
+      "astereala-osb",
+      "accesorii-acoperis",
+      "sapa-uscata",
+      "rigips-tavan"
+    ]
+  },
+  {
+    "termen": "tencuiala decorativa",
+    "um": "buc",
+    "material": "Tencuiala decorativa",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-decorativa"
+    ]
+  },
+  {
+    "termen": "tencuiala ipsos",
+    "um": "sac",
+    "material": "Tencuiala de ipsos",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-mecanizata"
+    ]
+  },
+  {
+    "termen": "tencuiala mozaicata",
+    "um": "buc",
+    "material": "Tencuiala mozaicata",
+    "laMagazin": true,
+    "retete": [
+      "tencuiala-mozaicata"
+    ]
+  },
+  {
+    "termen": "tigla ceramica",
+    "um": "buc",
+    "material": "Tigla ceramica",
+    "laMagazin": true,
+    "retete": [
+      "tigla-ceramica"
+    ]
+  },
+  {
+    "termen": "tigla metalica",
+    "um": "mp",
+    "material": "Tigla metalica",
+    "laMagazin": true,
+    "retete": [
+      "tigla-metalica"
+    ]
+  },
+  {
+    "termen": "tub drenaj",
+    "um": "ml",
+    "material": "Tub de drenaj riflat 110 mm",
+    "laMagazin": true,
+    "retete": [
+      "drenaj-perimetral"
+    ]
+  },
+  {
+    "termen": "var pasta",
+    "um": "buc",
+    "material": "Var pasta",
+    "laMagazin": true,
+    "retete": [
+      "zidarie-mortar-santier"
+    ]
+  },
+  {
+    "termen": "vata bazaltica fatada",
+    "um": "mp",
+    "material": "Vata bazaltica de fatada",
+    "laMagazin": true,
+    "retete": [
+      "termosistem-vata"
+    ]
+  },
+  {
+    "termen": "vata minerala 5",
+    "um": "mp",
+    "material": "Vata minerala 5 cm",
+    "laMagazin": true,
+    "retete": [
+      "izolatie-fonica-perete",
+      "rigips-perete-simplu"
+    ]
+  },
+  {
+    "termen": "vata minerala rulou",
+    "um": "rola",
+    "material": "Vata minerala in rulou",
+    "laMagazin": true,
+    "retete": [
+      "izolatie-pod"
+    ]
+  },
+  {
+    "termen": "vopsea lavabila",
+    "um": "buc",
+    "material": "Vopsea de finisaj",
+    "laMagazin": true,
+    "retete": [
+      "structura-metalica",
+      "vopsea-metal"
+    ]
+  }
+]

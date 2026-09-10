@@ -4,9 +4,17 @@ import { type RangeKey, bucketsFor, ultima } from "@/lib/charts/buckets";
 import { prisma } from "@/lib/db";
 import { toNumber } from "@/lib/money";
 import { toDecimal } from "@/lib/money-db";
+import {
+  type AgregatPiata,
+  agregatePentruTermen,
+  observatiiDinCatalog,
+  potrivesteTermen,
+} from "./agregat";
 import { type PriceObservation } from "./import";
 import { type LaborIndexObservation } from "./labor-source";
-import { cautaLaFurnizor, scraperActiv } from "./scraper";
+import { scraperActiv } from "./scraper";
+import { cautaLaToateMagazinele } from "./scraper/magazine";
+import { type TermenDeScanat, vechimeaDinCatalog } from "./scraper/plan";
 import { type Reper, potrivesteMaterial, reperPentruJudet } from "./pricing";
 
 /**
@@ -165,12 +173,18 @@ export async function importaObservatii(
     // care intoarce tot istoricul la fiecare rulare ar umple tabelul cu copii
     // ale aceleiasi masuratori, iar graficul ar arata la fel — doar ca peste
     // cateva mii de randuri degeaba.
+    // `supplier` intra in cheie fiindca de acum citim la mai multe magazine, iar
+    // `observedAt` e normalizat pe zi (vezi `scraper/magazine.ts`). Doua magazine
+    // care dau acelasi pret pe acelasi material in aceeasi zi sunt doua fapte,
+    // nu unul: fara furnizor in cheie, al doilea s-ar pierde si defalcarea pe
+    // magazin ar ramine cu un rand mai putin.
     const existenta = await prisma.materialPrice.findFirst({
       where: {
         materialId: material.id,
         countyCode: o.countyCode,
         observedAt: o.observedAt,
         price: toDecimal(o.price, 4),
+        supplier: o.supplier,
       },
       select: { id: true },
     });
@@ -290,7 +304,7 @@ export async function cautaMaterialeProaspete(
   interogare: string,
   countyCode: string | null,
   range: RangeKey = "1A",
-  cauta: (interogare: string) => Promise<PriceObservation[]> = cautaLaFurnizor,
+  cauta: (interogare: string) => Promise<PriceObservation[]> = cautaLaToateMagazinele,
 ): Promise<CautareProaspata> {
   const local = await cautaMateriale(interogare, countyCode, range);
 
@@ -319,4 +333,105 @@ export async function cautaMaterialeProaspete(
     cerutLaFurnizor: true,
     observatiiNoi: scrise.observatii,
   };
+}
+
+/** Cate zile in urma se mai poate compara un pret cu al altui magazin. */
+function fereastraZile(): number {
+  const din = Number(process.env.SCRAPER_FEREASTRA_ZILE);
+  return Number.isFinite(din) && din > 0 ? din : 7;
+}
+
+/**
+ * Reperul de piata pentru un termen: cat cere, cam, la magazine.
+ *
+ * Se calculeaza la citire din observatiile care exista deja, si nu se stocheaza
+ * nimic. Vezi antetul din `agregat.ts` pentru de ce: un agregat scris in baza ar
+ * fi un al doilea adevar despre bani, si ar pune regula 1 in pericol.
+ *
+ * **Fereastra conteaza.** Fara ea s-ar aseza un pret Dedeman de acum sase luni
+ * langa unul Hornbach de azi si s-ar numi comparatie de piata. Se iau numai
+ * observatii de la magazine (`FURNIZOR`), naționale (magazinul online n-are pret
+ * pe judet) si din fereastra.
+ */
+export async function agregatLaMagazine(
+  termen: string,
+  zile = fereastraZile(),
+): Promise<AgregatPiata[]> {
+  if (!termen.trim()) return [];
+
+  const dinCand = new Date(Date.now() - zile * 24 * 3_600_000);
+
+  // Potrivirea pe termen se face in memorie, ca la `cautaMateriale` si la norme:
+  // fara diacritice si pe cuvinte partiale n-are echivalent simplu in SQL.
+  const toate = await prisma.material.findMany({
+    select: { id: true, name: true, unit: true },
+  });
+
+  const potrivite = toate.filter((m) => potrivesteTermen(m.name, termen));
+  if (potrivite.length === 0) return [];
+
+  const preturi = await prisma.materialPrice.findMany({
+    where: {
+      materialId: { in: potrivite.map((m) => m.id) },
+      source: "FURNIZOR",
+      // Magazinul online n-are pret pe judet, deci numai observatiile naționale
+      // sunt de la magazine. Un rind cu judet ar veni din alta sursa.
+      countyCode: null,
+      supplier: { not: null },
+      observedAt: { gte: dinCand },
+    },
+    select: {
+      materialId: true,
+      price: true,
+      supplier: true,
+      sourceUrl: true,
+      observedAt: true,
+    },
+  });
+
+  // Maparea si agregarea sunt pure, ca sa fie verificabile fara baza. Aici
+  // ramane doar interogarea.
+  const observatii = observatiiDinCatalog(
+    potrivite,
+    preturi.map((p) => ({
+      materialId: p.materialId,
+      price: toNumber(p.price),
+      supplier: p.supplier,
+      sourceUrl: p.sourceUrl,
+      observedAt: p.observedAt,
+    })),
+  );
+
+  return agregatePentruTermen(observatii, termen);
+}
+
+/**
+ * Cand a fost cerut ultima data fiecare termen la magazine.
+ *
+ * De aici iese ordinea trecerii zilnice, cel-mai-vechi-intii. Nu exista tabel de
+ * progres si nu e nevoie: vechimea sta deja in `MaterialPrice.observedAt`.
+ * Vezi antetul din `scraper/plan.ts`.
+ */
+export async function vechimeaTermenilor(
+  termeni: { termen: string; um: string }[],
+): Promise<TermenDeScanat[]> {
+  const materiale = await prisma.material.findMany({
+    select: { id: true, name: true, unit: true },
+  });
+
+  // O singura interogare pentru toate materialele, nu una pe termen: la 90 de
+  // termeni ar fi 90 de drumuri la baza pentru o socoteala de ordonare.
+  const ultimele = await prisma.materialPrice.groupBy({
+    by: ["materialId"],
+    where: { source: "FURNIZOR", countyCode: null },
+    _max: { observedAt: true },
+  });
+
+  const ultimaPeMaterial = new Map(
+    ultimele.map((u) => [u.materialId, u._max.observedAt]),
+  );
+
+  // Socoteala e pura si testata in `plan.test.ts`; aici ramane doar aducerea
+  // datelor.
+  return vechimeaDinCatalog(termeni, materiale, ultimaPeMaterial, potrivesteTermen);
 }
