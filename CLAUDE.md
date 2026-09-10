@@ -56,6 +56,7 @@ app/
     devize/[id]/linii      adaugare din vorbire in deviz existent, SSE
     devize/[id]/pdf        un singur PDF, landscape
     facturi/[id]/{pdf,xml}
+    cron/preturi           trecerea zilnica la magazine, pazita cu CRON_SECRET
 components/
   charts/          sparkline (server) + graficul de evolutie (client)
   icons.tsx        setul de iconite, scrise de mina
@@ -71,7 +72,9 @@ lib/
   progress/        situatii de lucrari, cantitati executate cumulat
   invoices/        emitere, storno, snapshot-uri; lines.ts — deviz -> factura, pur
   materials/       catalog de preturi: cautare, reper pe judet, import din API,
-                   liste si direct de la magazin (scraper/)
+                   liste si direct de la magazin (scraper/); agregat.ts: reperul
+                   de piata pe magazine, pur; termeni.ts: puntea reteta -> magazin;
+                   zilnic.ts: trecerea zilnica marginita
   efactura/        generator UBL 2.1 + validator CIUS-RO
   pdf/             documente react-pdf — devizul landscape, factura portret
   numbering/       alocare numere, fara goluri
@@ -80,7 +83,8 @@ lib/
   theme.ts         tema din localStorage + scriptul care o pune inainte de pictura
   money.ts         rotunjiri half-up
   money-db.ts      conversii spre Decimal
-data/              norme-c.json, norme-rpc.json, norme-ts.json, consumuri.json
+data/              norme-c.json, norme-rpc.json, norme-ts.json, consumuri.json,
+                   termeni-magazin.json
 scripts/           migrarea de la deploy, import indicatoare si preturi, seed demo
 prisma/            schema, migrari, seed
 ```
@@ -264,11 +268,29 @@ un pret fara istorie.
 un efect secundar al unui deploy. Restul comenzilor (ritm, timeout, cache, TTL,
 User-Agent) sint in `.env.example`.
 
-Se poarta cuviincios, si fiecare parte are motivul ei: **respecta `robots.txt`**
-(un magazin care spune ca nu vrea ajunge oricum sa blocheze, deci catalogul se
-opreste la fel), **tine ritm** intre cereri catre aceeasi origine, **se prezinta**
-cu un User-Agent care spune cine e, si **tine cache** ca doi oameni care cauta
-"parchet" in acelasi minut sa nu faca doua cereri identice.
+Se poarta cuviincios, si fiecare parte are motivul ei: **citeste `robots.txt`**,
+**tine ritm** intre cereri catre aceeasi origine, **se prezinta** cu un User-Agent
+care spune cine e, si **tine cache** ca doi oameni care cauta "parchet" in acelasi
+minut sa nu faca doua cereri identice.
+
+**Purtarea fata de `robots.txt` e per magazin, si implicit se respecta.** Cimpul
+`robots` din `ConfigSite`, plus `SCRAPER_IGNORA_ROBOTS` care il suprascrie fara
+deploy. Orice magazin nou se respecta: nu se ignora nimic din inertie.
+
+Astazi o singura exceptie, la **Dedeman**, luata in cunostinta de cauza. Singura
+cale de cautare care functioneaza (`/ro/catalogsearch/result/?q=`) e interzisa in
+`robots.txt`-ul lor, dar regula e boilerplate de Magento, pusa ca paginile de
+rezultate sa nu intre in indexul Google (igiena de SEO, continut duplicat), si
+apare neschimbata in orice Magento needitat. Nu e o pozitie anti-scraping scrisa
+de Dedeman. Fisierul se cere oricum, si se scrie in log peste ce regula s-a trecut:
+o hotarire luata trebuie sa se vada.
+
+**Ce nu se face, si nu se adauga:** nimic care sa infranga o blocare. Nu se
+deghizeaza User-Agent-ul in browser, nu se rotesc identitati sau IP-uri, si nu se
+reia o cerere respinsa de pe alta adresa. A nu citi un fisier de convenție e o
+hotarire de risc pe deploy-ul tau; a te da drept altcineva ca sa treci de un zid e
+altceva. Cind un magazin blocheaza, **acela e raspunsul** si catalogul cade pe ce
+are. Vezi paragraful urmator.
 
 **Cind magazinul nu raspunde, pagina se afiseaza oricum**, cu ce e in catalog.
 Verificat pe server real: cerere respinsa, pagina 200. O cautare de materiale nu e
@@ -281,11 +303,33 @@ supravietuieste unui redesign, si abia apoi selectoare CSS. Pretul vechi, taiat,
 57,90 linga 67,91, iar cel taiat ar intra in catalog ca un pret care nu se mai
 practica.
 
-**Selectoarele din `dedeman.ts` sint de confirmat.** Mediul in care s-a scris codul
-n-are acces la internet, deci sunt scrise pe tipare uzuale, nu pe pagina reala. Se
-corecteaza cu `npm run proba:furnizor -- parchet`, care arata ce s-a extras si din
-ce strat; cu `--salveaza` pune pagina in `fixtures/`, ca testele sa se scrie pe
-HTML adevarat.
+**Un produs cotat pe doua baze da doua observatii.** La Hornbach acelasi parchet
+arata pret pe mp si pret pe pachet. Se iau amindoua, fiecare cu unitatea ei, si
+ajung materiale diferite in catalog: sunt doua cotatii adevarate ale aceluiasi bun.
+Alegerea uneia era un accident de ordine, si putea pune pretul pachetului in
+coloana lei/mp.
+
+**`observedAt` e normalizat pe inceputul zilei.** Cu marca la milisecunda, acelasi
+produs la acelasi pret, citit de doua ori intr-o zi, intra de doua ori, fiindca
+marca difera, si la o rulare zilnica plus cautarile oamenilor ies mii de rinduri care nu
+spun nimic nou. Normalizat, cheia de duplicat face ce spune comentariul de la ea:
+un pret pe produs pe zi. Si e mai adevarat asa: un pret de raft e un fapt al zilei
+aceleia. `supplier` intra si el in cheie, altfel doua magazine cu acelasi pret in
+aceeasi zi s-ar prabusi intr-un singur rind si defalcarea pe magazin ar pierde unul.
+
+**Selectoarele sint de confirmat, la toate patru.** Mediul in care s-a scris codul
+nu vede paginile, deci sunt scrise pe tipare uzuale. Se corecteaza cu
+`npm run proba:furnizor -- hornbach parchet` (sau `toate`), care arata ce s-a
+extras, din ce strat si pe ce unitati; cu `--salveaza` pune pagina in `fixtures/`,
+ca testele sa se scrie pe HTML adevarat. Starea de acum, verificata cerind
+paginile:
+
+| Magazin | Stare |
+|---|---|
+| Hornbach | `/s/<termen>` merge, produse randate pe server, `robots.txt` nu se opune |
+| Dedeman | `/ro/catalogsearch/result/?q=` merge; `/ro/cauta` dadea 404 |
+| Leroy Merlin | 403 pe tot site-ul dintr-un IP din afara; de probat din mediul de deploy |
+| Brico | `brico.ro`, **nu** `bricostore.ro`; calea de cautare e de aflat |
 
 **Pretul de la magazinul online e national.** Judetul ales schimba disponibilitatea
 si magazinul, nu cifra, deci observatiile intra cu `countyCode` null — de aceea
@@ -295,6 +339,102 @@ dimensiune pe judet care nu exista in sursa.
 **Calea sanctionata ramine feed-ul de afiliere** (2Performant), care da preturile
 cu acordul magazinului. Intra pe aceeasi interfata `PriceSource`, deci trecerea la
 el nu rescrie nimic.
+
+### Reperul de piata, si de ce nu se stocheaza
+
+`lib/materials/agregat.ts` intoarce, pentru un fel de material, cit cere piata:
+mediana, intervalul, defalcarea pe magazin. Modul pur, fara Prisma si fara retea.
+
+**Nu e pretul unui produs, si nu poate fi.** Magazinele nu vind acelasi articol:
+la o cautare de parchet, Dedeman scoate un laminat la 87,89 lei/mp si Hornbach un
+triplustratificat la 209. Media lor, 148, nu descrie nimic. Si nu se poate lega
+altfel: in HTML-ul listelor nu exista EAN, iar marfa care umple un deviz e in buna
+parte marca proprie a magazinului, deci de multe ori nu exista produs comun de
+identificat. Ce iese e un **interval de piata pentru un fel de material, pe o
+unitate, la magazinele astea, in fereastra asta**.
+
+- **Mediana, nu media**, si **cite un vot pe magazin**, nu pe observatie. Un
+  magazin cu douazeci de rezultate si altul cu doua ar face ca "media pe patru
+  magazine" sa fie media pe unul. Si media nu rezista la un rind citit greșit:
+  `parseNumar` avertizeaza in propriul antet ca o eroare de factor 1000 trece
+  neobservata.
+- **Unitatile se filtreaza, nu se convertesc.** O conversie lei/pachet -> lei/mp ar
+  cere cit acopera pachetul, care e pe fiecare articol si nu se citeste de
+  incredere. Ce nu se potriveste se numara si se spune, in `altaUnitate`.
+- **Cifra nu apare niciodata singura.** Interfata arata intervalul, cite magazine
+  au dat un pret, si vechimea celui mai vechi element; sub doua magazine scrie
+  raspicat ca e un pret, nu o piata; peste `PRAG_IMPRASTIERE` conduce cu intervalul.
+  `imprastiereMare` si `nrMagazine` sunt in tip anume: sunt contract, nu podoaba.
+- **Nu se stocheaza nicio medie.** Ar fi un numar de bani derivat, cu ciclu de viata
+  propriu, si fara `observedAt` al lui: ca sa ramina cinstit ar trebui sa duca cu el
+  care magazine si ce fereastra l-au facut, adica sa stocheze din nou eșantionul.
+  Eșantionul e deja in `MaterialPrice`. Calculat la citire, orice zi din trecut se
+  poate reface exact.
+
+Si nu trece prin `lib/pricing/calculator.ts`: regula 2 e despre adunarea banilor pe
+un document, iar aici nu se aduna nimic si nu iese niciun total.
+
+### De la deviz la magazin
+
+O linie de deviz numeste o lucrare, nu un produs, si `EstimateLine` n-are nicio
+legatura cu `Material`. Drumul trece prin retete:
+
+```
+descrierea lucrarii -> cautaRetete -> reteta -> termenii ei -> magazine
+```
+
+`data/termeni-magazin.json` (`lib/materials/termeni.ts`) e puntea: ce se scrie in
+caseta de cautare, pe ce unitate se asteapta pretul, si care retete sunt servite.
+106 termeni, 90 ceruti la magazin, 97 din cele 131 de retete acoperite. Prima
+trecere a fost facuta cu `scripts/termeni-magazin.mjs`; de acum fisierul se editeaza
+de mina, iar scriptul refuza sa scrie peste el.
+
+Doua lucruri care par ocolisuri si nu sint:
+
+- **Denumirile din `consumuri.json` nu se caută direct.** Sunt scrise pentru o
+  comanda de materiale: "Caramida cu goluri 25x25x23" nu gaseste nimic la Hornbach.
+  Trunchierea automata la primele cuvinte ar fi o presupunere, si presupunerile n-au
+  ce cauta in lista care hotaraste ce se pune la pret.
+- **`Material.name` nu e sursa de termeni.** Fiecare produs citit de la magazin
+  creeaza un rind in `Material`, deci tabelul ca sursa ar fi o bucla care creste
+  singura.
+
+`laMagazin: false` nu e o omisiune, e un raspuns: betonul gata preparat vine de la
+statie, balastul se ia vrac, apa nu e marfa. Interfata scrie "nu se urmareste la
+magazinele astea", nu arata un agregat gol: gol se citeste "n-am gasit azi".
+
+### Rularea zilnica
+
+`lib/materials/zilnic.ts`, cu doi apelanti peste acelasi modul:
+`npm run preturi:zilnic` si `/api/cron/preturi` (programul in `vercel.json`).
+
+**Marginita, si de aia reluabila.** Se iau cei mai vechi termeni, citi incap in
+buget; restul rimin pe maine, cind vor fi cei mai vechi si vor urca singuri.
+**Nu exista cursor si nu exista tabel de progres**: vechimea sta in
+`MaterialPrice.observedAt`, care exista oricum. O rulare care cade la jumatate nu
+lasa nimic de reparat. Cine adauga un `ScanRun` adauga si un al doilea adevar
+despre ce s-a facut.
+
+**Termenii merg unul dupa altul, magazinele in paralel.** Nu din comoditate:
+limitatorul de ritm din `fetcher.ts` citeste marca ultimei cereri si o rescrie de
+partea cealalta a unui `await`, deci doua cereri concurente **catre aceeasi
+origine** ocolesc pauza. Structura de acum tine o singura cerere in aer pe origine.
+Cine paralelizeaza termenii sparge ritmul fara ca nimic sa se vada.
+
+Ruta de cron e **pazita cu `CRON_SECRET`**; fara secretul setat raspunde 404 si nu
+exista. Porneste cereri catre site-uri strine de pe serverul nostru, deci
+nepazita ar face-o oricine. Cod de eroare numai la cadere totala: o trecere in care
+trei magazine au mers e o reusita, si daca ar da 1, cine citeste mailul de cron
+s-ar invata sa-l ignore.
+
+```bash
+npm run preturi:zilnic -- --plan      # arata planul si bugetul, FARA retea
+npm run preturi:zilnic -- --dry       # cere paginile, arata, nu scrie
+npm run preturi:zilnic -- --termeni=5
+```
+
+`--plan` si `--dry` nu sunt acelasi lucru: `--plan` nu atinge internetul, deci cu el
+se reglează bugetul fara sa coste nimic magazinele.
 
 ## Consumurile specifice
 
@@ -446,7 +586,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 343 de teste
+npm test          # 412 de teste (18 cer PostgreSQL pornit)
 npm run typecheck
 npm run build
 ```

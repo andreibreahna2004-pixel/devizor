@@ -36,10 +36,22 @@ export interface SelectoareSite {
 }
 
 export interface ConfigSite {
+  /** Cheia din `SITE_URI`: apare in log si in `SCRAPER_MAGAZINE`. */
+  cheie: string;
+  /** Numele afisat, si acelasi sir care ajunge in `MaterialPrice.supplier`. */
   nume: string;
   baseUrl: string;
   /** Adresa paginii de rezultate pentru o cautare. */
   caleCautare: (interogare: string) => string;
+  /**
+   * Ce se face cu `robots.txt`. Implicit `"respecta"`, si asa rimine pentru
+   * orice magazin nou: nu se ignora nimic din inertie.
+   *
+   * `"ignora"` e o decizie luata pe un magazin anume, scrisa aici ca sa se vada
+   * in config si in log, nu ascunsa in cod. Fisierul se cere oricum, si se
+   * scrie in log ce regula s-a trecut peste.
+   */
+  robots?: "respecta" | "ignora";
   selectoare: SelectoareSite;
 }
 
@@ -52,6 +64,15 @@ const UNITATI: [RegExp, string][] = [
   [/\b(l|litru|litri)\b/i, "l"],
   [/\bsac\b/i, "sac"],
   [/\bset\b/i, "set"],
+  // Ambalajele stau inaintea lui "buc" anume: un card care arata si pretul pe
+  // pachet, citit ca "buc", ar pune in aceeasi grupa un pret de pachet linga
+  // preturi chiar pe bucata. Ar fi de citeva ori mai mare, fara ca nimic sa se
+  // vada pe ecran.
+  [/\b(pachet|pachete)\b/i, "pachet"],
+  [/\b(cutie|cutii)\b/i, "cutie"],
+  [/\b(rola|role)\b/i, "rola"],
+  [/\b(colac|colaci)\b/i, "colac"],
+  [/\b(to|tona|tone)\b/i, "to"],
   [/\b(buc|bucata)\b/i, "buc"],
 ];
 
@@ -104,12 +125,44 @@ function esteProdus(o: Record<string, unknown>): boolean {
   return false;
 }
 
-function primaOferta(o: Record<string, unknown>): Record<string, unknown> | null {
-  const oferte = o.offers;
-  const lista = desfasoara(oferte).filter(
+/**
+ * Ofertele cu pret ale unui produs, cate una pe unitate.
+ *
+ * Nu una singura, cum era: acelasi produs e cotat pe doua baze pe acelasi card.
+ * La Hornbach un parchet arata 209,00 lei/m2 si pretul pe pachet. Alegerea uneia
+ * era un accident, ieseau in ordinea in care le scrie magazinul, si putea pune
+ * pretul pachetului in coloana lei/mp. Se iau amindoua, fiecare cu unitatea ei,
+ * si ajung materiale diferite in catalog: sunt doua cotatii adevarate ale
+ * aceluiasi bun, pe doua baze de masura.
+ *
+ * La aceeasi unitate rimine prima. Doua preturi vii pe aceeasi baza inseamna un
+ * interval "de la", si atunci prima pastreaza purtarea de dinainte.
+ */
+function oferteCuPret(o: Record<string, unknown>): { price: number; unit: string }[] {
+  const lista = desfasoara(o.offers).filter(
     (x): x is Record<string, unknown> => typeof x === "object" && x !== null,
   );
-  return lista.find((x) => x.price !== undefined) ?? null;
+
+  const numele = typeof o.name === "string" ? o.name : "";
+  const peUnitate = new Map<string, number>();
+
+  for (const oferta of lista) {
+    if (oferta.price === undefined) continue;
+    const pret =
+      typeof oferta.price === "number"
+        ? oferta.price
+        : parseNumar(String(oferta.price ?? ""));
+    if (pret === null || !Number.isFinite(pret) || pret <= 0) continue;
+
+    const unit =
+      typeof oferta.unitCode === "string"
+        ? unitateDinText(oferta.unitCode)
+        : unitateDinText(typeof o.unitText === "string" ? o.unitText : numele);
+
+    if (!peUnitate.has(unit)) peUnitate.set(unit, pret);
+  }
+
+  return [...peUnitate].map(([unit, price]) => ({ price, unit }));
 }
 
 /**
@@ -141,32 +194,22 @@ export function dinJsonLd(
       const o = nod as Record<string, unknown>;
       if (!esteProdus(o)) continue;
 
-      const oferta = primaOferta(o);
-      if (!oferta) continue;
-
-      const pret =
-        typeof oferta.price === "number"
-          ? oferta.price
-          : parseNumar(String(oferta.price ?? ""));
       const nume = typeof o.name === "string" ? o.name.trim() : "";
-      if (!nume || pret === null || !Number.isFinite(pret) || pret <= 0) continue;
+      if (!nume) continue;
 
-      const unitate =
-        typeof oferta.unitCode === "string"
-          ? unitateDinText(oferta.unitCode)
-          : unitateDinText(typeof o.unitText === "string" ? o.unitText : nume);
-
-      observatii.push({
-        name: nume,
-        unit: unitate,
-        price: pret,
-        // Pretul afisat de magazin online e national: judetul ales schimba
-        // disponibilitatea si magazinul, nu cifra. Vezi CLAUDE.md.
-        countyCode: null,
-        observedAt: acum,
-        supplier: config.nume,
-        sourceUrl: absolut(config.baseUrl, typeof o.url === "string" ? o.url : null),
-      });
+      for (const oferta of oferteCuPret(o)) {
+        observatii.push({
+          name: nume,
+          unit: oferta.unit,
+          price: oferta.price,
+          // Pretul afisat de magazin online e national: judetul ales schimba
+          // disponibilitatea si magazinul, nu cifra. Vezi CLAUDE.md.
+          countyCode: null,
+          observedAt: acum,
+          supplier: config.nume,
+          sourceUrl: absolut(config.baseUrl, typeof o.url === "string" ? o.url : null),
+        });
+      }
     }
   }
 
@@ -196,38 +239,45 @@ export function dinSelectoare(
       .find((t) => t.length > 0);
     if (!nume) continue;
 
-    // Se ia primul nod care chiar da un numar, nu primul care se potriveste cu
+    // Se iau nodurile care chiar dau un numar, nu primul care se potriveste cu
     // selectorul. Cu un selector larg, primul nod poate fi titlul; asa nu se
     // pierde produsul din cauza ca selectorul nu e destul de ingust.
     //
     // Pretul si unitatea vin lipite: "26,50 lei/sac". Numarul se citeste numai
-    // din partea dinaintea slash-ului — cu sufixul cu tot, `parseNumar` nu vede
+    // din partea dinaintea slash-ului: cu sufixul cu tot, `parseNumar` nu vede
     // un numar.
-    let pret: number | null = null;
-    let textPret = "";
+    //
+    // Cite una pe unitate, ca la JSON-LD, si din acelasi motiv: un card poate
+    // arata pretul pe mp si pretul pe pachet. La aceeasi unitate rimine prima,
+    // deci un selector larg care prinde de doua ori acelasi pret, o data pe
+    // nodul din afara si o data pe cel dinauntru, da tot o observatie.
+    //
+    // Cind `s.um` e configurat, unitatea e una pentru tot cardul, si atunci iese
+    // o singura observatie. La un magazin care coteaza pe doua baze, `s.um` se
+    // lasa nepus, ca unitatea sa fie citita din textul fiecarui pret.
+    const peUnitate = new Map<string, number>();
     for (const nod of card.querySelectorAll(s.pret)) {
       const text = nod.text.trim();
       const valoare = parseNumar(text.split("/")[0]);
-      if (valoare !== null && Number.isFinite(valoare) && valoare > 0) {
-        pret = valoare;
-        textPret = text;
-        break;
-      }
+      if (valoare === null || !Number.isFinite(valoare) || valoare <= 0) continue;
+      const um = unitateDinText(s.um ? card.querySelector(s.um)?.text : text);
+      if (!peUnitate.has(um)) peUnitate.set(um, valoare);
     }
-    if (pret === null) continue;
+    if (peUnitate.size === 0) continue;
 
-    const textUm = s.um ? card.querySelector(s.um)?.text : textPret;
     const href = s.link ? card.querySelector(s.link)?.getAttribute("href") : null;
 
-    observatii.push({
-      name: nume,
-      unit: unitateDinText(textUm),
-      price: pret,
-      countyCode: null,
-      observedAt: acum,
-      supplier: config.nume,
-      sourceUrl: absolut(config.baseUrl, href),
-    });
+    for (const [unit, price] of peUnitate) {
+      observatii.push({
+        name: nume,
+        unit,
+        price,
+        countyCode: null,
+        observedAt: acum,
+        supplier: config.nume,
+        sourceUrl: absolut(config.baseUrl, href),
+      });
+    }
   }
 
   return observatii;

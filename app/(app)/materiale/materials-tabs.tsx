@@ -11,11 +11,16 @@ import { usePathname } from "next/navigation";
  * (vezi comentariul din `components/nav-links.tsx`). Sub Materiale e si locul
  * lor firesc — tot despre materiale e vorba, o data cu pretul, o data cu
  * cantitatea.
+ *
+ * "La magazine" vine pe acelasi raft si pentru acelasi motiv: e a treia
+ * intrebare despre un material, cit cere piata pentru el, dupa pretul de
+ * referinta si cantitatea de comanda.
  */
 
 const TABS = [
   { href: "/materiale", eticheta: "Preturi" },
   { href: "/materiale/consumuri", eticheta: "Consumuri" },
+  { href: "/materiale/magazine", eticheta: "La magazine" },
 ];
 
 export function MaterialsTabs() {

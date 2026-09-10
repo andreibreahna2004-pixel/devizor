@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { type ConfigSite, dinJsonLd, dinSelectoare, extrageProduse, unitateDinText } from "./extract";
 
 const SITE: ConfigSite = {
+  cheie: "proba",
   nume: "Magazin de proba",
   baseUrl: "https://exemplu.invalid",
   caleCautare: (q) => `/cauta?q=${q}`,
@@ -77,6 +78,62 @@ describe("dinJsonLd", () => {
     const html = jsonLd({ "@type": "BreadcrumbList", name: "Parchet", offers: { price: 9 } });
     expect(dinJsonLd(html, SITE, ACUM)).toHaveLength(0);
   });
+
+  it("ia amindoua bazele cand produsul e cotat pe doua unitati", () => {
+    // Cazul Hornbach: acelasi parchet, pret pe mp si pret pe pachet. Alegerea
+    // uneia era un accident de ordine si putea pune pachetul in coloana lei/mp.
+    const html = jsonLd({
+      "@type": "Product",
+      name: "Parchet triplustratificat 14 mm stejar",
+      offers: [
+        { "@type": "Offer", price: 209, unitCode: "mp" },
+        { "@type": "Offer", price: 286.33, unitCode: "pachet" },
+      ],
+    });
+
+    const gasite = dinJsonLd(html, SITE, ACUM);
+    expect(gasite).toHaveLength(2);
+    expect(gasite.map((o) => [o.unit, o.price])).toEqual([
+      ["mp", 209],
+      ["pachet", 286.33],
+    ]);
+    // Acelasi produs, doua baze: in catalog devin doua materiale, si asa trebuie.
+    expect(new Set(gasite.map((o) => o.name)).size).toBe(1);
+  });
+
+  it("da o singura observatie la doua preturi pe aceeasi unitate", () => {
+    // Doua preturi vii pe aceeasi baza inseamna un interval "de la": prima
+    // pastreaza purtarea de dinainte.
+    const html = jsonLd({
+      "@type": "Product",
+      name: "Adeziv gresie",
+      offers: [
+        { price: 26.5, unitCode: "sac" },
+        { price: 31.9, unitCode: "sac" },
+      ],
+    });
+
+    const gasite = dinJsonLd(html, SITE, ACUM);
+    expect(gasite).toHaveLength(1);
+    expect(gasite[0].price).toBe(26.5);
+  });
+
+  it("sare peste ofertele fara pret si nu arunca", () => {
+    // AggregateOffer da lowPrice/highPrice, nu price. Nu se alege un capat de
+    // interval: ar fi o presupunere intr-o coloana de bani.
+    const html = jsonLd({
+      "@type": "Product",
+      name: "Vopsea lavabila",
+      offers: [
+        { "@type": "AggregateOffer", lowPrice: 40, highPrice: 90 },
+        { "@type": "Offer", price: 55, unitCode: "l" },
+      ],
+    });
+
+    const gasite = dinJsonLd(html, SITE, ACUM);
+    expect(gasite).toHaveLength(1);
+    expect(gasite[0].price).toBe(55);
+  });
 });
 
 describe("dinSelectoare", () => {
@@ -132,6 +189,65 @@ describe("dinSelectoare", () => {
     expect(dinSelectoare(html, SITE, ACUM).map((o) => o.name)).toEqual(["Bun"]);
   });
 
+  it("ia amindoua bazele cand cardul arata doua unitati", () => {
+    const html = `<ul>
+      <li class="produs"><span class="titlu">Parchet SKANDOR 14 mm</span>
+        <span class="pret">209,00 lei/mp</span>
+        <span class="pret">286,33 lei/pachet</span></li>
+    </ul>`;
+
+    const gasite = dinSelectoare(html, SITE, ACUM);
+    expect(gasite.map((o) => [o.unit, o.price])).toEqual([
+      ["mp", 209],
+      ["pachet", 286.33],
+    ]);
+  });
+
+  it("nu dubleaza cand acelasi pret e prins de doua ori de selector", () => {
+    // Un selector larg prinde si nodul din afara si pe cel dinauntru. Aceeasi
+    // unitate, deci o singura observatie.
+    const laxe: ConfigSite = {
+      ...SITE,
+      selectoare: { ...SITE.selectoare, pret: ".pret, .pret span" },
+    };
+    const html = `<ul>
+      <li class="produs"><span class="titlu">Ciment 40 kg</span>
+        <div class="pret"><span>26,50 lei/sac</span></div></li>
+    </ul>`;
+
+    expect(dinSelectoare(html, laxe, ACUM)).toHaveLength(1);
+  });
+
+  it("pretul taiat nu devine a doua observatie", () => {
+    // Se sterge din card inainte de citire, deci nu poate intra nici ca a doua
+    // baza, chiar daca ar fi scris pe alta unitate.
+    const html = `<ul>
+      <li class="produs"><span class="titlu">Parchet redus</span>
+        <span class="pret-vechi">67,91 lei/pachet</span>
+        <span class="pret">57,90 lei/mp</span></li>
+    </ul>`;
+
+    const gasite = dinSelectoare(html, SITE, ACUM);
+    expect(gasite).toHaveLength(1);
+    expect(gasite[0].price).toBe(57.9);
+  });
+
+  it("cu s.um configurat, unitatea e una pentru tot cardul", () => {
+    const cuUm: ConfigSite = {
+      ...SITE,
+      selectoare: { ...SITE.selectoare, um: ".um" },
+    };
+    const html = `<ul>
+      <li class="produs"><span class="titlu">Gletiera</span><span class="um">buc</span>
+        <span class="pret">39,90 lei</span>
+        <span class="pret">44,90 lei</span></li>
+    </ul>`;
+
+    const gasite = dinSelectoare(html, cuUm, ACUM);
+    expect(gasite).toHaveLength(1);
+    expect(gasite[0].unit).toBe("buc");
+  });
+
   it("intoarce lista goala pe o pagina fara produse", () => {
     expect(dinSelectoare("<html><body>nimic</body></html>", SITE, ACUM)).toEqual([]);
   });
@@ -173,5 +289,15 @@ describe("unitateDinText", () => {
     expect(unitateDinText("57,90 lei")).toBe("buc");
     expect(unitateDinText(null)).toBe("buc");
     expect(unitateDinText("")).toBe("buc");
+  });
+
+  it("citeste ambalajele, si nu le confunda cu bucata", () => {
+    // Un pret pe pachet luat drept pret pe bucata ar fi de citeva ori mai mare
+    // si n-ar arata diferit pe ecran.
+    expect(unitateDinText("286,33 lei/pachet")).toBe("pachet");
+    expect(unitateDinText("59,90 lei/cutie")).toBe("cutie");
+    expect(unitateDinText("120,00 lei/rola")).toBe("rola");
+    expect(unitateDinText("310,00 lei/colac")).toBe("colac");
+    expect(unitateDinText("240,00 lei/to")).toBe("to");
   });
 });
