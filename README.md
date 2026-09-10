@@ -1,6 +1,6 @@
 # Devizor
 
-Devize și facturi pentru firmele de construcții din România.
+Devize și facturi pentru firmele de construcții din România
 
 Descrii lucrarea în cuvintele tale — *„casă P+1, 120 mp amprentă, zidărie BCA 30,
 șarpantă cu țiglă ceramică, finisaje medii"* — și primești devizul cu lucrări,
