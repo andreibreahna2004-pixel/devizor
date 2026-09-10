@@ -586,7 +586,7 @@ intii daca testul avea dreptate — de citeva ori a avut.
 ## Verificare
 
 ```bash
-npm test          # 412 de teste (18 cer PostgreSQL pornit)
+npm test          # 444 de teste (18 cer PostgreSQL pornit)
 npm run typecheck
 npm run build
 ```
@@ -607,10 +607,34 @@ Scriptul acopera amindoi candidatii caderii de atunci:
 
 - **fara `DATABASE_URL` sare peste**, cu o linie in log. Un build de preview sau o
   rulare locala nu mai cade din cauza asta;
-- **cind exista `DIRECT_URL`, migrarea merge pe ea.** `migrate deploy` refuza o
-  conexiune pooled (pgbouncer). `schema.prisma` ramine neatins: un `directUrl`
-  acolo, cu variabila nesetata, ar strica si rularile locale. Cind `DATABASE_URL`
-  pare pooled si `DIRECT_URL` lipseste, scriptul avertizeaza inainte sa incerce.
+- **migrarea merge pe o conexiune directa.** `migrate deploy` cere un
+  `pg_advisory_lock`, care e o incuietoare de sesiune; prin pgbouncer nu exista
+  stare de sesiune, deci asteapta degeaba si pica cu `P1002`. Mesajul lui vorbeste
+  despre server si despre advisory lock, si nu pomeneste nicaieri pooling-ul —
+  asa a cazut deploy-ul de pe `2193fbb`, cu baza perfect sanatoasa.
+  `schema.prisma` ramine neatins: un `directUrl` acolo, cu variabila nesetata, ar
+  strica si rularile locale.
+
+  Care conexiune se ia, si in ce ordine, sta in `scripts/migrare-url.mjs` — modul
+  pur, testat direct, fiindca greseala de aici nu se vede nici la `npm test` nici
+  la un build local, ci abia pe Vercel:
+
+  1. `DIRECT_URL`, scrisa de om;
+  2. `DATABASE_URL_UNPOOLED` sau `POSTGRES_URL_NON_POOLING`, pe care le pune
+     singura integrarea Neon-Vercel;
+  3. dedusa din `DATABASE_URL`, scotind `-pooler` din numele gazdei. La Neon
+     aceeasi baza are doua nume care difera doar prin sufixul asta. E singurul pas
+     care ghiceste, deci merge numai pe forma aia de nume si scrie in log ce a
+     dedus.
+
+  Cind nu se potriveste nimic, ramine `DATABASE_URL` neatins, cu un avertisment:
+  unele conexiuni pooled accepta totusi migrarile, si nu oprim un deploy dintr-o
+  banuiala.
+
+  **Acreditarile nu trec prin `new URL()`.** Acela normalizeaza si reincodeaza
+  userul si parola, iar o parola cu semne iese pe partea cealalta schimbata si
+  conexiunea e refuzata pentru un motiv care n-are legatura cu nimic. Se taie
+  bucata de gazda si bucata de parametri, si numai ele se ating.
 
 O migrare care chiar da eroare opreste build-ul, si asa trebuie: mai bine
 deploy-ul nu pleaca decit sa ajunga cod nou peste schema veche. Diferenta fata de
